@@ -75,7 +75,7 @@
 
 RAG는 두 번째 요소인 vector database를 추가합니다. 팀마다 서로 다른 vector database를 사용하며, 요구사항이 변화함에 따라 우리의 vector database도 교체하고 싶을 수 있습니다. 애플리케이션은 자신이 어떤 vector database와 통신하는지 알거나 신경 쓸 필요가 없어야 합니다.
 
-**OGX (Open GenAI Stack, 이전 이름 Llama Stack)**는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
+**OGX **(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
 
 공급자 이동성 외에도, OGX는 직접 구축하기 어려운 RAG 기능들도 제공합니다:
 

@@ -1,6 +1,6 @@
 # 🎯 Fine-tuning
 
-AI 커스터마이징 도구에는 세 가지가 있습니다: **프롬프트 엔지니어링(prompt engineering)**, **컨텍스트 엔지니어링(context engineering)**(RAG 같은 것), 그리고 **파인튜닝(fine-tuning)**입니다.  
+AI 커스터마이징 도구에는 세 가지가 있습니다: **프롬프트 엔지니어링(prompt engineering)**, **컨텍스트 엔지니어링(context engineering)**(RAG 같은 것), 그리고 **파인튜닝**(fine-tuning)입니다.  
 지금까지 프롬프트 엔지니어링과 컨텍스트를 활용해서 모델 응답을 개선하고, 다른 것들과 함께 응답을 그라운딩(grounding)하는 방법을 살펴봤습니다.
 
 그럼 파인튜닝은 어디에 쓰일까요?  
@@ -64,7 +64,7 @@ You are Canopy, RDU's math tutor.
 안타깝게도 좋은 데이터는 구하기가 꽤 어렵고, 보통 매우 수작업이 많이 들어가는 일입니다.  
 다행히 이제는 기존 데이터를 보완할 수 있는 합성 데이터 생성 기법들이 존재합니다.
 
-이러한 접근 방식을 **합성 데이터 생성(Synthetic Data Generation)**이라고 부릅니다.
+이러한 접근 방식을 **합성 데이터 생성**(Synthetic Data Generation)이라고 부릅니다.
 
 직접 시도해 보려면, 워크벤치로 가서 **`experiments/12-fine-tuning/1-synthetic-data-generation.ipynb`**를 열고 안내를 따라가세요.
 

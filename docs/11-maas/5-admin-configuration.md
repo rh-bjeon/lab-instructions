@@ -295,6 +295,6 @@ flowchart TB
 
 ## 🎯 다음 단계
 
-관리자 측에서 모든 것을 설정했습니다. 이제 관점을 바꿔봅시다 — API 키를 받아서 바로 만들어보고 싶어하는 👤 **소비자(Consumer)**로서 LiteMaaS를 경험할 시간입니다!
+관리자 측에서 모든 것을 설정했습니다. 이제 관점을 바꿔봅시다 — API 키를 받아서 바로 만들어보고 싶어하는 👤 **소비자**(Consumer)로서 LiteMaaS를 경험할 시간입니다!
 
 **[User Experience](./4-user-experience.md)로 계속하기** →

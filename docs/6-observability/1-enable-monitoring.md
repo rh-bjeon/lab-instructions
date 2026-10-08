@@ -71,4 +71,4 @@ LlamaStack 배포의 텔레메트리 구성에는 다음이 포함됩니다.
 
 RHOAI Observability 플랫폼과 OpenShift User Workload Monitoring이 구성되면서, 이제 vLLM(토큰 생성, 지연 시간), LlamaStack(토큰 사용량), Canopy UI/Backend(HTTP 요청, 응답 시간)로부터 메트릭을 수집하고 있습니다. 다음 섹션에서는 Prometheus에서 이러한 메트릭을 조회하고, 시각화를 위해 Grafana를 배포하며, 대시보드를 해석해 AI 스택의 성능을 이해하는 방법을 배웁니다.
 
-**[Metrics](6-observability/2-metrics.md)**로 이동해 여러분의 AI 스택이 성능에 대해 무엇을 알려주는지 살펴봅시다.
+**[Metrics](6-observability/2-metrics.md)** 로 이동해 여러분의 AI 스택이 성능에 대해 무엇을 알려주는지 살펴봅시다.

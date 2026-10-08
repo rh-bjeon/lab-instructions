@@ -114,7 +114,7 @@ _* 양자화(Quantization)는 모델이 차지하는 공간을 줄여, 더 빠�
 [Hugging Face](https://huggingface.co/)는 개발자들이 머신러닝 모델, 특히 대형 언어 모델을 공유하고 탐색하고 배포하는 플랫폼이자 모델 허브입니다.
 우리 중 많은 사람이 Hugging Face를 이용해 모델을 둘러보고 다운로드합니다.
 
-Hugging Face에서 대형 언어 모델을 둘러보면, 각 모델에는 **모델 카드(model card)**가 있습니다 — 모델의 아키텍처, 학습 데이터, 사용 목적, 그리고 종종 하드웨어 요구 사항까지 담긴 요약 페이지입니다. 예를 들어 Llama 4 컬렉션의 [Llama-4-Scout-17B-16E-Instruct](https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct) 모델을 살펴보세요.
+Hugging Face에서 대형 언어 모델을 둘러보면, 각 모델에는 **모델 카드**(model card)가 있습니다 — 모델의 아키텍처, 학습 데이터, 사용 목적, 그리고 종종 하드웨어 요구 사항까지 담긴 요약 페이지입니다. 예를 들어 Llama 4 컬렉션의 [Llama-4-Scout-17B-16E-Instruct](https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct) 모델을 살펴보세요.
 
 리소스에 대한 힌트를 찾을 수 있는 곳:
 

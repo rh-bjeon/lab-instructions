@@ -210,7 +210,7 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
 
 예를 들어, 프로덕션 환경의 trace를 평가 데이터셋에 추가하려면 다음과 같이 합니다.
 
-1. **OpenShift AI Dashboard** > **Experiments (MLflow)**로 이동하여 `<USER_NAME>-prod`를 선택합니다.
+1. **OpenShift AI Dashboard** > **Experiments **(MLflow)로 이동하여 `<USER_NAME>-prod`를 선택합니다.
 2. **summarization** > **Traces**를 열고 trace를 하나 선택합니다.
 3. **Show assessments** > **Add expectations**를 클릭합니다 (예: `length` = `200`).
 4. **Add to dataset**을 클릭하고 기존의 `eval` 데이터셋을 선택한 다음 **Export**를 클릭합니다.

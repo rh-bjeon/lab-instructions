@@ -8,9 +8,9 @@
 
 [MCP Authorization Guide](https://modelcontextprotocol.io/docs/tutorials/security/authorization#when-should-you-use-authorization)에 따르면, 다음과 같은 경우 보안이 필요합니다.
 
-- **여러 사용자(multiple users)**가 서버에 접근하는 경우 (각자 다른 권한을 가짐)
-- **민감한 데이터(sensitive data)**가 관련된 경우 (캘린더, 성적, 개인정보)
-- **쓰기 작업(write operations)**이 상태를 변경할 수 있는 경우 (이벤트 생성/삭제)
+- **여러 사용자**(multiple users)가 서버에 접근하는 경우 (각자 다른 권한을 가짐)
+- **민감한 데이터**(sensitive data)가 관련된 경우 (캘린더, 성적, 개인정보)
+- **쓰기 작업**(write operations)이 상태를 변경할 수 있는 경우 (이벤트 생성/삭제)
 
 우리의 calendar MCP 서버는 이 세 가지 항목 모두에 해당합니다! 학생들은 자신의 이벤트만 볼 수 있어야 하며, 무작위 요청이 가짜 미팅을 만들어내는 것도 원하지 않습니다.
 

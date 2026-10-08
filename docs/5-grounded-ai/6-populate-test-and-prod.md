@@ -5,7 +5,7 @@
 
 ## 🔍 KFP Pipelines (다시) 소개
 
-이제 **Kubeflow Pipelines (KFP)**를 사용해 여러분의 실험적인 RAG 시스템을, 복잡한 학술 문서를 대규모로 자동 처리할 수 있는 production급 플랫폼으로 전환하겠습니다.
+이제 **Kubeflow Pipelines **(KFP)를 사용해 여러분의 실험적인 RAG 시스템을, 복잡한 학술 문서를 대규모로 자동 처리할 수 있는 production급 플랫폼으로 전환하겠습니다.
 
 ## 🏗️ Document Intelligence RAG Pipeline 아키텍처
 

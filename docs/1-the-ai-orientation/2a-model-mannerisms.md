@@ -20,8 +20,8 @@
 
 본격적으로 들어가기 전에, 중요한 구분 하나를 명확히 해 둡시다.
 
-- **생성형 AI(Generative AI)**는 무언가를 **생성(generate)**하려 하며, 여기에는 종종 많은 변동성(variance)이 포함됩니다
-- **예측형 AI(Predictive AI)**는 가장 가능성이 높은 답을 **예측(predict)**하려고만 합니다
+- **생성형 AI**(Generative AI)는 무언가를 **생성**(generate)하려 하며, 여기에는 종종 많은 변동성(variance)이 포함됩니다
+- **예측형 AI**(Predictive AI)는 가장 가능성이 높은 답을 **예측**(predict)하려고만 합니다
 
 예를 들어, **예측형 AI**에게 개에 대해 물으면, 이미지를 분류해서 각각을 "DOG" 또는 "NOT DOG"로 레이블을 붙일 것입니다.
 
@@ -29,7 +29,7 @@
 
 ![예측형 AI vs 생성형 AI — 개 예시](images/predictive-vs-generative-dogs.png)
 
-> 이 교육에서는 **생성형 AI(GenAI)**에 초점을 맞춥니다.
+> 이 교육에서는 **생성형 AI**(GenAI)에 초점을 맞춥니다.
 
 GenAI 모델이 생성할 수 있는 데이터 유형은 다양합니다.
 
@@ -40,7 +40,7 @@ GenAI 모델이 생성할 수 있는 데이터 유형은 다양합니다.
 | 🔊 오디오 | Whisper, Bark |
 | 🎬 비디오 | Sora, Runway |
 
-우리는 **텍스트 생성**, 그중에서도 특히 **대형 언어 모델(LLM)**에 초점을 맞출 것입니다.
+우리는 **텍스트 생성**, 그중에서도 특히 **대형 언어 모델**(LLM)에 초점을 맞출 것입니다.
 
 <!-- ![GenAI can generate many types of data](images/genai-data-types.png) -->
 
@@ -220,7 +220,7 @@ What are the last two digits of pi?
 	loading="lazy">
 </iframe>
 
-모델이 답을 주었나요? 파이(pi)는 **무리수(irrational number)**입니다 — "마지막 두 자리"라는 것이 존재하지 않습니다. 그럼에도 모델은 자신 있게 답을 내놓을 것입니다!
+모델이 답을 주었나요? 파이(pi)는 **무리수**(irrational number)입니다 — "마지막 두 자리"라는 것이 존재하지 않습니다. 그럼에도 모델은 자신 있게 답을 내놓을 것입니다!
 
 ![어머, 모델이 방금 우리에게 거짓말을 한 걸까요?](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG5sdWRianF6OXQ3bHZ2bzRzemMxYXNheTR2anc1aTJnN3IxNXAzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nm8ZPAGOwZUQM/giphy.gif)
 
