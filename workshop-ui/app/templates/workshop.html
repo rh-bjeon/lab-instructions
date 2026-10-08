@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ workshop.title }}{% endblock %}
+{% block nav %}
+<nav class="top"><a href="/logout">Log out</a></nav>
+{% endblock %}
+{% block banner %}
+<div class="banner">
+  <h1>{{ workshop.title }}</h1>
+  <div class="subtitle">Signed in as {{ info.assigned_email }} ({{ info.username }})</div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Lab Guide</h2>
+  <div class="info-row">
+    <span class="label">Lab Guide</span>
+    <a href="{{ info.labguide_url }}" target="_blank">{{ info.labguide_url }}</a>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<div class="card">
+  <h2>OpenShift Console Access</h2>
+  <div class="info-row">
+    <span class="label">OpenShift Console URL</span>
+    <a href="{{ info.openshift_console_url }}" target="_blank">{{ info.openshift_console_url }}</a>
+  </div>
+  <div class="info-row">
+    <span class="label">OpenShift Cluster Domain</span>
+    <span>{{ info.cluster_ingress_domain }}</span>
+  </div>
+  <div class="info-row">
+    <span class="label">User</span>
+    <code>{{ info.username }}</code>
+  </div>
+  <div class="info-row">
+    <span class="label">Password</span>
+    <code>{{ info.password }}</code>
+  </div>
+  {% if info.gitea_console_url %}
+  <div class="info-row">
+    <span class="label">Gitea</span>
+    <a href="https://{{ info.gitea_console_url }}" target="_blank">{{ info.gitea_console_url }}</a>
+  </div>
+  {% endif %}
+  <label>oc login command</label>
+  <div class="copy-field"><pre>{{ info.oc_login_command }}</pre></div>
+</div>
+{% endblock %}

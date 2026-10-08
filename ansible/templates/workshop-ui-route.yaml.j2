@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: workshop-ui
+  namespace: "{{ workshop_ui_namespace }}"
+spec:
+  to:
+    kind: Service
+    name: workshop-ui
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

@@ -69,6 +69,23 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 | `openshift_cluster_ingress_domain` | `openshift_cluster_ingress_domain` | `<CLUSTER_DOMAIN>` |
 | `gitea_console_url` | `gitea_console_url` | `<GIT_SERVER>` |
 
+#### 워크샵 디렉터리/로그인 앱 (`workshop-ui/`)
+
+실습자가 OpenShift 사용자 이름을 미리 알 필요 없이, 이메일 + 공용 워크샵 비밀번호만 입력하면 `ansible/deploy-labguide.yml`이 이미 프로비저닝한 `user1`..`userN` 중 하나에 자동으로 매칭되는 작은 디렉터리/로그인 앱입니다. 관리자(admin) 모드에서 워크샵 제목/설명/비밀번호/등록 방식(open 또는 pre-registration)/리다이렉트 여부를 설정하고, 이메일↔사용자 할당 현황을 확인·관리할 수 있습니다. 자세한 내용은 [`workshop-ui/README.md`](./workshop-ui/README.md) 참고.
+
+랩 가이드 사이트와 동일하게 커스텀 이미지 빌드 없이 배포됩니다(`git-cloner` initContainer + 범용 `registry.access.redhat.com/ubi9/python-312` 이미지, 시작 시 `pip install`). 다만 랩 가이드와 달리 **학생 1명당 1개가 아니라 워크샵/클러스터당 1개**만 배포하며, 할당 데이터(SQLite)를 Pod 재시작 후에도 보존하기 위해 `emptyDir`이 아니라 PVC를 사용합니다. 이 앱은 Ansible을 직접 트리거하지 않습니다 — `ansible/deploy-labguide.yml`로 이미 프로비저닝된 것과 동일한 `student_count`/`cluster_ingress_domain`/`default_user_password`를 admin 대시보드에 입력해두면, 명명 규칙에 따라 각 사용자의 콘솔/랩가이드 URL을 계산해서 보여줄 뿐입니다.
+
+```shell
+ansible-playbook ansible/deploy-workshop-ui.yml -e workshop_ui_admin_password='some-strong-password'
+
+# 제거 (PVC까지 함께 삭제되어 할당 데이터도 사라집니다)
+ansible-playbook ansible/destroy-workshop-ui.yml
+```
+
+- `workshop_ui_admin_password`는 **필수**이며 안전하지 않은 기본값이 없습니다(미전달 시 플레이북이 즉시 실패).
+- `workshop_ui_secret_key`(세션 서명 키)는 전달하지 않으면 실행마다 무작위로 생성됩니다 — 재배포 간 세션을 유지하려면 직접 값을 지정하세요.
+- 워크샵 제목/설명/비밀번호/등록 방식 등 나머지 설정은 Ansible 변수가 아니라, 배포 후 admin 대시보드(`/admin`)에서 직접 입력합니다.
+
 ## 🎃 Contribution
 
 Pull Request를 환영합니다 🎃. 컨트리뷰터가 되려면 [Contribution Guide](./CONTRIBUTING.md)를 🙏 검토 👀 해주세요.

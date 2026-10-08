@@ -33,3 +33,12 @@ labguide_nginx_image: "registry.access.redhat.com/ubi9/nginx-124"
 # ambient ~/.kube/config (already authenticated to the cluster) and its current-context are used.
 # k8s_kubeconfig: ~/.kube/config
 # k8s_context: my-context
+
+# --- workshop-ui (single shared Deployment, not looped per student) ---
+workshop_ui_namespace: workshop-ui
+workshop_ui_image: "registry.access.redhat.com/ubi9/python-312"
+workshop_ui_pvc_size: 1Gi
+# workshop_ui_admin_password has NO default -- deploy-workshop-ui.yml asserts it was
+# passed via -e, since unlike default_password this guards the whole assignment table.
+# workshop_ui_secret_key is auto-generated per run if not passed via -e (sessions won't
+# survive a redeploy in that case -- pass -e workshop_ui_secret_key=... for stability).

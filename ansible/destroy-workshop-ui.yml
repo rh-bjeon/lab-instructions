@@ -1,0 +1,22 @@
+---
+# Tears down the workshop directory/login app's namespace (including its PVC,
+# so the assignment database is deleted too).
+#
+# Example:
+#   ansible-playbook ansible/destroy-workshop-ui.yml
+- name: Remove the workshop directory/login app
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - defaults.yml
+
+  tasks:
+    - name: Delete namespace
+      kubernetes.core.k8s:
+        kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+        context: "{{ k8s_context | default(omit) }}"
+        state: absent
+        api_version: v1
+        kind: Namespace
+        name: "{{ workshop_ui_namespace }}"

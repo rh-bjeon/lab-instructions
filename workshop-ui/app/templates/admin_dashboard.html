@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Workshop Admin — {{ workshop.title }}{% endblock %}
+{% block nav %}
+<nav class="top"><a href="/admin/logout">Log out</a></nav>
+{% endblock %}
+{% block banner %}
+<div class="banner">
+  <h1>{{ workshop.title }}</h1>
+  <div class="subtitle">Workshop Admin · {{ assigned_count }} / {{ total_count }} assigned</div>
+</div>
+{% endblock %}
+{% block content %}
+{% if notice %}<div class="notice">{{ notice }}</div>{% endif %}
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+<div class="card">
+  <h2>Details</h2>
+  <form method="post" action="/admin/workshop">
+    <label for="title">Title <span class="required">*</span></label>
+    <input type="text" id="title" name="title" required value="{{ workshop.title }}">
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" placeholder="Shown next to the login box on the user access page.">{{ workshop.description or '' }}</textarea>
+
+    <label for="password">Access Password <span class="required">*</span></label>
+    <input type="text" id="password" name="password" placeholder="Leave blank to keep the current password">
+    <div class="help">Shared password students enter alongside their email. Leave blank to keep it unchanged.</div>
+
+    <div class="toggle-row">
+      <input type="checkbox" id="redirect_enabled" name="redirect_enabled" {% if workshop.redirect_enabled %}checked{% endif %}>
+      <label for="redirect_enabled" style="margin:0;">Redirect users straight to the lab guide (skip the info page)</label>
+    </div>
+
+    <label for="registration_mode">User Registration</label>
+    <select id="registration_mode" name="registration_mode">
+      <option value="open" {% if workshop.registration_mode == 'open' %}selected{% endif %}>Open — anyone with the password claims the next free user slot</option>
+      <option value="pre_registration" {% if workshop.registration_mode == 'pre_registration' %}selected{% endif %}>Pre-registration — only emails the admin assigned below can log in</option>
+    </select>
+
+    <label for="student_count">Number of OpenShift users (user1..userN)</label>
+    <input type="number" id="student_count" name="student_count" min="0" value="{{ workshop.student_count }}">
+    <div class="help">Must match what <code>ansible/deploy-labguide.yml</code> was run with. Raising this only adds new slots, never removes existing assignments.</div>
+
+    <label for="cluster_ingress_domain">OpenShift Cluster Ingress Domain</label>
+    <input type="text" id="cluster_ingress_domain" name="cluster_ingress_domain" placeholder="apps.example.com" value="{{ workshop.cluster_ingress_domain or '' }}">
+
+    <label for="gitea_console_url">Gitea Console URL</label>
+    <input type="text" id="gitea_console_url" name="gitea_console_url" placeholder="gitea-gitea.apps.example.com" value="{{ workshop.gitea_console_url or '' }}">
+
+    <label for="default_user_password">Default OpenShift User Password</label>
+    <input type="text" id="default_user_password" name="default_user_password" value="{{ workshop.default_user_password or '' }}">
+    <div class="help">Must match <code>default_password</code> passed to <code>ansible/deploy-labguide.yml</code>, unless a user has a per-user override below.</div>
+
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+<hr class="section-divider">
+
+<div class="card">
+  <h2>Users ({{ assigned_count }} / {{ total_count }} assigned)</h2>
+  <table>
+    <thead>
+      <tr><th>User</th><th>Assigned Email</th><th>Password Override</th><th>Lab Guide</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td><code>{{ user.username }}</code></td>
+        <td>
+          <form method="post" action="/admin/users/{{ user.username }}/assign" style="display:flex; gap:6px;">
+            <input type="email" name="email" value="{{ user.assigned_email or '' }}" placeholder="- unassigned -" style="min-width:220px;">
+            <button type="submit" class="secondary">Save</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="/admin/users/{{ user.username }}/assign" style="display:flex; gap:6px;">
+            <input type="hidden" name="email" value="{{ user.assigned_email or '' }}">
+            <input type="text" name="password_override" value="{{ user.password_override or '' }}" placeholder="(use default)" style="min-width:140px;">
+            <button type="submit" class="secondary">Save</button>
+          </form>
+        </td>
+        <td>{% if user.assigned_email %}<a href="{{ user_infos[user.username].labguide_url }}" target="_blank">open</a>{% endif %}</td>
+        <td>
+          {% if user.assigned_email %}
+          <form method="post" action="/admin/users/{{ user.username }}/unassign">
+            <button type="submit" class="secondary">Unassign</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<hr class="section-divider">
+
+<div class="card">
+  <h2>Bulk Assignment</h2>
+  <form method="post" action="/admin/users/bulk-assign">
+    <label for="emails">Emails (one per line) — assigned to the next free slots in order</label>
+    <textarea id="emails" name="emails" rows="6" placeholder="alice@example.com&#10;bob@example.com"></textarea>
+    <button type="submit">Assign</button>
+  </form>
+</div>
+{% endblock %}

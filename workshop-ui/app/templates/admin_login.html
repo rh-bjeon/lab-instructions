@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block banner %}
+<div class="banner"><h1>Workshop Admin</h1></div>
+{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 420px; margin: 0 auto;">
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  <form method="post" action="/admin/login">
+    <label for="password">Admin Password <span class="required">*</span></label>
+    <input type="password" id="password" name="password" required autofocus>
+    <button type="submit">Log in</button>
+  </form>
+</div>
+{% endblock %}
