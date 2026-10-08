@@ -1,0 +1,13 @@
+---
+- name: Resolve this student's username
+  ansible.builtin.set_fact:
+    student_username: "{{ student_username_prefix }}{{ student_index }}"
+
+- name: "{{ student_username }}: delete namespace"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: absent
+    api_version: v1
+    kind: Namespace
+    name: "{{ student_username }}-labguide"

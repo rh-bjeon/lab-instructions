@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labguide
+  namespace: "{{ student_username }}-labguide"
+  labels:
+    app: labguide
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labguide
+  template:
+    metadata:
+      labels:
+        app: labguide
+    spec:
+      initContainers:
+        - name: git-cloner
+          image: "{{ git_cloner_image }}"
+          env:
+            - name: GIT_REPO_URL
+              value: "{{ content_git_repo_url }}"
+            - name: GIT_REPO_REF
+              value: "{{ content_git_repo_ref }}"
+            - name: CLONE_DIR
+              value: /content/repo
+          volumeMounts:
+            - name: content
+              mountPath: /content
+      containers:
+        - name: labguide
+          image: "{{ labguide_nginx_image }}"
+          command: ["/bin/sh", "-c"]
+          args:
+            - /opt/app-root/scripts/generate-env-config.sh && exec /usr/libexec/s2i/run
+          envFrom:
+            - configMapRef:
+                name: labguide-values
+          env:
+            - name: password
+              valueFrom:
+                secretKeyRef:
+                  name: labguide-secret
+                  key: password
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: content
+              mountPath: /opt/app-root/src
+              subPath: repo/docs
+            - name: scripts
+              mountPath: /opt/app-root/scripts
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: content
+          emptyDir: {}
+        - name: scripts
+          configMap:
+            name: labguide-scripts
+            defaultMode: 0755

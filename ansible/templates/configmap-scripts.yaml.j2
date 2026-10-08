@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: labguide-scripts
+  namespace: "{{ student_username }}-labguide"
+data:
+  generate-env-config.sh: |
+{{ lookup('file', 'files/generate-env-config.sh') | indent(4, true) }}

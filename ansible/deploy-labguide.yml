@@ -1,0 +1,35 @@
+---
+# Deploys the GenAIOps lab guide for every student in one run.
+#
+# Run from the bastion host as the account whose ~/.kube/config already holds a valid,
+# authenticated OpenShift context (no host/api_key/username/password are set here --
+# the ambient kubeconfig is used as-is).
+#
+# Example (30 students, shared default password, one override):
+#   ansible-playbook ansible/deploy-labguide.yml \
+#     -e student_count=30 \
+#     -e openshift_cluster_ingress_domain=apps.example.com \
+#     -e default_password='ABC' \
+#     -e password_overrides='{"user7":"special-pass"}'
+- name: Deploy GenAIOps lab guide for all students
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - defaults.yml
+
+  tasks:
+    - name: Validate required variables
+      ansible.builtin.assert:
+        that:
+          - student_count is defined
+          - openshift_cluster_ingress_domain is defined
+        fail_msg: >-
+          student_count and openshift_cluster_ingress_domain are required, e.g.
+          -e student_count=30 -e openshift_cluster_ingress_domain=apps.example.com
+
+    - name: Deploy one lab guide per student
+      ansible.builtin.include_tasks: tasks/deploy_one_user.yml
+      loop: "{{ range(student_start_index | int, student_start_index | int + student_count | int) | list }}"
+      loop_control:
+        loop_var: student_index

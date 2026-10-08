@@ -1,0 +1,57 @@
+---
+- name: Resolve this student's username and password
+  ansible.builtin.set_fact:
+    student_username: "{{ student_username_prefix }}{{ student_index }}"
+
+- name: Resolve this student's password (override takes precedence over default_password)
+  ansible.builtin.set_fact:
+    student_password: "{{ password_overrides[student_username] | default(default_password) }}"
+
+- name: "{{ student_username }}: ensure namespace exists"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/namespace.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply env-config generator script ConfigMap"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/configmap-scripts.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply non-sensitive values ConfigMap"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/configmap-values.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply password Secret"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/secret.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply Deployment"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/deployment.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply Service"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/service.yaml.j2') }}"
+
+- name: "{{ student_username }}: apply Route"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
+    context: "{{ k8s_context | default(omit) }}"
+    state: present
+    definition: "{{ lookup('template', 'templates/route.yaml.j2') }}"

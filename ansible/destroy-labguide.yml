@@ -1,0 +1,24 @@
+---
+# Tears down every student's lab guide namespace in one run.
+#
+# Example (matches a prior deploy-labguide.yml run for 30 students):
+#   ansible-playbook ansible/destroy-labguide.yml -e student_count=30
+- name: Remove GenAIOps lab guide for all students
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - defaults.yml
+
+  tasks:
+    - name: Validate required variables
+      ansible.builtin.assert:
+        that:
+          - student_count is defined
+        fail_msg: "student_count is required, e.g. -e student_count=30"
+
+    - name: Remove each student's lab guide namespace
+      ansible.builtin.include_tasks: tasks/destroy_one_user.yml
+      loop: "{{ range(student_start_index | int, student_start_index | int + student_count | int) | list }}"
+      loop_control:
+        loop_var: student_index

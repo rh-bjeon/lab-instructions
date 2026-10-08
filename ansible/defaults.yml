@@ -1,0 +1,27 @@
+---
+# Student OpenShift usernames follow "<student_username_prefix><N>", e.g. user1, user2, ...
+student_username_prefix: user
+student_start_index: 1
+
+# Placeholder only -- override with `-e default_password=...` (or Ansible Vault) at run time.
+default_password: "ChangeMe123!"
+
+# Per-student password overrides, e.g. -e password_overrides='{"user7":"special-pass"}'
+password_overrides: {}
+
+# Most Gitea instances in this environment follow "gitea-gitea.<cluster ingress domain>"
+# (the same convention docs/index.html already used). Override only if a given cluster differs.
+gitea_console_url: "gitea-gitea.{{ openshift_cluster_ingress_domain }}"
+
+# Lab guide content source (this repo) -- override to point at a fork/branch if needed.
+content_git_repo_url: "https://github.com/rhoai-genaiops/lab-instructions.git"
+content_git_repo_ref: main
+
+# Generic images used for every student -- no custom image build. See docs/index.html.
+git_cloner_image: "quay.io/rhpds/git-cloner:v1.1.5"
+labguide_nginx_image: "registry.access.redhat.com/ubi9/nginx-124"
+
+# Optional overrides for non-default kubeconfig/context. Left unset by default so the
+# ambient ~/.kube/config (already authenticated to the cluster) and its current-context are used.
+# k8s_kubeconfig: ~/.kube/config
+# k8s_context: my-context

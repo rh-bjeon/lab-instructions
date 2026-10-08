@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: labguide-values
+  namespace: "{{ student_username }}-labguide"
+data:
+  user: "{{ student_username }}"
+  openshift_cluster_ingress_domain: "{{ openshift_cluster_ingress_domain }}"
+  gitea_console_url: "{{ gitea_console_url }}"
