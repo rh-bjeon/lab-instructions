@@ -1,23 +1,23 @@
-# Evaluate RAG
+# RAG 평가하기
 
-After we now have built a RAG system, I know what you all are thinking...
+이제 RAG 시스템을 구축했으니, 여러분 모두가 무슨 생각을 하고 있는지 압니다...
 
 ![testing_meme](images/testing_meme.png)
 
-And I agree, so that's the end of this section!
+저도 동의합니다. 그러니 이 섹션은 여기서 끝입니다!
 
 ...
 
-However, since we already have an evaluation framework, it would be a shame not to use it, so let's add some evaluations to make sure our RAG performs as expected after all.  
+하지만, 우리에게는 이미 평가 프레임워크가 있으니, 이를 사용하지 않는 것은 아쉬운 일이겠죠. 그러니 RAG가 예상대로 동작하는지 확인하기 위한 평가를 몇 가지 추가해봅시다.
 
-For RAG we also have the retreived text chunks, so we can build tests for those too. Here we specifically test if the retrieved chunks are relevant to the user question, and if the LLM use them to ground the answer.  
-MLflow have built-in tests for this that we will use, you can read more about them here: https://mlflow.org/docs/latest/genai/eval-monitor/scorers/llm-judge/rag/
+RAG에서는 검색된(retrieved) 텍스트 chunk도 있으므로, 이를 위한 테스트도 만들 수 있습니다. 여기서는 특히 검색된 chunk가 사용자의 질문과 관련이 있는지, 그리고 LLM이 그것들을 바탕으로 답변에 근거(ground)를 두는지를 테스트합니다.
+MLflow에는 이를 위한 내장 테스트가 있으므로 이를 사용하겠습니다. 자세한 내용은 여기에서 확인할 수 있습니다: https://mlflow.org/docs/latest/genai/eval-monitor/scorers/llm-judge/rag/
 
-To add our new RAG evaluations, we simply need to add a new eval folder with some tests in it.
+새로운 RAG 평가를 추가하려면, 단순히 몇 가지 테스트가 담긴 새로운 eval 폴더를 추가하면 됩니다.
 
-1. Go to your workbench and navigate to `evals` folder.
+1. workbench로 이동해 `evals` 폴더로 들어가세요.
 
-2. Then start by creating a `information-search`, and `judge_prompt.txt` and `information_search_tests.yaml` files under it. Here are the commands if you don't want to do it manually:
+2. 그 아래에 `information-search` 폴더를 만들고, 그 안에 `judge_prompt.txt`와 `information_search_tests.yaml` 파일을 생성하세요. 직접 하지 않고 명령어로 하고 싶다면 다음을 사용하세요:
 
     ```bash
     mkdir /opt/app-root/src/evals/information-search
@@ -25,7 +25,7 @@ To add our new RAG evaluations, we simply need to add a new eval folder with som
     touch /opt/app-root/src/evals/information-search/judge_prompt.txt
     ```
 
-3. Add below text to the `judge_prompt.txt` in the `information-search` folder. The summarization's judge prompt penalises answers that introduce facts not present in the user's question, which would incorrectly fail valid RAG responses that draw from retrieved documents. That's why we need a RAG specific one:
+3. `information-search` 폴더 안의 `judge_prompt.txt`에 아래 텍스트를 추가하세요. summarization의 judge prompt는 사용자의 질문에 없는 사실을 끌어오는 답변에 감점을 주는데, 이는 검색된 문서를 바탕으로 한 유효한 RAG 응답을 잘못 실패시킬 수 있습니다. 그래서 RAG 전용 prompt가 필요한 것입니다:
 
     ```bash
     You are an expert evaluator judging the quality of a generated answer to a question.
@@ -53,7 +53,7 @@ To add our new RAG evaluations, we simply need to add a new eval folder with som
     Respond with only "yes" or "no".
     ```
 
-4. Open up `evals/information-search/information_search_tests.yaml` and paste this to have a good baseline:
+4. `evals/information-search/information_search_tests.yaml`을 열고 다음을 붙여넣어 좋은 기준선(baseline)을 만드세요:
 
 
 ```yaml
@@ -94,9 +94,9 @@ tests:
 ```
     
 
-  **Note:** These prompts are for the course AI501, depending on what course you ingested before you may need to change them to match your content. To find good prompts and expected responses you can try running a few through the **Canopy UI** or **Gen AI Playground**.
+  **참고:** 이 prompt들은 AI501 과목을 기준으로 작성되었습니다. 이전에 어떤 과목을 수집(ingest)했는지에 따라 내용에 맞게 수정해야 할 수 있습니다. 좋은 prompt와 예상 응답을 찾으려면 **Canopy UI**나 **Gen AI Playground**에서 몇 가지를 직접 실행해보세요.
 
-5. After you are happy with the evaluation, make sure to commit it to git:
+5. 평가 내용이 만족스럽다면, 반드시 git에 커밋하세요:
 
     ```bash
     cd /opt/app-root/src/evals
@@ -105,16 +105,16 @@ tests:
     git push
     ```
 
-6. Remeber, our eval pipeline should trigger off of this git push! 🥳 Just like in the `Ready to Scale 201` section, you can go to OpenShift Pipelines to see how it's progressing.
+6. 기억하세요, 우리의 eval pipeline은 이 git push에 의해 트리거되어야 합니다! 🥳 `Ready to Scale 201` 섹션에서와 마찬가지로, OpenShift Pipelines로 이동해 진행 상황을 확인할 수 있습니다.
 
   ![rag-eval-pipeline-run.png](./images/rag-eval-pipeline-run.png)
 
-7. While the pipeline is running, feel free to explore the traces from your RAG system by going `Develop & train` > `Experiments (MLflow)` > under **<USER_NAME>-test** project, check `information-search`'s Traces and see the document content being added to your prompt.
+7. pipeline이 실행되는 동안, `Develop & train` > `Experiments (MLflow)`로 이동해 **<USER_NAME>-test** 프로젝트 아래에서 `information-search`의 Traces를 확인하고 문서 내용이 prompt에 추가되는 모습을 자유롭게 살펴보세요.
 
   ![information-search-traces.png](./images/information-search-traces.png)
   ![information-search-traces-2.png](./images/information-search-traces-2.png)
 
-8. And after the pipeline is done, you can again see the evaluation results under `Experiments (MLflow)` > under **<USER_NAME>-toolings** project.
+8. pipeline이 완료되면, **<USER_NAME>-toolings** 프로젝트 아래의 `Experiments (MLflow)`에서 다시 평가 결과를 확인할 수 있습니다.
 
   ![rag-mlflow-eval.png](./images/rag-mlflow-eval.png)
 

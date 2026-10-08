@@ -1,34 +1,35 @@
-# 🧭 AI Orientation
+# 🧭 AI 오리엔테이션
 
-Welcome to the AI Orientation! In this section, we'll cover the fundamentals of Generative AI and Large Language Models (LLMs) through interactive exercises and quizzes.
+AI 오리엔테이션에 오신 것을 환영합니다! 이 섹션에서는 인터랙티브한 실습과 퀴즈를 통해 생성형 AI(Generative AI)와 대형 언어 모델(LLM)의 기본 개념을 다룹니다.
 
-## 🎯 What you'll learn
+## 🎯 배우게 될 내용
 
-By the end of this section, you will understand:
+이 섹션을 마치면 다음을 이해하게 됩니다.
 
-- The difference between **Generative AI** and Predictive AI
-- The **4 fundamental truths** about how GenAI models behave
-- How **prompting** works and why it matters (system prompt vs user prompt)
-- What a model actually is (**parameters, runtimes, GPUs**)
-- How models **generate text** (next-word prediction)
-- Where **hallucinations** come from and how to reduce them
+- **생성형 AI**와 예측형 AI(Predictive AI)의 차이
+- GenAI 모델이 어떻게 동작하는지에 대한 **4가지 근본적인 진실**
+- **프롬프팅(prompting)**이 어떻게 작동하며 왜 중요한지 (시스템 프롬프트 vs 사용자 프롬프트)
+- 모델이 실제로 무엇인지 (**파라미터, 런타임, GPU**)
+- 모델이 **텍스트를 생성**하는 방식 (다음 단어 예측)
+- **환각(hallucination)**이 어디서 발생하며, 이를 줄이는 방법
 
-## 📖 Sections
+## 📖 섹션 구성
 
-| Section | Topic | What you'll do |
+| 섹션 | 주제 | 하게 될 일 |
 |---------|-------|----------------|
-| [🎓 AI 101: Model Mannerisms](1-the-ai-orientation/2a-model-mannerisms.md) | The 4 truths about GenAI models | Chat with a model and discover its quirks |
-| [📝 GenAI 102: Prompting Principles](1-the-ai-orientation/2b-prompting-principles.md) | System prompts, user prompts, and context | Learn how to control model behavior |
-| [🔬 GenAI 103: Model Mechanics](1-the-ai-orientation/2c-model-mechanics.md) | Parameters, GPUs, text generation, hallucinations | Understand what's under the hood |
+| [🎓 AI 101: 모델의 특성](1-the-ai-orientation/2a-model-mannerisms.md) | GenAI 모델에 대한 4가지 진실 | 모델과 대화하며 그 특성을 발견해 보기 |
+| [📝 GenAI 102: 프롬프팅 원칙](1-the-ai-orientation/2b-prompting-principles.md) | 시스템 프롬프트, 사용자 프롬프트, 컨텍스트 | 모델의 동작을 제어하는 방법 배우기 |
+| [🔬 GenAI 103: 모델 메커니즘](1-the-ai-orientation/2c-model-mechanics.md) | 파라미터, GPU, 텍스트 생성, 환각 | 내부적으로 어떤 일이 일어나는지 이해하기 |
 
-## 🛠️ Tools used in this section
+## 🛠️ 이 섹션에서 사용하는 도구
 
-- **Chat Interface** — available at `https://ai-orientation-app-ai501.<CLUSTER_DOMAIN>/chat`
+- **채팅 인터페이스** — `https://ai-orientation-app-ai501.<CLUSTER_DOMAIN>/chat`에서 사용 가능
 
-## 🧠 The one thing to remember
+## 🧠 꼭 기억해야 할 단 한 가지
 
-If there is anything to internalize from these 5 days, this is it:
+5일간의 과정에서 단 하나만 마음에 새겨야 한다면, 바로 이것입니다.
 
 > `Text → LLM → Text`
 
-LLMs take text as input, and produce text as output. Everything else builds on top of this.
+LLM은 텍스트를 입력으로 받아 텍스트를 출력으로 만들어냅니다. 다른 모든 것은 이 위에 쌓아 올려지는 것입니다.
+</content>

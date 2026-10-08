@@ -1,32 +1,32 @@
-# Module 10 - The Fitness Program
+# Module 10 - 다이어트 프로그램
 
-> Your 70B model is brilliant. It's also eating $500/day in GPU costs and making students wait 10 seconds for answers. Time to put it on a diet. 🏋️
+> 여러분의 70B 모델은 훌륭합니다. 하지만 하루 500달러의 GPU 비용을 먹어 치우고, 학생들이 답변을 받기까지 10초씩 기다리게 만들고 있습니다. 이제 다이어트를 시작할 시간입니다. 🏋️
 
-# 🧑‍🍳 Module Intro
+# 🧑‍🍳 모듈 소개
 
-This module is about making models smaller, faster, and cheaper—without making them dumber. We'll compress LLMs using quantization, test that they still work, and deploy them through your GitOps pipeline.
+이 모듈은 모델을 더 멍청하게 만들지 않으면서 더 작고, 더 빠르고, 더 저렴하게 만드는 방법을 다룹니다. 양자화(quantization)를 사용해 LLM을 압축하고, 여전히 잘 동작하는지 테스트한 뒤, GitOps 파이프라인을 통해 배포합니다.
 
-**The big question:** *How much can we compress before students are impacted?*
+**핵심 질문:** *학생들에게 영향을 주기 전까지 얼마나 압축할 수 있을까?*
 
-# 🖼️ Big Picture
+# 🖼️ 큰 그림
 ![big-picture-optimization.jpg](images/big-picture-optimization.jpg)
 
-# 🔮 Learning Outcomes
+# 🔮 학습 목표
 
-By the end of this module, you'll be able to:
+이 모듈을 마치면 다음을 할 수 있게 됩니다:
 
-* **Speak the language** — FP16, INT8, INT4, W8A16... you'll know what these mean and when to use them
-* **Pick your weapon** — GPTQ, AWQ, SmoothQuant—different tools for different jobs
-* **Compress a model** — Hands-on with llm-compressor to shrink models for production
-* **Know if it worked** — Evaluate quantized models to catch quality regressions
-* **Ship it** — Deploy optimized models through your GenAIOps pipeline
+* **용어 이해하기** — FP16, INT8, INT4, W8A16... 이 용어들이 무엇을 의미하고 언제 사용하는지 알게 됩니다
+* **무기 고르기** — GPTQ, AWQ, SmoothQuant—작업에 맞는 다양한 도구들
+* **모델 압축하기** — llm-compressor를 사용해 프로덕션용 모델을 축소하는 실습
+* **제대로 됐는지 확인하기** — 양자화된 모델을 평가하여 품질 저하를 잡아내기
+* **배포하기** — GenAIOps 파이프라인을 통해 최적화된 모델 배포하기
 
-# 🔨 Tools used in this module
+# 🔨 이 모듈에서 사용하는 도구
 
-| Tool | What It Does |
+| 도구 | 하는 일 |
 |------|--------------|
-| **llm-compressor** | The quantization toolkit from vLLM—this does the actual compression |
-| **lm-evaluation-harness** | Industry-standard benchmarking to verify you didn't break anything |
-| **GuideLLM** | Performance testing—measure latency, throughput, time-to-first-token |
-| **vLLM/KServe** | Serve your compressed models to production |
-| **Argo CD** | GitOps deployment—promote models through test → prod |
+| **llm-compressor** | vLLM의 양자화 툴킷—실제 압축을 수행합니다 |
+| **lm-evaluation-harness** | 업계 표준 벤치마킹으로 문제가 생기지 않았는지 검증합니다 |
+| **GuideLLM** | 성능 테스트—지연시간(latency), 처리량(throughput), 첫 토큰까지의 시간(time-to-first-token)을 측정합니다 |
+| **vLLM/KServe** | 압축된 모델을 프로덕션에 서빙합니다 |
+| **Argo CD** | GitOps 배포—test → prod로 모델을 승격시킵니다 |

@@ -1,22 +1,22 @@
 # Canopy Backend
 
-We'll separate out the LLM business logic from the frontend into its own backend so that we can iterate on them independently.
+LLM 비즈니스 로직을 프런트엔드에서 분리하여 별도의 백엔드로 구성함으로써, 각각을 독립적으로 반복 개발할 수 있도록 하겠습니다.
 
-1. We'll deploy the backend to our development environment the same way we deployed the other components. Go back to OpenShift Console > `Helm` > `Releases` in `<USER_NAME>-canopy` project.
+1. 다른 구성 요소들을 배포했던 것과 동일한 방식으로 개발 환경에 백엔드를 배포하겠습니다. `<USER_NAME>-canopy` 프로젝트에서 OpenShift Console > `Helm` > `Releases`로 다시 이동합니다.
    
    ![canopy-be-helm-releases.png](./images/canopy-be-helm-releases.png)
 
-2.  Under `Chart Repositories` select  `Canopy Helm Charts` and click `Canopy Backend` > `Create`.
+2.  `Chart Repositories`에서 `Canopy Helm Charts`를 선택하고 `Canopy Backend` > `Create`를 클릭합니다.
 
     ![canopy-be-helm.png](./images/canopy-be-helm.png)
 
-3. Open up the `YAML view`. There are a lot of default variables there. For now don't worry about them and just override the values with the ones provided below.
+3. `YAML view`를 엽니다. 여기에는 많은 기본 변수들이 있습니다. 지금은 신경 쓰지 말고, 아래에 제공된 값으로 덮어쓰기만 하면 됩니다.
 
-    As we discussed, backend will be the one talking to the model, to the registry, and more. Therefore we need to make sure we provide the correct connection details.
+    앞서 설명했듯이, 백엔드는 모델 및 레지스트리 등과 통신하는 역할을 담당합니다. 따라서 올바른 연결 정보를 제공해야 합니다.
 
-    We also need to provide your chosen System Prompt. Just like we did in the Notebooks, we need to include the system prompt while calling the model.
+    또한 선택한 System Prompt도 제공해야 합니다. 노트북에서 했던 것처럼, 모델을 호출할 때 system prompt를 포함해야 합니다.
 
-    Delete the content of the box, and just copy the below YAML snippet 🙏
+    상자의 내용을 삭제하고 아래 YAML 스니펫을 그대로 복사해 넣으세요 🙏
 
     ```yaml
     summarization:
@@ -29,20 +29,20 @@ We'll separate out the LLM business logic from the frontend into its own backend
 
     ![canopy-be-values.png](./images/canopy-be-values.png)
  
-    ..leave the rest default and hit `Create`.
+    ..나머지는 기본값으로 두고 `Create`를 클릭합니다.
 
-4. Verify that it is running on the OpenShift Console.
+4. OpenShift Console에서 정상적으로 실행되고 있는지 확인합니다.
    
    ![canopy-be-ocp.png](./images/canopy-be-ocp.png)
 
 
-## Update Canopy Frontend
+## Canopy Frontend 업데이트
 
-1. Now it is time to make Canopy UI talk with backend, instead of directly sending requests to the LLM. In order to do that, we need to update some values in our helm chart. In the `Workloads` >  `Topology` view, find the frontend called `canopy-ui` and click on the three dots underneath > `Upgrade`
+1. 이제 Canopy UI가 LLM에 직접 요청을 보내는 대신 백엔드와 통신하도록 할 차례입니다. 이를 위해서는 helm chart의 일부 값을 업데이트해야 합니다. `Workloads` > `Topology` 뷰에서 `canopy-ui`라는 이름의 프런트엔드를 찾고, 그 아래의 세 개의 점을 클릭한 다음 `Upgrade`를 클릭합니다.
 
     ![update-canopy-ui.png](./images/update-canopy-ui.png)
 
-2. In the values, open up the `Form view`, find the `BACKEND_ENDPOINT` key and add the below value.
+2. values에서 `Form view`를 열고 `BACKEND_ENDPOINT` 키를 찾아 아래 값을 추가합니다.
    
     ```bash
     http://canopy-backend:8000
@@ -50,19 +50,19 @@ We'll separate out the LLM business logic from the frontend into its own backend
 
     ![update-canopy-ui-2.png](./images/update-canopy-ui-2.png)
 
-3. Then, go a little bit down, expand the `image` value and update the tag to point to a newer version:
+3. 그 다음 조금 아래로 내려가 `image` 값을 펼치고 태그를 더 새로운 버전으로 업데이트합니다.
    
-   - tag: **0.12** (replace `simple-0.5` with `0.12`.)
+   - tag: **0.12** (`simple-0.5`를 `0.12`로 교체합니다.)
   
-  ..and now hit `Upgrade`!
+  ..그리고 이제 `Upgrade`를 클릭합니다!
 
     ![update-canopy-ui-3.png](./images/update-canopy-ui-3.png)
 
-1. Verify that Canopy UI still works as expected by clicking the little arrow and accessing the UI:
+1. 작은 화살표를 클릭하고 UI에 접속하여 Canopy UI가 여전히 예상대로 동작하는지 확인합니다.
    
    ![update-canopy-ui-4.png](./images/update-canopy-ui-4.png)
 
-2. Ask it to summarize a text again!
+2. 다시 한 번 텍스트 요약을 요청해 보세요!
 
     ```
     Tea preparation involves the controlled extraction of bioactive compounds from processed Camellia sinensis leaves. Begin by heating water to near 100°C to optimize solubility. Introduce a tea bag to a ceramic vessel, then infuse with hot water to initiate steeping—typically 3–5 minutes to allow for the diffusion of polyphenols and caffeine. Upon removal of the bag, optional additives like sucrose or lipid-based emulsions may be introduced to alter flavor profiles. The infusion is then ready for consumption.
@@ -70,10 +70,10 @@ We'll separate out the LLM business logic from the frontend into its own backend
    
    ![canopy-ui-after-backend.png](./images/canopy-ui-after-backend.png)
 
-Now that we're happy with the first iteration of our Canopy student assistant, it's time to put it in the hands of real users. To do that, we need to deploy everything we've built so far into a test, and eventually a production environment. But this time, we'll do it in a more robust, consistent, and repeatable way. That's why we're stepping into the world of: GitOps 🐙.
+Canopy 학생 도우미의 첫 번째 반복 버전에 만족했으니, 이제 실제 사용자들의 손에 전달할 차례입니다. 이를 위해서는 지금까지 구축한 모든 것을 테스트 환경, 그리고 궁극적으로는 프로덕션 환경에 배포해야 합니다. 하지만 이번에는 더 견고하고, 일관되며, 반복 가능한 방식으로 진행하겠습니다. 그래서 우리는 이제 GitOps 🐙 의 세계로 들어가게 됩니다.
 
-By releasing early, we get feedback sooner, allowing us to make course corrections before investing too much. 
+조기에 릴리스함으로써 더 빠르게 피드백을 받을 수 있고, 너무 많은 투자를 하기 전에 방향을 수정할 수 있습니다. 
 
-And by investing in automation and GitOps, we can release often! 
+그리고 자동화와 GitOps에 투자함으로써 더 자주 릴리스할 수 있습니다! 
 
   ![keep-calm.png](./images/keep-calm.png ':size=300 :class=center')

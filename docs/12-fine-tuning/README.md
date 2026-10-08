@@ -1,39 +1,39 @@
 # Module 12 - The Tuning Room
 
-> Your prompt is 800 tokens long and gets sent with every single message. That's 8 million tokens a day just for instructions. What if you could bake those instructions into the model itself? 🎓
+> 여러분의 프롬프트는 800토큰이나 되고 메시지 하나를 보낼 때마다 매번 함께 전송됩니다. 그러면 하루에 지시문만으로 800만 토큰이 소모되는 셈입니다. 그 지시문들을 모델 자체에 녹여낼 수 있다면 어떨까요? 🎓
 
-# 🧑‍🍳 Module Intro
+# 🧑‍🍳 모듈 소개
 
-You've optimized Canopy's model for speed and cost. But there's one efficiency you haven't tackled yet: **the prompt itself**.
+지금까지 속도와 비용 측면에서 Canopy의 모델을 최적화했습니다. 하지만 아직 손대지 않은 효율화 지점이 하나 있습니다. 바로 **프롬프트 자체**입니다.
 
-Every time a student asks a question, you send the same massive system prompt explaining how to be a Socratic tutor. Don't give answers directly. Ask guiding questions. Praise effort. Handle frustration. The prompt works—but it's expensive, slow, and students have figured out how to jailbreak it.
+학생이 질문을 할 때마다, 소크라테스식 튜터가 되는 방법을 설명하는 거대한 시스템 프롬프트를 매번 함께 보냅니다. 답을 직접 알려주지 말고, 유도 질문을 던지고, 노력을 칭찬하고, 좌절감을 다뤄주라는 내용입니다. 이 프롬프트는 작동은 하지만 비용이 비싸고, 느리고, 학생들은 이를 탈옥(jailbreak)하는 방법을 이미 알아냈습니다.
 
-This module is about teaching the model to *be* a Socratic tutor, not just *pretend* to be one. You'll learn about synthetic data generation, LoRA adapters, and the fine-tuning workflow.
+이번 모듈에서는 모델이 소크라테스식 튜터인 *척*하는 것이 아니라 실제로 소크라테스식 튜터가 *되도록* 가르치는 방법을 다룹니다. 합성 데이터 생성(synthetic data generation), LoRA 어댑터, 그리고 파인튜닝 워크플로우에 대해 배우게 됩니다.
 
-**The big question:** *Can we bake behavior into the model instead of describing it every time?*
+**핵심 질문:** *매번 행동을 설명하는 대신, 그 행동을 모델 자체에 녹여낼 수 있을까?*
 
-# 🖼️ Big Picture
+# 🖼️ 전체 그림
 
 ![big-picture-fine-tuning.jpg](./images/big-picture-fine-tuning.jpg)
 
-# 🔮 Learning Outcomes
+# 🔮 학습 목표
 
-By the end of this module, you'll be able to:
+이번 모듈을 마치면 다음을 할 수 있게 됩니다.
 
-* **Understand when to fine-tune** — Know when prompt engineering hits its limits
-* **Explain synthetic data generation** — How SDG Hub creates training examples from documents
-* **Describe training datasets** — What format models expect and why
-* **Understand LoRA** — How adapters enable efficient fine-tuning
-* **Know evaluation approaches** — How to verify a fine-tuned model learned the behavior
-* **Plan production deployment** — How to serve LoRA adapters alongside base models
+* **파인튜닝이 필요한 시점 이해하기** — 프롬프트 엔지니어링의 한계가 어디인지 알기
+* **합성 데이터 생성 설명하기** — SDG Hub가 문서로부터 학습 예제를 만들어내는 방법
+* **학습 데이터셋 설명하기** — 모델이 요구하는 형식과 그 이유
+* **LoRA 이해하기** — 어댑터가 효율적인 파인튜닝을 가능하게 하는 방법
+* **평가 방식 이해하기** — 파인튜닝된 모델이 원하는 행동을 학습했는지 검증하는 방법
+* **운영 배포 계획하기** — 베이스 모델과 함께 LoRA 어댑터를 서빙하는 방법
 
-# 🔨 Tools used in this module
+# 🔨 이 모듈에서 사용하는 도구
 
-| Tool | What It Does |
+| 도구 | 역할 |
 |------|--------------|
-| **Docling** | Converts PDFs, slides, and documents into clean markdown for processing |
-| **SDG Hub** | Generates synthetic training data using LLM-powered pipelines |
-| **Training Hub** | Runs LoRA fine-tuning with optimized backends (Unsloth) |
-| **lm-evaluation-harness** | Benchmarks your fine-tuned model against the baseline |
-| **vLLM** | Serves LoRA adapters dynamically alongside base models |
-| **Argo CD** | Deploys your fine-tuned model through GitOps |
+| **Docling** | PDF, 슬라이드, 문서를 처리하기 좋은 깨끗한 마크다운으로 변환 |
+| **SDG Hub** | LLM 기반 파이프라인으로 합성 학습 데이터 생성 |
+| **Training Hub** | 최적화된 백엔드(Unsloth)로 LoRA 파인튜닝 수행 |
+| **lm-evaluation-harness** | 파인튜닝된 모델을 베이스라인과 비교하여 벤치마크 |
+| **vLLM** | 베이스 모델과 함께 LoRA 어댑터를 동적으로 서빙 |
+| **Argo CD** | GitOps를 통해 파인튜닝된 모델 배포 |

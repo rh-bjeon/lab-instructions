@@ -1,20 +1,20 @@
-# 📝 Logging: The Detailed Story
+# 📝 Logging: 상세한 이야기
 
-While metrics answer "how much?" and "how fast?", logs answer "what exactly happened?" They're the detailed notes capturing exactly what happened, when, and in what context.
+메트릭이 "얼마나?"와 "얼마나 빠르게?"에 답한다면, 로그는 "정확히 무슨 일이 일어났는가?"에 답합니다. 로그는 무엇이, 언제, 어떤 맥락에서 일어났는지를 정확히 담아내는 상세한 기록입니다.
 
-## Aggregating Loggings for LokiStack
+## LokiStack을 위한 로그 수집
 
-OpenShift's built-in logging uses LokiStack to automatically collect anything your application writes to STDOUT or STDERR - no explicit configuration needed. Logs are collected via a collector running on each node, then indexed as time-series JSON in LokiStack.
+OpenShift의 내장 로깅은 LokiStack을 사용해 애플리케이션이 STDOUT 또는 STDERR로 쓰는 모든 것을 자동으로 수집합니다. 별도의 설정이 필요하지 않습니다. 각 노드에서 실행되는 수집기(collector)를 통해 로그가 수집되고, 시계열 JSON 형태로 LokiStack에 색인됩니다.
 
-Let's see what Canopy is telling us in its logs.
+Canopy가 로그에서 무엇을 말하고 있는지 살펴봅시다.
 
-1. Navigate to **OpenShift Console → Observe → Logs**
+1. **OpenShift Console → Observe → Logs**로 이동합니다.
 
    ![OpenShift Logging Interface](./images/logging1.png)
 
-   By default, you see logs from all applications across all namespaces that you have access. This is useful for cluster operators, but too noisy when you're focused on a specific application.
+   기본적으로는 접근 권한이 있는 모든 네임스페이스에 있는 모든 애플리케이션의 로그가 표시됩니다. 클러스터 운영자에게는 유용하지만, 특정 애플리케이션에 집중하고 싶을 때는 너무 많은 정보가 뒤섞여 있습니다.
 
-2. Let's filter to just Canopy in your test environment. Click **Show Query** and paste this LogQL query:
+2. 테스트 환경의 Canopy만 필터링해 봅시다. **Show Query**를 클릭하고 아래 LogQL 쿼리를 붙여 넣습니다.
 
    ![show-query.png](./images/show-query.png)
    
@@ -27,32 +27,32 @@ Let's see what Canopy is telling us in its logs.
    - `kubernetes_pod_name=~"canopy-ui.*"`: Regex matching any canopy-ui pod
    - `kubernetes_namespace_name="<USER_NAME>-test"`: Your test environment namespace -->
 
-3. Click **Run Query** to see Canopy's recent logs streaming in real-time
+3. **Run Query**를 클릭해 Canopy의 최근 로그가 실시간으로 스트리밍되는 것을 확인합니다.
 
    ![Filtered Canopy Logs](./images/logging2.png)
 
-   The logs appear with timestamps, pod names, and the actual log messages. You can scroll through them, search for specific text, and see patterns in your application's behavior.
+   로그는 타임스탬프, 파드 이름, 실제 로그 메시지와 함께 표시됩니다. 스크롤하면서 특정 텍스트를 검색하고, 애플리케이션 동작의 패턴을 확인할 수 있습니다.
 
-This solves a critical problem: **container logs are ephemeral**. When a container restarts (crashes, gets redeployed, or scaled down), its logs disappear unless they've been aggregated elsewhere. LokiStack ensures you can investigate issues from hours or days ago, even if the pods involved are long gone.
+이는 중요한 문제 하나를 해결해 줍니다. **컨테이너 로그는 일시적(ephemeral)**이라는 점입니다. 컨테이너가 재시작되면(충돌, 재배포, 스케일 다운 등) 다른 곳에 수집되어 있지 않은 한 그 로그는 사라집니다. LokiStack은 관련된 파드가 이미 사라졌더라도 몇 시간 또는 며칠 전의 문제를 조사할 수 있게 해줍니다.
 
-## Why Aggregation Matters
+## 로그 수집이 중요한 이유
 
-If Canopy crashes at 2am and restarts automatically, you can still investigate what caused the crash because LokiStack:
+Canopy가 새벽 2시에 충돌해서 자동으로 재시작되더라도, LokiStack 덕분에 무엇이 충돌을 일으켰는지 여전히 조사할 수 있습니다. LokiStack은 다음을 수행하기 때문입니다.
 
-- Continuously collects logs from all containers automatically
-- Indexes them with Kubernetes metadata (namespace, pod, container)
-- Stores them for the configured retention period
-- Makes them searchable across all environments and timeframes
+- 모든 컨테이너에서 자동으로 로그를 지속적으로 수집함
+- Kubernetes 메타데이터(네임스페이스, 파드, 컨테이너)로 로그를 색인함
+- 설정된 보존 기간 동안 로그를 저장함
+- 모든 환경과 시간대에 걸쳐 검색 가능하게 만듦
 
-## Generating and Querying Custom Logs
+## 커스텀 로그 생성 및 조회하기
 
-Let's create some logs intentionally and then find them - simulating how you'd debug a real issue.
+실제 문제를 디버깅하는 과정을 시뮬레이션하기 위해, 의도적으로 로그를 생성한 다음 찾아봅시다.
 
-1. In **OpenShift Console → Workloads -> Pods**, connect to the Canopy UI pod Terminal in the `<USER_NAME>-canopy` namespace to run commands inside:
+1. **OpenShift Console → Workloads -> Pods**에서, `<USER_NAME>-canopy` 네임스페이스에 있는 Canopy UI 파드의 Terminal에 연결해 명령을 내부에서 실행합니다.
 
    ![Logs](./images/logging1.1.png)
 
-2. Inside the container, generate custom log messages:
+2. 컨테이너 내부에서 커스텀 로그 메시지를 생성합니다.
 
    ```bash
    echo "🪄🪄🪄🪄" >> /tmp/custom.log
@@ -64,9 +64,9 @@ Let's create some logs intentionally and then find them - simulating how you'd d
    exit
    ```
 
-   This creates a log file and pipes it to STDOUT (file descriptor 1 of process 1), which OpenShift's logging agent automatically captures.
+   이는 로그 파일을 생성하고 이를 STDOUT(프로세스 1의 파일 디스크립터 1)으로 파이프하며, OpenShift의 로깅 에이전트가 이를 자동으로 캡처합니다.
 
-3. In the `Aggregated Logs` Tab, check the last logs or query specifically for your custom messages (in the Show Query button):
+3. `Aggregated Logs` 탭에서 최근 로그를 확인하거나(Show Query 버튼에서) 커스텀 메시지를 직접 조회해 봅니다.
 
    ```logql
    { log_type="application", kubernetes_pod_name=~"canopy-ui.*", kubernetes_namespace_name="<USER_NAME>-canopy" } |= `🪄🪄🪄🪄` | json
@@ -74,7 +74,7 @@ Let's create some logs intentionally and then find them - simulating how you'd d
 
    ![Custom Log Messages](./images/logging3.png)
 
-You just simulated what happens when you're debugging an issue: you know what to look for (the llama emojis in this case, or error messages in real scenarios), and you can query logs to find exactly when and where it happened.
+방금 문제를 디버깅할 때 벌어지는 일을 그대로 시뮬레이션해 보았습니다. 무엇을 찾아야 하는지 알고 있다면(이번 경우는 라마 이모지, 실제 상황이라면 오류 메시지 등), 그것이 정확히 언제 어디서 발생했는지 로그를 조회해 찾아낼 수 있습니다.
 
 <!-- ## Logs vs. Metrics: When to Use Each (Move to Slides)
 
@@ -95,8 +95,8 @@ You just simulated what happens when you're debugging an issue: you know what to
 - Logs tell you what the errors are: "RAG service timeout connecting to Milvus"
 - Traces show you where: "Milvus search span taking 30+ seconds" -->
 
-## 🎯 Next Steps: Following the Request Journey
+## 🎯 다음 단계: 요청의 여정 따라가기
 
-Logs show what happened in individual components, but modern AI systems are distributed - a single student question touches multiple services. How do you see the complete journey of a request through your entire system?
+로그는 개별 구성 요소 안에서 일어난 일을 보여주지만, 현대의 AI 시스템은 분산되어 있어서 학생의 질문 하나가 여러 서비스를 거쳐갑니다. 시스템 전체를 통과하는 요청의 전체 여정을 어떻게 볼 수 있을까요?
 
-That's where distributed tracing comes in. Continue to **[Tracing](6-observability/4-tracing.md)** to see how requests flow through Canopy's architecture 🔍
+바로 여기서 분산 트레이싱(distributed tracing)이 등장합니다. **[Tracing](6-observability/4-tracing.md)**으로 이동해 요청이 Canopy의 아키텍처를 어떻게 거쳐가는지 살펴봅시다 🔍

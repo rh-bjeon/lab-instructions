@@ -1,32 +1,32 @@
-# Document Intelligence with Docling
-It's not always just text that we want to ask about in our RAG application, sometimes it's images, diagrams, tables, etc.
+# Docling을 활용한 문서 인텔리전스
+RAG 애플리케이션에서 질문하고 싶은 대상이 항상 텍스트뿐인 것은 아닙니다. 때로는 이미지, 다이어그램, 표 등일 수도 있습니다.
 
-To be able to process these we can use Docling.
+이런 것들을 처리하기 위해 Docling을 사용할 수 있습니다.
 
-**Docling** enhances your RAG system with an intelligent document processor that understands:
+**Docling**은 다음을 이해하는 지능형 문서 처리기로 RAG 시스템을 강화합니다:
 
-* 📊 **Complex tables** with research data and experimental results
-* 🧮 **Mathematical formulas** and scientific notation
-* 📈 **Charts and figures** that visualize key concepts
-* 📝 **Multi-column layouts** typical of academic papers
-* 🏛️ **Document structure** like sections and references
-  
+* 📊 연구 데이터와 실험 결과가 담긴 **복잡한 표(tables)**
+* 🧮 **수학 공식**과 과학적 표기법
+* 📈 핵심 개념을 시각화하는 **차트와 그림**
+* 📝 학술 논문에 흔한 **다단 레이아웃**
+* 🏛️ 섹션이나 참고문헌 같은 **문서 구조**
+
 ![Docling](images/rag3.png ':size=60%')
 
-## Build Document Intelligence
+## Document Intelligence 구축하기
 
-Let's try it out to see how Docling works in practice!
+실제로 Docling이 어떻게 동작하는지 직접 시도해봅시다!
 
-Go to your workbench and go through the notebook `experiments/5-rag/3-docling.ipynb`.
+workbench로 이동해 `experiments/5-rag/3-docling.ipynb` 노트북을 진행하세요.
 
 ---
 
-Now that we went through below stages hands on:
+이제 아래 단계들을 직접 실습해보았습니다:
 
-1. **Chunking** — the uploaded PDF is split into smaller pieces of text.
-2. **Embedding** — each chunk is converted into a numerical vector (a list of numbers that captures its meaning) using an embedding model.
-3. **Storing** — those vectors are saved in a vector database so they can be searched later.
-4. **Retrieving** — when you ask a question, your question is also converted into a vector, and the database finds the chunks most similar to it.
-5. **Generating** — the retrieved chunks are sent to the LLM along with your question as context, so the model can answer based on the actual document content rather than its general training data.
+1. **Chunking(청킹)** — 업로드된 PDF가 더 작은 텍스트 조각들로 분할됩니다.
+2. **Embedding(임베딩)** — 각 chunk는 embedding 모델을 사용해 숫자로 된 벡터(해당 의미를 담아낸 숫자 목록)로 변환됩니다.
+3. **Storing(저장)** — 이러한 벡터들은 나중에 검색할 수 있도록 vector database에 저장됩니다.
+4. **Retrieving(검색)** — 질문을 하면, 그 질문 역시 벡터로 변환되고, 데이터베이스는 그와 가장 유사한 chunk들을 찾아냅니다.
+5. **Generating(생성)** — 검색된 chunk들은 여러분의 질문과 함께 컨텍스트로 LLM에 전달되어, 모델이 일반적인 학습 데이터가 아닌 실제 문서 내용을 바탕으로 답변할 수 있게 됩니다.
 
-..and have it actually fully working in our experiment environment, let's automate and production-harden it so we can use it in our Canopy product.
+..그리고 이것이 실험 환경에서 실제로 완전히 동작하는 것을 확인했으니, 이제 이를 자동화하고 production에서도 견고하게 동작하도록 만들어 Canopy 제품에서 사용할 수 있도록 해봅시다.

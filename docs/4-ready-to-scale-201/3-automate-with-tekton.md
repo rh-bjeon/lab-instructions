@@ -1,30 +1,30 @@
-# Automatically trigger on git changes
+# git 변경 시 자동으로 트리거하기
 
-Now that we have successfully ran our evaluation pipeline (🎉), we would like it to run automatically everytime we make a change to our evaluation tests, prompts, or backend.  
-To do this, we can create a Tekton pipeline with a git hook to the relevant endpoints. This Tekton pipeline will then trigger our evaluation kubeflow pipeline (that we just ran manually).
+이제 평가 파이프라인을 성공적으로 실행해 보았으니 (🎉), 평가 테스트, 프롬프트, 또는 백엔드에 변경이 생길 때마다 자동으로 실행되도록 하고 싶습니다.  
+이를 위해 관련 엔드포인트에 git hook을 연결한 Tekton 파이프라인을 만들 수 있습니다. 이 Tekton 파이프라인은 (방금 수동으로 실행했던) 평가용 Kubeflow 파이프라인을 트리거하게 됩니다.
 
-## Install Pipeline Server
+## 파이프라인 서버 설치
 
-We also need to set up our pipeline server for our `toolings` namespace, but this time we will do it with ArgoCD.
+`toolings` 네임스페이스에도 파이프라인 서버를 설정해야 하지만, 이번에는 ArgoCD로 설정하겠습니다.
 
-1. Like before, open your workbench in the `<USER_NAME>-canopy` namespace.
+1. 이전과 마찬가지로 `<USER_NAME>-canopy` 네임스페이스에서 workbench를 엽니다.
 
-2. Let's add a DSPA (which stands for **D**ata **S**cience **P**ipeline **A**pplication, and is our pipeline server) folder and `config.yaml` under `genaiops-gitops/toolings`, you can do that by running these commands:
+2. `genaiops-gitops/toolings` 아래에 DSPA(**D**ata **S**cience **P**ipeline **A**pplication를 의미하며, 우리의 파이프라인 서버입니다) 폴더와 `config.yaml`을 추가합니다. 다음 명령을 실행하면 됩니다.
 
     ```bash
     mkdir /opt/app-root/src/genaiops-gitops/toolings/dspa
     touch /opt/app-root/src/genaiops-gitops/toolings/dspa/config.yaml
     ```
-    We don't have any specific settings inside for our DSPA, let's add it to the `config.yaml` in the next step
+    DSPA에는 특별한 설정이 필요하지 않습니다. 다음 단계에서 `config.yaml`에 내용을 추가해 봅시다.
 
-3. Inside of `genaiops-gitops/toolings/dspa/config.yaml` add this:
+3. `genaiops-gitops/toolings/dspa/config.yaml` 안에 다음을 추가합니다.
 
     ```yaml
     ---
     chart_path: charts/dspa
     ```
 
-4. Let's push the changes for Argo CD to pick it up.
+4. Argo CD가 변경 사항을 가져올 수 있도록 push 합시다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -33,26 +33,26 @@ We also need to set up our pipeline server for our `toolings` namespace, but thi
     git push 
     ```
 
-5. As soon as it's ready, you can go to `OpenShift AI` -> `Projects` -> `<USER_NAME>-toolings` -> `Pipelines` and see that it's available to start importing pipelines:  
+5. 준비가 완료되면 `OpenShift AI` -> `Projects` -> `<USER_NAME>-toolings` -> `Pipelines`로 이동하여, 파이프라인을 가져올 수 있게 되었는지 확인할 수 있습니다.  
 
     ![dspa-ready](images/dspa-ready.png)
 
-Great, now you are all set up!  
+좋습니다, 이제 모든 준비가 끝났습니다!  
 
-## Trigger our Kubeflow pipeline through a Tekton pipeline
+## Tekton 파이프라인을 통해 Kubeflow 파이프라인 트리거하기
 
-Now we are ready to set up automatic runs of our Kubeflow pipeline!  
-We will be triggering it from a Tekton Pipeline, where we both will have a step for our MLflow evals and for GuideLLM.  
+이제 Kubeflow 파이프라인의 자동 실행을 설정할 준비가 되었습니다!  
+Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가를 위한 단계와 GuideLLM을 위한 단계가 모두 포함됩니다.  
 
-1. Let's deploy the Tekton pipeline through ArgoCD. Start by running: 
+1. ArgoCD를 통해 Tekton 파이프라인을 배포해 봅시다. 먼저 다음을 실행합니다. 
 
     ```bash
     mkdir /opt/app-root/src/genaiops-gitops/toolings/evaluation-pipeline
     touch /opt/app-root/src/genaiops-gitops/toolings/evaluation-pipeline/config.yaml
     ```
-    This will create a config file inside `genaiops-gitops/toolings/evaluation-pipeline`.
+    이렇게 하면 `genaiops-gitops/toolings/evaluation-pipeline` 안에 구성 파일이 생성됩니다.
 
-2. Open up the `evaluation-pipeline/config.yaml` file and paste the below yaml to config.yaml.
+2. `evaluation-pipeline/config.yaml` 파일을 열고 아래 yaml을 config.yaml에 붙여넣습니다.
 
     ```yaml
     ---
@@ -64,7 +64,7 @@ We will be triggering it from a Tekton Pipeline, where we both will have a step 
       llmEndpoint: "http://llama-32-predictor.ai501.svc.cluster.local:8080"
     ```
 
-3. And finally commit and push it to git, as it only counts if it's in git 😉
+3. 마지막으로 git에 커밋하고 push 합니다. git에 있어야만 의미가 있으니까요 😉
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -73,30 +73,30 @@ We will be triggering it from a Tekton Pipeline, where we both will have a step 
     git push
     ```
 
-4. Now let's look at it by going to the `OpenShift Dashboard` -> `Pipelines` -> `<USER_NAME>-toolings` -> `canopy-evals-pipeline`.
+4. 이제 `OpenShift Dashboard` -> `Pipelines` -> `<USER_NAME>-toolings` -> `canopy-evals-pipeline`로 이동하여 살펴봅시다.
 
-    You can see that all it does is a simple `git clone` followed by starting the Kubeflow pipeline.  
+    여기서 하는 일은 단순한 `git clone`을 수행한 다음 Kubeflow 파이프라인을 시작하는 것뿐입니다.  
 
-    After the pipeline is complete it also raises the changes in `test` as a PR to `prod`.
+    파이프라인이 완료되면, `test`의 변경 사항을 `prod`로 가져오기 위한 PR도 생성됩니다.
 
     ![tekton-pipeline](images/tekton-pipeline.png)
 
-5. Great, we have our pipeline! However, so far we would still need to trigger it manually, the only difference from before is that we now trigger a Tekton pipeline that then triggers our Kubeflow pipeline and nothing more...
+5. 좋습니다, 파이프라인이 준비되었습니다! 하지만 지금까지는 여전히 수동으로 트리거해야 하며, 이전과의 유일한 차이점은 이제 Tekton 파이프라인을 트리거하면 그것이 Kubeflow 파이프라인을 트리거한다는 점뿐입니다. 그 이상은 아직 없습니다...
 
     ![super-important-meme](images/super-important-meme.jpg)
 
-    To get some use of our Tekton pipeline, let's make it trigger automatically from git changes in our repos.  
-    Start by going to Gitea.
+    Tekton 파이프라인을 제대로 활용하기 위해, 저장소의 git 변경 사항으로부터 자동으로 트리거되도록 만들어 봅시다.  
+    먼저 Gitea로 이동합니다.
 
-6. Inside of Gitea, navigate to your `evals` repository. Go to Settings.
+6. Gitea 안에서 `evals` 저장소로 이동합니다. Settings로 이동합니다.
 
     ![gitea-evals-settings.png](./images/gitea-evals-settings.png)
 
-7. Click `Webhooks` > `Add` and choose Gitea.
+7. `Webhooks` > `Add`를 클릭하고 Gitea를 선택합니다.
 
     ![gitea-evals-webhook.png](./images/gitea-evals-webhook.png)
 
-8. Enter the URL below for the Pipeline Event Listener and click `Add Webhook`
+8. Pipeline Event Listener를 위해 아래 URL을 입력하고 `Add Webhook`을 클릭합니다.
 
     ```bash
     http://el-canopy-evals-event-listener.<USER_NAME>-toolings.svc.cluster.local:8080
@@ -104,62 +104,62 @@ We will be triggering it from a Tekton Pipeline, where we both will have a step 
 
     ![githook](images/githook.png)
 
-9. We also need to trigger our evals whenever there is a change in the system. Let's say we change something in the settings, add a new feature, etc, we need to asses the system again. So let's add the webhook for `genaiops-gitops` repo too. That is where we keep the externalized backend config.
+9. 또한 시스템에 변경이 생길 때마다 평가를 트리거해야 합니다. 예를 들어 설정의 무언가를 변경하거나, 새로운 기능을 추가하는 등의 경우, 시스템을 다시 평가해야 합니다. 그러니 `genaiops-gitops` 저장소에도 webhook을 추가해 봅시다. 이곳에 외부화된 백엔드 설정이 저장되어 있습니다.
 
-    But don't worry, we won't be triggering the pipeline for _every push_ to GitOps repo. We have an interceptor config that triggers the pipeline **only** when there is change in `canopy/test/backend/config.yaml` file.
+    하지만 걱정하지 마세요. GitOps 저장소에 대한 _모든 push_에 대해 파이프라인을 트리거하지는 않습니다. `canopy/test/backend/config.yaml` 파일에 변경이 있을 때만 파이프라인을 트리거하는 interceptor 설정이 있습니다.
 
     ![webhook-gitops.png](./images/webhook-gitops.png)
 
-10. And lastly we need to do the same for **prompts** 💥💥💥 
+10. 그리고 마지막으로 **프롬프트**에 대해서도 같은 작업을 해야 합니다 💥💥💥 
 
-    Go to your code-server workbench, and open up the `experiments/4-ready-to-scale-201/3-mlflow-webhook.ipynb` and run the first 3 code cells. It will create a webhook on MLflow side, when you add a new prompt, it will trigger the Tekton pipeline.
+    code-server workbench로 이동하여 `experiments/4-ready-to-scale-201/3-mlflow-webhook.ipynb`를 열고 처음 3개의 코드 셀을 실행합니다. 이렇게 하면 MLflow 쪽에 webhook이 생성되어, 새로운 프롬프트를 추가할 때 Tekton 파이프라인을 트리거하게 됩니다.
 
     ![mlflow-webhook-notebook.png](./images/mlflow-webhook-notebook.png)
 
-11. After you are done running the cells, let's test it by going to OpenShift AI Dashboard > Gen AI studio > Prompts and select `<USER_NAME>-toolings`. Go to `summarization` and Create a new prompt version. 
+11. 셀 실행을 마쳤다면, OpenShift AI Dashboard > Gen AI studio > Prompts로 이동하여 `<USER_NAME>-toolings`를 선택하여 테스트해 봅시다. `summarization`으로 이동하여 새로운 프롬프트 버전을 생성합니다. 
 
     ![new-prompt-toolings.png](./images/new-prompt-toolings.png)
 
-12. Observe that the Tekton pipeline has kicked off. Now, as the human in the loop, you can not just test the Canopy in the test environment, but also see the eval results and decide whether this prompt is good to go to production.
+12. Tekton 파이프라인이 시작된 것을 확인하세요. 이제 사람이 개입하는 단계(human in the loop)로서, test 환경에서 Canopy를 테스트하는 것뿐만 아니라, 평가 결과를 확인하고 이 프롬프트를 프로덕션으로 보내도 괜찮을지 판단할 수 있습니다.
 
     ![new-prompt-eval-pipeline.png](./images/new-prompt-eval-pipeline.png)
 
-13. When the pipeline finish, in OpenShift AI Dashboard, go to `Experiments (MLFlow)` > select **<USER_NAME>-toolings** as the project > `summarization` > `Evaluation runs` and check the latest evaluation result based on your latest prompt. 
+13. 파이프라인이 끝나면, OpenShift AI Dashboard에서 `Experiments (MLFlow)` > 프로젝트로 **<USER_NAME>-toolings** 선택 > `summarization` > `Evaluation runs`로 이동하여, 최신 프롬프트를 기반으로 한 최신 평가 결과를 확인합니다. 
 
     ![eval-results.png](./images/eval-results.png)
 
-    And you can also check the GuideLLM results stored in the S3 bucket as an artifact under the `test-results` bucket. 
+    그리고 `test-results` 버킷 아래에 아티팩트로 저장된 S3 버킷의 GuideLLM 결과도 확인할 수 있습니다. 
 
-    Go to MinIO UI and login with your credentials: [https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>/browser](https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>/browser)
+    MinIO UI로 이동하여 본인의 자격 증명으로 로그인하세요. [https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>/browser](https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>/browser)
 
     ![guidellm-results.png](./images/guidellm-results.png)
 
-Congratulations! 🎉  
+축하합니다! 🎉  
 
-You have now added evals pipelines to your mlflow and eval repo, so whenever you update your evaluations or prompts, you will run through the tests.
+이제 mlflow와 eval 저장소에 평가 파이프라인을 추가했으므로, 평가나 프롬프트를 업데이트할 때마다 테스트가 실행됩니다.
 
-_In practice we would also run the tests whenever we build a new backend, but since we are using pre-built backend images, we are skipping that for now._
+_실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트를 실행하겠지만, 지금은 사전에 빌드된 백엔드 이미지를 사용하고 있으므로 그 부분은 생략합니다._
 
-Are we happy with the results? Yes? Awesome! The next question then; how are we going to production now?
+결과에 만족하시나요? 그렇다면, 좋습니다! 다음 질문은 이렇습니다. 이제 어떻게 프로덕션으로 보낼 것인가?
 
-## How to take the prompt changes to production?
+## 프롬프트 변경 사항을 프로덕션으로 가져가는 방법
 
-You ran your evals, you look at the GuideLLM results, everything looks good enough for production as well. So how to we can update the system prompt in production in a way that we have visibility of what changed and easy to rollback in case of a problem.
+평가를 실행했고, GuideLLM 결과도 확인했으며, 모든 것이 프로덕션에 적합해 보입니다. 그렇다면 무엇이 변경되었는지 가시성을 확보하고, 문제가 생겼을 때 쉽게 롤백할 수 있는 방식으로 프로덕션의 system prompt를 어떻게 업데이트할 수 있을까요?
 
-1. You decided take your latest prompt version for `summarization`. We'll do this by moving `prod` alias to that version. Adding an alias to the prompt will trigger a pipeline to update our GitOps repository with the ID of that prompt. So we know what is on production and when. By knowing its ID, we can easily rollback to the previous ID cause it'll be stored in Git commit history.
+1. `summarization`에 대한 최신 프롬프트 버전을 사용하기로 결정했습니다. `prod` 별칭을 해당 버전으로 옮김으로써 이를 수행하겠습니다. 프롬프트에 별칭을 추가하면 해당 프롬프트의 ID로 GitOps 저장소를 업데이트하는 파이프라인이 트리거됩니다. 이를 통해 프로덕션에 무엇이, 언제 올라갔는지 알 수 있습니다. ID를 알고 있으면 Git 커밋 히스토리에 저장되어 있으므로 이전 ID로 쉽게 롤백할 수 있습니다.
 
-    In order to do this, let's add another pipeline to our toolings by creating a folder called `prompt-promotion-pipeline`. 
+    이를 위해, `prompt-promotion-pipeline`이라는 폴더를 생성하여 도구에 또 다른 파이프라인을 추가해 봅시다. 
 
-    Let's deploy the Tekton pipeline through Argo CD. Start by running: 
+    Argo CD를 통해 Tekton 파이프라인을 배포해 봅시다. 먼저 다음을 실행합니다. 
 
     ```bash
     mkdir /opt/app-root/src/genaiops-gitops/toolings/prompt-promotion-pipeline
     touch /opt/app-root/src/genaiops-gitops/toolings/prompt-promotion-pipeline/config.yaml
     ```
 
-    This will create a config file inside `genaiops-gitops/toolings/prompt-promotion-pipeline`.
+    이렇게 하면 `genaiops-gitops/toolings/prompt-promotion-pipeline` 안에 구성 파일이 생성됩니다.
 
-2. Open up the `prompt-promotion-pipeline/config.yaml` file and paste the below yaml to config.yaml.
+2. `prompt-promotion-pipeline/config.yaml` 파일을 열고 아래 yaml을 config.yaml에 붙여넣습니다.
 
     ```yaml
     ---
@@ -167,7 +167,7 @@ You ran your evals, you look at the GuideLLM results, everything looks good enou
     USER_NAME: <USER_NAME>
     CLUSTER_DOMAIN: <CLUSTER_DOMAIN>
 
-3. And again commit and push it to git:
+3. 다시 git에 커밋하고 push 합니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -176,58 +176,58 @@ You ran your evals, you look at the GuideLLM results, everything looks good enou
     git push
     ```
 
-    Check `OpenShift Dashboard` -> `Pipelines` -> `<USER_NAME>-toolings` -> `prompt-promotion-pipeline` that was synced by Argo CD.
+    Argo CD에 의해 동기화된 `OpenShift Dashboard` -> `Pipelines` -> `<USER_NAME>-toolings` -> `prompt-promotion-pipeline`을 확인하세요.
 
     ![prompt-promotion-pipeline.png](./images/prompt-promotion-pipeline.png)
 
-4. Go back to the notebook you were (`experiments/4-ready-to-scale-201/3-mlflow-webhook.ipynb`), just to run the last cell to add the webhook definition to MLFlow strictly to trigger when a new alias is added to the prompt versions.
+4. 이전에 작업했던 노트북(`experiments/4-ready-to-scale-201/3-mlflow-webhook.ipynb`)으로 돌아가서, 프롬프트 버전에 새로운 별칭이 추가될 때만 트리거되도록 MLFlow에 webhook 정의를 추가하는 마지막 셀을 실행합니다.
 
     ![mlflow-webhook-notebook2.png](./images/mlflow-webhook-notebook2.png)
 
 
-5. Then let's test this out! OpenShift AI Dashboard > Gen AI studio > Prompts and select `<USER_NAME>-toolings` as project. Go to `summarization` and add `prod` alias to the latest one.
+5. 이제 테스트해 봅시다! OpenShift AI Dashboard > Gen AI studio > Prompts로 이동하여 프로젝트로 `<USER_NAME>-toolings`를 선택합니다. `summarization`으로 이동하여 최신 버전에 `prod` 별칭을 추가합니다.
 
     ![add-alias.png](./images/add-alias.png)
 
     ![add-alia-2.png](./images/add-alias-2.png)
 
-6. Watch that the pipeline is running in OpenShift console > Pipelines > under `<USER_NAME>-toolings` project.
+6. OpenShift console > Pipelines > `<USER_NAME>-toolings` 프로젝트 아래에서 파이프라인이 실행되는 것을 지켜보세요.
 
     ![prompt-promotion-pipeline-run.png](./images/prompt-promotion-pipeline-run.png)
 
-7. When the pipeline is finished, observe the GitOps repo being updated. Go to [Gitea](https://gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/genaiops-gitops/) > `genaiops-gitops` and see there is a new commit made by Tekton the Peaceful Cat 🐈
+7. 파이프라인이 끝나면, GitOps 저장소가 업데이트되는 것을 확인하세요. [Gitea](https://gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/genaiops-gitops/) > `genaiops-gitops`로 이동하여, 평온한 고양이 Tekton 🐈 이 만든 새로운 커밋이 있는지 확인합니다.
 
     ![prompt-promotion-git-update.png](./images/prompt-promotion-git-update.png)
 
-8. Lastly, verify the change by accessing to prod Canopy at [https://canopy-ui-<USER_NAME>-prod.<CLUSTER_DOMAIN>/](https://canopy-ui-<USER_NAME>-prod.<CLUSTER_DOMAIN>/) and sending some prompts.
+8. 마지막으로, [https://canopy-ui-<USER_NAME>-prod.<CLUSTER_DOMAIN>/](https://canopy-ui-<USER_NAME>-prod.<CLUSTER_DOMAIN>/)에서 prod Canopy에 접속하여 프롬프트를 몇 개 전송해 봄으로써 변경 사항을 확인합니다.
 
-> Alternatively, we could push this change to a branch and raise a PR for another human to approve. In this flow, though, the human review already happens when we assess the evaluation result.
-
-
-## Adding more eval data
-
-You can grow your evaluation dataset from MLflow traces, just like you did in the [Evaluating with MLflow](1-evaluate-genai-applications.md#evaluating-with-mlflow) section. Each environment stores traces in its own workspace.
-
-For example, to add traces from your production environment to the eval dataset:
-
-1. Go to **OpenShift AI Dashboard** > **Experiments (MLflow)** and select `<USER_NAME>-prod`.
-2. Open **summarization** > **Traces** and pick a trace.
-3. Click **Show assessments** > **Add expectations** (e.g., `length` = `200`).
-4. Click **Add to dataset** and select the existing `eval` dataset, then **Export**.
+> 또는, 이 변경 사항을 브랜치에 push하고 다른 사람이 승인할 수 있도록 PR을 생성하는 방법도 있습니다. 다만 이번 흐름에서는 평가 결과를 검토하는 단계에서 이미 사람의 리뷰가 이루어집니다.
 
 
-### Where are my prompts? Where are my traces?
+## 평가 데이터 추가하기
 
-Follow the numbered steps to see how a prompt change triggers an eval run, where the traces are collected, and where results land for human review.
+[Evaluating with MLflow](1-evaluate-genai-applications.md#evaluating-with-mlflow) 섹션에서 했던 것처럼, MLflow trace로부터 평가 데이터셋을 키워나갈 수 있습니다. 각 환경은 자신만의 작업 공간에 trace를 저장합니다.
+
+예를 들어, 프로덕션 환경의 trace를 평가 데이터셋에 추가하려면 다음과 같이 합니다.
+
+1. **OpenShift AI Dashboard** > **Experiments (MLflow)**로 이동하여 `<USER_NAME>-prod`를 선택합니다.
+2. **summarization** > **Traces**를 열고 trace를 하나 선택합니다.
+3. **Show assessments** > **Add expectations**를 클릭합니다 (예: `length` = `200`).
+4. **Add to dataset**을 클릭하고 기존의 `eval` 데이터셋을 선택한 다음 **Export**를 클릭합니다.
+
+
+### 내 프롬프트는 어디에 있을까? 내 trace는 어디에 있을까?
+
+번호가 매겨진 단계를 따라가며, 프롬프트 변경이 어떻게 평가 실행을 트리거하는지, trace는 어디에 수집되는지, 그리고 결과는 사람이 검토할 수 있도록 어디에 도착하는지 살펴보세요.
 
 ![where-are-my-prompts.jpg](./images/where-are-my-prompts.jpg)
 
-1. A prompt change in the prompt registry kicks off an eval pipeline run in `toolings` namespace.
-2. The pipeline collects eval datasets from three sources: Git, and the trace collections from both `test` and `prod` environments.
-3. The eval prompts are sent to the `test` backend, which calls the LLM — new traces are generated in the `test` environment as a result.
-4. Eval results are stored in the `toolings` namespace.
-5. A human reviews the results before any promotion happens.
+1. 프롬프트 레지스트리의 프롬프트 변경이 `toolings` 네임스페이스에서 평가 파이프라인 실행을 시작시킵니다.
+2. 파이프라인은 세 곳에서 평가 데이터셋을 수집합니다. Git, 그리고 `test`와 `prod` 환경 각각의 trace 컬렉션입니다.
+3. 평가용 프롬프트가 `test` 백엔드로 전송되고, 백엔드는 LLM을 호출합니다. 그 결과로 `test` 환경에 새로운 trace가 생성됩니다.
+4. 평가 결과는 `toolings` 네임스페이스에 저장됩니다.
+5. 어떤 승격(promotion)이든 이루어지기 전에 사람이 결과를 검토합니다.
 
 ----
 
-And with that, we have an end-to-end automated process for changes that is traceable, observable, and ready to grow into more complex use cases. Let’s gooooo! 🚀
+이렇게 해서, 추적 가능하고 관찰 가능하며 더 복잡한 사용 사례로 확장해 나갈 준비가 된, 변경에 대한 종단 간(end-to-end) 자동화 프로세스를 갖추게 되었습니다. 가봅시다! 🚀

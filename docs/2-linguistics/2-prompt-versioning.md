@@ -1,46 +1,47 @@
-# 🗂️ Prompt Versioning
+# 🗂️ 프롬프트 버전 관리
 
-Do you remember the first System Prompt you tried? What was the first one? Why you didn't like the second one? 
+처음 시도했던 시스템 프롬프트를 기억하시나요? 가장 처음에 쓴 것은 무엇이었나요? 두 번째 프롬프트가 마음에 들지 않았던 이유는 무엇인가요?
 
-There must be a better way to track these experiments you've been conducting in the playground!
+플레이그라운드에서 진행해온 이런 실험들을 추적할 더 나은 방법이 분명히 있을 것입니다!
 
-This is where we introduce **prompt versioning** and a **prompt registry** concepts!
+여기서 **프롬프트 버전 관리(prompt versioning)**와 **프롬프트 레지스트리(prompt registry)**라는 개념을 소개합니다!
 
-## 🎯 Why Prompt Versioning Matters
+## 🎯 프롬프트 버전 관리가 중요한 이유
 
-Think of good prompt like a well-written function or component. Once you get it right, you want to reuse it across different apps and users.
+좋은 프롬프트를 잘 작성된 함수나 컴포넌트라고 생각해 보세요. 한 번 제대로 만들어두면, 여러 애플리케이션과 사용자에 걸쳐 재사용하고 싶어질 것입니다.
 
-But in GenAI workflows, we face a big challenge: Prompt experiments are often **invisible**, **untracked**, and **not reusable**. Just like you experienced a moment ago!
+하지만 GenAI 워크플로우에서는 큰 문제에 부딫힙니다. 프롬프트 실험은 종종 **보이지 않고**, **추적되지 않으며**, **재사용할 수 없습니다**. 방금 당신이 경험한 것처럼 말이죠!
 
-This makes collaboration hard and reproducibility nearly impossible—especially at scale.
+이는 협업을 어렵게 만들고, 특히 규모가 커질수록 재현 가능성을 거의 불가능하게 만듭니다.
 
-There are a variety of different strategies here on where to store your prompts and how to load them into your application. 
+프롬프트를 어디에 저장하고 애플리케이션에 어떻게 불러올지에 대해서는 다양한 전략이 있습니다. 
 
-In our case, we are going to store the prompts in MLflow Prompt Registry! 
+우리의 경우에는, MLflow Prompt Registry에 프롬프트를 저장할 것입니다!
 
-## Prompt Registry
+## 프롬프트 레지스트리
 
-We are going to store our prompts on our Prompt Registry, add notes, tags, etc when necessary and fetch these prompts from our application during the runtime. 
+우리는 프롬프트를 Prompt Registry에 저장하고, 필요할 때 노트나 태그 등을 추가하며, 런타임 동안 애플리케이션에서 이 프롬프트들을 가져올 것입니다. 
 
-1. Let's go to `Gen AI studio` > `Prompts` from the left menu. Select **<USER_NAME>-canopy** project from top and store your favourite Summarization prompt under the experiment environment. We'll get to talk about production later 🤫🤫🤫
+1. 왼쪽 메뉴에서 `Gen AI studio` > `Prompts`로 이동해 봅시다. 상단에서 **<USER_NAME>-canopy** 프로젝트를 선택하고, 실험 환경 아래에 당신이 가장 좋아하는 요약 프롬프트를 저장하세요. 운영 환경에 대해서는 나중에 이야기하겠습니다 🤫🤫🤫
 
-    _Note: We will be able to store prompts directly from the Playground very soon._
+    _참고: 곧 플레이그라운드에서 바로 프롬프트를 저장할 수 있게 될 것입니다._
 
     ![prompt-registry.png](./images/prompt-registry.png)
 
-2. Click `Create prompt` and call it: `summarization`. 
+2. `Create prompt`를 클릭하고 이름을 다음과 같이 지정하세요: `summarization`. 
 
     ```bash
     summarization
     ```
 
-    And paste your new favourite System Prompt for the task 🫶 While you're at it, you can add a nice commit message there too, and hit `Create`. 
+    그리고 이 작업을 위해 당신이 새롭게 가장 좋아하게 된 시스템 프롬프트를 붙여넣으세요 🫶 하는 김에, 괜찮은 커밋 메시지도 추가하고 `Create`를 누르세요. 
 
     ![summarization-prompt-1.png](./images/summarization-prompt-1.png)
 
-    This is the first version (Version 1) of your prompt and it automatically gets `latest` tag. 
+    이것이 당신의 프롬프트의 첫 번째 버전(Version 1)이며, 자동으로 `latest` 태그를 부여받습니다. 
 
     ![summarization-prompt-2.png](./images/summarization-prompt-2.png)
 
-    Now it's time to put your system prompt to work! That means, deploying Canopy to your experimentation environment on OpenShift cluster and letting it fetch the prompt from your Prompt Registry.
+    이제 시스템 프롬프트를 실제로 활용할 시간입니다! 즉, OpenShift 클러스터의 실험 환경에 Canopy를 배포하고, 당신의 Prompt Registry에서 프롬프트를 가져오게 만드는 것입니다.
 
+</content>

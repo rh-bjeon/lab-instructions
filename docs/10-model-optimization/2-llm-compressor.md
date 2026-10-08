@@ -1,50 +1,50 @@
-# 🧮 Understanding Quantization
+# 🧮 양자화(Quantization) 이해하기
 
-## The Problem: Great Models, Expensive Hardware
+## 문제: 훌륭한 모델, 비싼 하드웨어
 
-You tried Tiny Llama, but you were not so happy. And earlier you had this shiny big model that answers student questions beautifully. Why can't we have it again? But it needs 14GB of GPU memory, and your deployment budget says "absolutely not." 😭😭😭
+Tiny Llama를 써봤지만 그다지 만족스럽지 않았습니다. 그리고 이전에는 학생들의 질문에 멋지게 답해주던 번쩍이는 큰 모델이 있었습니다. 왜 다시 그걸 쓸 수 없을까요? 하지만 그 모델은 14GB의 GPU 메모리가 필요한데, 여러분의 배포 예산은 "절대 안 돼"라고 말합니다. 😭😭😭
 
-Welcome to quantization!! The art of making models smaller without making them dumber.
+양자화(quantization)의 세계에 오신 것을 환영합니다!! 모델을 더 멍청하게 만들지 않으면서 더 작게 만드는 기술입니다.
 
-Think of it like compression for your model's brain. Instead of storing every weight as a precise 16-bit number, we round them to 8 or even 4 bits. It's like the difference between keeping exact change ($14.37) versus rounding to the nearest dollar ($14). You lose some precision, but your wallet gets a lot lighter.
+모델의 "두뇌"를 압축하는 것이라고 생각하면 됩니다. 모든 가중치(weight)를 정밀한 16비트 숫자로 저장하는 대신, 8비트 또는 심지어 4비트로 반올림합니다. 정확한 잔돈($14.37)을 보관하는 것과 가장 가까운 달러 단위($14)로 반올림하는 것의 차이와 비슷합니다. 약간의 정밀도를 잃지만, 지갑은 훨씬 가벼워집니다.
 
-For Canopy, this means we can serve more students with the same hardware, respond faster, and maybe even run on that "spare" GPU that IT forgot about.
+Canopy의 경우, 이는 같은 하드웨어로 더 많은 학생을 서빙하고, 더 빠르게 응답하며, IT 부서가 잊고 있던 그 "여분의" GPU에서도 돌릴 수 있게 된다는 의미입니다.
 
 
-# 🔧 LLM-Compressor: Your Model's Personal Trainer
+# 🔧 LLM-Compressor: 모델의 개인 트레이너
 
-[llm-compressor](https://github.com/vllm-project/llm-compressor) is the tool the vLLM team built to compress models for production. Think of it as a Swiss Army knife for quantization: one tool, multiple algorithms, works with HuggingFace, outputs models ready for vLLM serving. This is what we are going to use in this chapter.
+[llm-compressor](https://github.com/vllm-project/llm-compressor)는 vLLM 팀이 프로덕션용 모델 압축을 위해 만든 도구입니다. 양자화를 위한 스위스 군용 칼이라고 생각하면 됩니다: 하나의 도구, 여러 알고리즘, HuggingFace와 호환, vLLM 서빙에 바로 사용할 수 있는 모델을 출력합니다. 이번 챕터에서 사용할 도구가 바로 이것입니다.
 
-But before, we need to beef up our workbench a bit, because compressing a model needs a bit more resources.
+하지만 그 전에, 워크벤치를 조금 더 강화해야 합니다. 모델 압축에는 조금 더 많은 리소스가 필요하기 때문입니다.
 
-1. Go to OpenShift AI dashboard, and find your workbench under `<USER_NAME>-canopy` project. Click on the three dots > `Edit workbench`.
+1. OpenShift AI 대시보드로 이동해서 `<USER_NAME>-canopy` 프로젝트 아래에 있는 워크벤치를 찾습니다. 세 개의 점을 클릭한 뒤 > `Edit workbench`를 선택합니다.
 
     ![edit-workbench.png](./images/edit-workbench.png)
 
-2. Scroll down to `Deployment size` and increase the CPU and Memory requests & limits as below.
+2. 아래로 스크롤해서 `Deployment size`로 이동한 뒤, CPU와 Memory의 requests 및 limits를 아래와 같이 늘립니다.
 
     ![cpu-memory.png](./images/cpu-memory.png)
 
-3. You don't need to change anything else. Just hit `Update workbench`. 
+3. 다른 것은 변경할 필요가 없습니다. `Update workbench`만 눌러주세요.
 
-4. This will restart your workbench. When it is up, open up **`experiments/10-model-optimization/1-intro-llm-compressor.ipynb`**
+4. 그러면 워크벤치가 재시작됩니다. 다시 켜지면 **`experiments/10-model-optimization/1-intro-llm-compressor.ipynb`**를 엽니다.
 
-In this exercise, you'll take a small model and compress it on CPU (yes, CPU—no fancy hardware needed to learn).
+이 실습에서는 작은 모델을 가져와 CPU에서 압축합니다(네, CPU입니다—학습을 위해 특별한 하드웨어는 필요하지 않습니다).
 
-**What you'll do:**
+**진행할 내용:**
 
-1. **Meet the oneshot API** — llm-compressor's main interface. One function call, compressed model.
+1. **oneshot API 살펴보기** — llm-compressor의 메인 인터페이스입니다. 함수 호출 한 번으로 모델이 압축됩니다.
 
-2. **Write a recipe** — Configure `GPTQModifier` with parameters like `scheme`, `targets`, and `ignore`
+2. **레시피 작성하기** — `scheme`, `targets`, `ignore`와 같은 파라미터로 `GPTQModifier`를 구성합니다
 
-3. **Compress a model** — We'll use `Qwen/Qwen2-0.5B-Instruct` as our guinea pig (compressing Llama 3.2 3B requires more compute power than you have in the workbench. That's why we are experiencing the topic with this Qwen model)
+3. **모델 압축하기** — 실험 대상으로 `Qwen/Qwen2-0.5B-Instruct`를 사용합니다(Llama 3.2 3B를 압축하려면 워크벤치가 가진 것보다 더 많은 컴퓨트 자원이 필요합니다. 그래서 이 주제를 Qwen 모델로 경험해보는 것입니다)
 
-4. **See the difference** — Compare file sizes before and after (prepare to be impressed)
+4. **차이 확인하기** — 압축 전후 파일 크기를 비교합니다(놀랄 준비를 하세요)
 
-5. **Run a test** — Compare the response from the compressed model to the original model
+5. **테스트 실행하기** — 압축된 모델의 응답을 원본 모델과 비교합니다
 
-## 🎯 Next Steps
+## 🎯 다음 단계
 
-Congrats you just compressed a model! Let's make sure it actually works.
+축하합니다, 방금 모델을 하나 압축했습니다! 이제 실제로 잘 동작하는지 확인해봅시다.
 
-Continue to **[Evaluation](./4-evaluation.md)** to learn how to validate quantized models before they hit production.
+양자화된 모델이 프로덕션에 들어가기 전에 검증하는 방법을 배우려면 **[Evaluation](./4-evaluation.md)**으로 계속 진행하세요.

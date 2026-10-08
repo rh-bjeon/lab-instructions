@@ -1,85 +1,85 @@
-## AI501 Cluster Setup
+## AI501 클러스터 설정
 
 <p class="warn">
-    ⛷️ <b>NOTE</b> ⛷️ - You need an OpenShift 4.19+ cluster with cluster-admin privilege.
+    ⛷️ <b>참고</b> ⛷️ - cluster-admin 권한을 가진 OpenShift 4.19+ 클러스터가 필요합니다.
 </p>
 
-Just like we practice throughout the course, we keep the cluster configuration as code in a GitHub repository: https://github.com/rhoai-genaiops/deploy-lab
+이 과정 전체에서 실습하는 것처럼, 우리도 클러스터 구성을 GitHub 저장소에 코드로 관리합니다: https://github.com/rhoai-genaiops/deploy-lab
 
-This repository has three main parts:
-- **Operators**: A Helm chart to deploy operators including OpenShift AI, GitOps, Pipelines, and GPU support.
-- **Toolings**: A Helm chart to configure shared infrastructure like MinIO, observability stack, and workbench templates.
-- **Student Content**: A Helm chart for per-student environments including ArgoCD instances and Data Science projects.
+이 저장소는 세 가지 주요 부분으로 구성됩니다.
+- **Operators**: OpenShift AI, GitOps, Pipelines, GPU 지원 등 오퍼레이터를 배포하는 Helm 차트
+- **Toolings**: MinIO, 관측성(observability) 스택, 워크벤치 템플릿 같은 공유 인프라를 구성하는 Helm 차트
+- **Student Content**: ArgoCD 인스턴스와 Data Science 프로젝트를 포함한 학생별 환경을 위한 Helm 차트
 
-## Prerequisites
+## 사전 준비 사항
 
-Before you begin, ensure you have:
+시작하기 전에 다음이 준비되어 있는지 확인하세요.
 
-- OpenShift 4.19+ cluster with cluster-admin access
-- Helm 3.x installed
-- `oc` CLI configured and authenticated
-- (Optional) AWS credentials for GPU machine provisioning
+- cluster-admin 권한을 가진 OpenShift 4.19+ 클러스터
+- Helm 3.x 설치
+- `oc` CLI 설정 및 인증 완료
+- (선택) GPU 머신 프로비저닝을 위한 AWS 자격 증명
 
-### GPU Requirements
+### GPU 요구 사항
 
-This lab requires **3 GPU nodes** with specific taints:
+이 실습에는 특정 taint가 적용된 **GPU 노드 3개**가 필요합니다.
 
-| Component | GPU Count | Instance Type | Taint |
+| 구성 요소 | GPU 개수 | 인스턴스 타입 | Taint |
 |-----------|-----------|---------------|-------|
 | Docling Serve | 1 | g4dn (T4) | `nvidia.com/gpu=g4dn` |
 | Llama 3.2 (cloud-model) | 1 | g5 (A10G) | `nvidia.com/gpu=g5` |
 | Llama 3.2 FP8 (quantized-model) | 1 | g5 (A10G) | `nvidia.com/gpu=g5` |
 
 <p class="tip">
-    💡 <b>TIP</b> 💡 - If you have different taints on your GPU nodes, update the deployment tolerations in the <code>student-content/templates/</code> directory.
+    💡 <b>팁</b> 💡 - GPU 노드에 다른 taint가 설정되어 있다면, <code>student-content/templates/</code> 디렉토리에서 배포 톨러레이션(toleration)을 업데이트하세요.
 </p>
 
-## Quick Installation
+## 빠른 설치
 
-The fastest way to get started is using the automated installation script.
+가장 빠르게 시작하는 방법은 자동화된 설치 스크립트를 사용하는 것입니다.
 
-1. **Clone the repository**
+1. **저장소 클론**
 
     ```bash
     git clone https://github.com/rhoai-genaiops/deploy-lab.git
     cd deploy-lab
     ```
 
-2. **Configure your deployment**
+2. **배포 구성**
 
-    Edit `student-content/values.yaml` before running the installation:
+    설치를 실행하기 전에 `student-content/values.yaml`을 편집하세요.
 
     ```yaml
     cluster_domain: apps.your-cluster.example.com  # Your OpenShift apps domain
     attendees: 20                                   # Number of students to create
     ```
 
-    To find your cluster domain:
+    클러스터 도메인을 확인하려면:
     ```bash
     oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
     ```
 
-3. **Run the installation**
+3. **설치 실행**
 
     ```bash
     ./install.sh
     ```
 
-    This script will:
-    - Install required operators (RHOAI, Pipelines, GitOps, GPU Operator)
-    - Deploy shared tooling infrastructure
-    - Create student environments
-    - Configure OAuth authentication with HTPasswd
-    - Set up ArgoCD for multi-tenancy
-    - Configure Tekton and user workload monitoring
+    이 스크립트는 다음을 수행합니다.
+    - 필요한 오퍼레이터 설치 (RHOAI, Pipelines, GitOps, GPU Operator)
+    - 공유 툴링 인프라 배포
+    - 학생 환경 생성
+    - HTPasswd를 이용한 OAuth 인증 구성
+    - 멀티테넌시를 위한 ArgoCD 설정
+    - Tekton 및 사용자 워크로드 모니터링 구성
 
-## Step-by-Step Installation
+## 단계별 설치
 
-If you prefer more control over the installation process, you can run each step manually.
+설치 과정을 더 세밀하게 제어하고 싶다면, 각 단계를 수동으로 실행할 수 있습니다.
 
-### Step 1: Install Operators
+### 1단계: 오퍼레이터 설치
 
-First, install the base operators that provide the platform capabilities:
+먼저 플랫폼 기능을 제공하는 기본 오퍼레이터를 설치합니다.
 
 ```bash
 cd deploy-lab
@@ -88,7 +88,7 @@ helm upgrade --install ai501-base operators \
     --create-namespace
 ```
 
-Wait for the GitOps operator to be ready:
+GitOps 오퍼레이터가 준비될 때까지 기다립니다.
 
 ```bash
 oc wait --for=jsonpath='{.status.availableReplicas}'=1 \
@@ -96,12 +96,12 @@ oc wait --for=jsonpath='{.status.availableReplicas}'=1 \
 ```
 
 <p class="warn">
-    ⏳ <b>NOTE</b> ⏳ - This step might take up to 15 minutes as operators are installed and reconciled.
+    ⏳ <b>참고</b> ⏳ - 오퍼레이터가 설치되고 reconcile되는 데 최대 15분 정도 걸릴 수 있습니다.
 </p>
 
-### Step 2: Install Shared Toolings
+### 2단계: 공유 Toolings 설치
 
-Deploy the shared infrastructure components:
+공유 인프라 구성 요소를 배포합니다.
 
 ```bash
 helm upgrade --install ai501-toolings toolings \
@@ -109,14 +109,14 @@ helm upgrade --install ai501-toolings toolings \
     --create-namespace
 ```
 
-This installs:
-- MinIO (S3-compatible storage)
-- Observability stack (Prometheus, Grafana, Tempo)
-- Custom workbench templates
+이 단계는 다음을 설치합니다.
+- MinIO (S3 호환 스토리지)
+- 관측성 스택 (Prometheus, Grafana, Tempo)
+- 커스텀 워크벤치 템플릿
 
-### Step 3: Install Student Content
+### 3단계: Student Content 설치
 
-Deploy the per-student resources:
+학생별 리소스를 배포합니다.
 
 ```bash
 helm upgrade --install ai501-student-content student-content \
@@ -125,12 +125,12 @@ helm upgrade --install ai501-student-content student-content \
 ```
 
 <p class="tip">
-    💡 <b>TIP</b> 💡 - Make sure you've configured <code>values.yaml</code> with your cluster domain and desired number of attendees before running this step.
+    💡 <b>팁</b> 💡 - 이 단계를 실행하기 전에 <code>values.yaml</code>에 클러스터 도메인과 원하는 수강생 수를 설정했는지 확인하세요.
 </p>
 
-### Step 4: Configure Authentication
+### 4단계: 인증 구성
 
-Set up HTPasswd authentication for students:
+학생을 위한 HTPasswd 인증을 설정합니다.
 
 ```bash
 oc patch --type=merge OAuth/cluster -p '{
@@ -149,9 +149,9 @@ oc patch --type=merge OAuth/cluster -p '{
 }'
 ```
 
-### Step 5: Configure ArgoCD for Multi-Tenancy
+### 5단계: 멀티테넌시를 위한 ArgoCD 구성
 
-Enable ArgoCD for student namespaces. The install script automatically calculates the namespace list based on your attendee count:
+학생 네임스페이스에 대해 ArgoCD를 활성화합니다. 설치 스크립트는 수강생 수를 기준으로 네임스페이스 목록을 자동으로 계산합니다.
 
 ```bash
 # Example for 5 attendees
@@ -171,9 +171,9 @@ oc -n openshift-gitops-operator patch subscriptions.operators.coreos.com/openshi
     ]'
 ```
 
-### Step 6: Configure Tekton and Monitoring
+### 6단계: Tekton 및 모니터링 구성
 
-Optimize Tekton for cost and configure user workload monitoring:
+비용 최적화를 위해 Tekton을 조정하고 사용자 워크로드 모니터링을 구성합니다.
 
 ```bash
 # Disable affinity assistant for cost optimization
@@ -185,92 +185,92 @@ oc -n openshift-user-workload-monitoring patch configmap user-workload-monitorin
     -p '{"data": {"config.yaml": "prometheus:\n  logLevel: debug\n  retention: 15d\nalertmanager:\n  enabled: true\n  enableAlertmanagerConfig: true\n"}}'
 ```
 
-## GPU Provisioning (AWS)
+## GPU 프로비저닝 (AWS)
 
-If you're running on AWS and need to provision GPU nodes, you can use the machine provisioning script:
+AWS에서 실행 중이고 GPU 노드를 프로비저닝해야 한다면, 머신 프로비저닝 스크립트를 사용할 수 있습니다.
 
 ```bash
 ./machineset.sh
 ```
 
-This script supports provisioning various GPU instance types:
-- T4 (g4dn instances)
-- A10G (g5 instances)
-- A100 (p4d instances)
-- H100 (p5 instances)
-- L40 instances
+이 스크립트는 다양한 GPU 인스턴스 타입의 프로비저닝을 지원합니다.
+- T4 (g4dn 인스턴스)
+- A10G (g5 인스턴스)
+- A100 (p4d 인스턴스)
+- H100 (p5 인스턴스)
+- L40 인스턴스
 
-## Verify The Installation
+## 설치 확인
 
-After installation completes, verify everything is working:
+설치가 완료되면 모든 것이 정상적으로 동작하는지 확인하세요.
 
-1. **Check operators are ready**:
+1. **오퍼레이터가 준비되었는지 확인**:
     ```bash
     oc get csv -n openshift-operators
     ```
 
-2. **Check student namespaces**:
+2. **학생 네임스페이스 확인**:
     ```bash
     oc get namespaces | grep user
     ```
 
-3. **Check pods in the main namespace**:
+3. **메인 네임스페이스의 Pod 확인**:
     ```bash
     oc get pods -n ai501
     ```
 
-4. **Check Helm releases**:
+4. **Helm 릴리스 확인**:
     ```bash
     helm list -n ai501
     ```
 
-5. **Monitor ArgoCD sync status**:
+5. **ArgoCD 동기화 상태 모니터링**:
     ```bash
     oc get applications -A
     ```
 
-Log in to the cluster via UI and use `htpasswd` login with your student username and password. You should only see `<USER_NAME>` and `<USER_NAME>-toolings` namespaces.
+UI를 통해 클러스터에 로그인하고, 학생 계정의 사용자명과 비밀번호로 `htpasswd` 로그인을 사용하세요. `<USER_NAME>`과 `<USER_NAME>-toolings` 네임스페이스만 보여야 합니다.
 
-## Getting the Necessary Links
+## 필요한 링크 확인하기
 
-The necessary links such as OpenShift console, OpenShift AI Dashboard, and other tools are embedded in the top right of this page under `Quick Links`.
+OpenShift 콘솔, OpenShift AI Dashboard 등 필요한 링크들은 이 페이지 오른쪽 상단의 `Quick Links`에 포함되어 있습니다.
 
-## Troubleshooting
+## 문제 해결
 
-### Helm Release Issues
+### Helm 릴리스 문제
 
-If a Helm release fails, check the release status:
+Helm 릴리스가 실패하면 릴리스 상태를 확인하세요.
 
 ```bash
 helm list -n ai501
 helm status <release-name> -n ai501
 ```
 
-### ConfigMap Already Exists
+### ConfigMap이 이미 존재하는 경우
 
-If you encounter errors about ConfigMaps already existing (not owned by Helm), you may need to delete them first:
+(Helm이 소유하지 않은) ConfigMap이 이미 존재한다는 오류가 발생하면, 먼저 이를 삭제해야 할 수 있습니다.
 
 ```bash
 oc delete configmap <configmap-name> -n <namespace>
 ```
 
-Then re-run the Helm installation.
+그런 다음 Helm 설치를 다시 실행하세요.
 
-### GPU Pods Not Scheduling
+### GPU Pod가 스케줄링되지 않는 경우
 
-If GPU workloads aren't scheduling, verify:
+GPU 워크로드가 스케줄링되지 않는다면 다음을 확인하세요.
 
-1. GPU nodes are available:
+1. GPU 노드가 사용 가능한지 확인:
     ```bash
     oc get nodes -l nvidia.com/gpu.present=true
     ```
 
-2. Check node taints match deployment tolerations:
+2. 노드 taint가 배포 톨러레이션과 일치하는지 확인:
     ```bash
     oc describe node <gpu-node-name> | grep Taints
     ```
 
-3. Verify the NVIDIA GPU operator is running:
+3. NVIDIA GPU 오퍼레이터가 실행 중인지 확인:
     ```bash
     oc get pods -n nvidia-gpu-operator
     ```

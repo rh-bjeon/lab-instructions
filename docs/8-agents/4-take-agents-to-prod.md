@@ -1,11 +1,11 @@
 # Take Agents to Prod
 
-Now that we have our new fresh agent, let's take it to production!  
-There are a few things we want to do, such as evaluating and observing the agent, but let's start with adding in the feature flag to enable it in the backend.
+새로 만든 agent가 준비되었으니, 이제 프로덕션으로 가져가 봅시다!
+평가(evaluating)와 모니터링(observing) 같이 해야 할 일들이 몇 가지 있지만, 먼저 백엔드에서 이를 활성화하기 위한 feature flag를 추가하는 것부터 시작하겠습니다.
 
-## Deploy the Agent through GitOps
+## GitOps를 통해 Agent 배포하기
 
-1. We need to start by upgrading our test and prod Llama Stack, go to `genaiops-gitops/canopy/test/ogx/config.yaml` and update to this:
+1. 먼저 test와 prod의 Llama Stack을 업그레이드해야 합니다. `genaiops-gitops/canopy/test/ogx/config.yaml`로 이동해서 다음과 같이 업데이트하세요.
 
     ```yaml
     ---
@@ -23,7 +23,7 @@ There are a few things we want to do, such as evaluating and observing the agent
       enabled: true     # 👈 Add this ❗︎❗︎❗︎
     ```
 
-2. Push this to git so that it takes effect:
+2. 이것을 git에 push해서 적용되도록 하세요.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -33,9 +33,9 @@ There are a few things we want to do, such as evaluating and observing the agent
     git push origin main
     ```
 
-3. After Llama Stack has MCP enabled, we need to update our Canopy backend so it can use the agent feature. Go to your workbench and open the file `genaiops-gitops/canopy/test/backend/config.yaml`
+3. Llama Stack에서 MCP가 활성화된 후에는, agent 기능을 사용할 수 있도록 Canopy 백엔드도 업데이트해야 합니다. 워크벤치로 이동해서 `genaiops-gitops/canopy/test/backend/config.yaml` 파일을 여세요.
 
-4. Edit the file to contain the `student-assistant` feature flag. Feel free to change the prompt, this is the system prompt just like before.
+4. 파일을 편집해서 `student-assistant` feature flag를 추가하세요. 프롬프트는 자유롭게 변경해도 됩니다. 이전과 마찬가지로 이것은 system prompt입니다.
 
     ```yaml
     ---
@@ -74,7 +74,7 @@ There are a few things we want to do, such as evaluating and observing the agent
       mlflow_prompt_version: latest
     ```
 
-5. Before we push this change, we need to create `student-assistant` prompt in our prompt registry. Go to OpenShift Dashboard > Gen AI Studio > Prompts under `<USER_NAME>-toolings` project and create `student-assistant` prompt. Then add this below prompt with a nice commit message:
+5. 이 변경 사항을 push하기 전에, 먼저 prompt registry에 `student-assistant` 프롬프트를 생성해야 합니다. OpenShift Dashboard > Gen AI Studio > Prompts로 이동해서 `<USER_NAME>-toolings` 프로젝트 아래에 `student-assistant` 프롬프트를 생성하세요. 그런 다음 아래 프롬프트를 추가하고 적절한 커밋 메시지를 남기세요.
 
     ```bash
     You are a helpful assistant that helps students with their calendar and studies.
@@ -103,16 +103,16 @@ There are a few things we want to do, such as evaluating and observing the agent
     ```
 
 
-6. Deploy calendar API for your test environment via GitOps as well so that you can freely continue iterating on your experiment environment while further evaluation tests can happen in the test environment before taking the current setup to production. 
+6. test 환경에서도 GitOps를 통해 calendar API를 배포하세요. 이렇게 하면 test 환경에서 추가적인 평가(evaluation) 테스트를 계속 진행하는 동시에, 실험(experiment) 환경에서도 자유롭게 실험을 이어갈 수 있습니다. 이후 현재 구성을 프로덕션으로 가져가게 됩니다.
 
-  But this time, let's deploy it via GitOps! Create `calendar-mcp` folder under `/opt/app-root/src/genaiops-gitops/canopy/test` , then create `config.yaml` file, or simply run below command:
+  단, 이번에는 GitOps를 통해 배포해 봅시다! `/opt/app-root/src/genaiops-gitops/canopy/test` 아래에 `calendar-mcp` 폴더를 만들고, 그 안에 `config.yaml` 파일을 생성하세요. 또는 아래 명령어를 그대로 실행해도 됩니다.
 
   ```bash
    mkdir /opt/app-root/src/genaiops-gitops/canopy/test/calendar-mcp
    touch /opt/app-root/src/genaiops-gitops/canopy/test/calendar-mcp/config.yaml
   ```
 
-  And add the following config that points to the related helm chart:
+  그리고 관련 helm chart를 가리키는 아래 설정을 추가하세요.
 
   ```yaml
   repo_url: https://github.com/rhoai-genaiops/mcp.git
@@ -120,7 +120,7 @@ There are a few things we want to do, such as evaluating and observing the agent
   fullnameOverride: canopy-mcp-calendar
   ```
 
-7. Push the changes to Git..because, you know, GitOps!
+7. 변경 사항을 Git에 push하세요.. 아시죠, GitOps니까요!
 
   ```bash
     cd /opt/app-root/src/genaiops-gitops/canopy/
@@ -130,9 +130,9 @@ There are a few things we want to do, such as evaluating and observing the agent
     git push
   ```
 
-8. Open the Canopy UI, change to the Student Assistant on the left side and ask `I need help understanding quantum chromodynamics.`.  
-    The agent should try to find the information, fail, and then find a professor to help you and schedule a call with them.  
+8. Canopy UI를 열고, 왼쪽에서 Student Assistant로 전환한 다음 `I need help understanding quantum chromodynamics.`라고 물어보세요.
+    Agent는 정보를 찾으려고 시도했다가 실패한 후, 도와줄 교수님을 찾아서 해당 교수님과의 미팅을 예약할 것입니다.
 
-    If you don't have the Canopy open any longer, you can find it here: [https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>](https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>)
+    Canopy를 더 이상 열어두지 않았다면, 여기서 다시 찾을 수 있습니다: [https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>](https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>)
 
     ![ask-canopy.png](images/ask-canopy.png)

@@ -1,46 +1,46 @@
-# 🎓 GenAI 101: Model Mannerisms
+# 🎓 GenAI 101: 모델의 특성 :id=-genai-101-model-mannerisms
 
-## 📚 Contents
-- [🎓 GenAI 101: Model Mannerisms](#-genai-101-model-mannerisms)
-  - [📚 Contents](#-contents)
-  - [🧠 There is a lot of different AI out there](#there-is-a-lot-of-different-ai-out-there)
-  - [🤖 Generative AI Models](#generative-ai-models)
-  - [📜 4 Truths about GenAI Models](#truths-about-genai-models)
-  - [🔍 Truth 1: They only speak when spoken to](#truth-1-they-only-speak-when-spoken-to)
-    - [🔍 Hands-on: Let's play!](#hands-on-lets-play)
-  - [🎲 Truth 2: They are non-deterministic](#truth-2-they-are-non-deterministic)
-    - [🔍 Hands-on: Test it yourself](#hands-on-test-it-yourself)
-  - [🤥 Truth 3: They don't speak the truth, they speak the probable](#truth-3-they-dont-speak-the-truth-they-speak-the-probable)
-    - [🔍 Hands-on: Can the model lie?](#hands-on-can-the-model-lie)
-  - [🧠 Truth 4: They have no memory](#truth-4-they-have-no-memory)
-    - [🔍 Hands-on: Does the model remember you?](#hands-on-does-the-model-remember-you)
-  - [✅ Recap](#recap)
+## 📚 목차 :id=-contents
+- [🎓 GenAI 101: 모델의 특성](#-genai-101-model-mannerisms)
+  - [📚 목차](#-contents)
+  - [🧠 세상에는 다양한 AI가 있다](#there-is-a-lot-of-different-ai-out-there)
+  - [🤖 생성형 AI 모델](#generative-ai-models)
+  - [📜 GenAI 모델에 대한 4가지 진실](#truths-about-genai-models)
+  - [🔍 진실 1: 말을 걸어야만 답한다](#truth-1-they-only-speak-when-spoken-to)
+    - [🔍 실습: 직접 해보기!](#hands-on-lets-play)
+  - [🎲 진실 2: 비결정적(non-deterministic)이다](#truth-2-they-are-non-deterministic)
+    - [🔍 실습: 직접 테스트해보기](#hands-on-test-it-yourself)
+  - [🤥 진실 3: 진실을 말하는 게 아니라 가능성이 높은 것을 말한다](#truth-3-they-dont-speak-the-truth-they-speak-the-probable)
+    - [🔍 실습: 모델이 거짓말을 할 수 있을까?](#hands-on-can-the-model-lie)
+  - [🧠 진실 4: 기억력이 없다](#truth-4-they-have-no-memory)
+    - [🔍 실습: 모델이 당신을 기억할까?](#hands-on-does-the-model-remember-you)
+  - [✅ 요약](#recap)
 
-## 🧠 There is a lot of different AI out there :id=there-is-a-lot-of-different-ai-out-there
+## 🧠 세상에는 다양한 AI가 있다 :id=there-is-a-lot-of-different-ai-out-there
 
-Before we dive in, let's clarify an important distinction:
+본격적으로 들어가기 전에, 중요한 구분 하나를 명확히 해 둡시다.
 
-- **Generative AI** tries to **generate** something, which often includes a lot of variance
-- **Predictive AI** only tries to **predict** the most likely answer
+- **생성형 AI(Generative AI)**는 무언가를 **생성(generate)**하려 하며, 여기에는 종종 많은 변동성(variance)이 포함됩니다
+- **예측형 AI(Predictive AI)**는 가장 가능성이 높은 답을 **예측(predict)**하려고만 합니다
 
-For example, if you ask **Predictive AI** about dogs, it will classify images — labeling each one as "DOG" or "NOT DOG."
+예를 들어, **예측형 AI**에게 개에 대해 물으면, 이미지를 분류해서 각각을 "DOG" 또는 "NOT DOG"로 레이블을 붙일 것입니다.
 
-If you ask **Generative AI** about dogs, it will *create* entirely new dog images that never existed before.
+반면 **생성형 AI**에게 개에 대해 물으면, 이전에는 존재하지 않았던 완전히 새로운 개 이미지를 *만들어낼* 것입니다.
 
-![Predictive AI vs Generative AI — dogs example](images/predictive-vs-generative-dogs.png)
+![예측형 AI vs 생성형 AI — 개 예시](images/predictive-vs-generative-dogs.png)
 
-> In this enablement, we will focus on **Generative AI (GenAI)**.
+> 이 교육에서는 **생성형 AI(GenAI)**에 초점을 맞춥니다.
 
-There are many types of data GenAI models can generate:
+GenAI 모델이 생성할 수 있는 데이터 유형은 다양합니다.
 
-| Type | Examples |
+| 유형 | 예시 |
 |------|----------|
-| 📷 Images | DALL-E, Stable Diffusion |
-| 📝 Text | LLaMA, GPT, Granite |
-| 🔊 Audio | Whisper, Bark |
-| 🎬 Video | Sora, Runway |
+| 📷 이미지 | DALL-E, Stable Diffusion |
+| 📝 텍스트 | LLaMA, GPT, Granite |
+| 🔊 오디오 | Whisper, Bark |
+| 🎬 비디오 | Sora, Runway |
 
-We will focus on **text generation** — specifically **Large Language Models (LLMs)**.
+우리는 **텍스트 생성**, 그중에서도 특히 **대형 언어 모델(LLM)**에 초점을 맞출 것입니다.
 
 <!-- ![GenAI can generate many types of data](images/genai-data-types.png) -->
 
@@ -48,8 +48,8 @@ We will focus on **text generation** — specifically **Large Language Models (L
 <!-- 📝 Pop Quiz – What do LLMs generate? -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 Pop Quiz</h3>
-<p style="color:#495057; font-weight:500;">What type of data does Large Language Models (LLMs) generate?</p>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 깜짝 퀴즈</h3>
+<p style="color:#495057; font-weight:500;">대형 언어 모델(LLM)은 어떤 종류의 데이터를 생성할까요?</p>
 
 <style>
 .quiz-container-llm-type{position:relative}
@@ -69,63 +69,63 @@ We will focus on **text generation** — specifically **Large Language Models (L
 
 <div class="quiz-container-llm-type">
   <input type="radio" name="quiz-llm-type" id="llm-type-wrong1" class="quiz-radio-llm-type">
-  <label for="llm-type-wrong1" class="quiz-option-llm-type" data-correct="false">📷 Images</label>
+  <label for="llm-type-wrong1" class="quiz-option-llm-type" data-correct="false">📷 이미지</label>
 
   <input type="radio" name="quiz-llm-type" id="llm-type-correct" class="quiz-radio-llm-type">
-  <label for="llm-type-correct" class="quiz-option-llm-type" data-correct="true">📝 Text</label>
+  <label for="llm-type-correct" class="quiz-option-llm-type" data-correct="true">📝 텍스트</label>
 
   <input type="radio" name="quiz-llm-type" id="llm-type-wrong2" class="quiz-radio-llm-type">
-  <label for="llm-type-wrong2" class="quiz-option-llm-type" data-correct="false">🔊 Audio</label>
+  <label for="llm-type-wrong2" class="quiz-option-llm-type" data-correct="false">🔊 오디오</label>
 
   <input type="radio" name="quiz-llm-type" id="llm-type-wrong3" class="quiz-radio-llm-type">
-  <label for="llm-type-wrong3" class="quiz-option-llm-type" data-correct="false">🎬 Video</label>
+  <label for="llm-type-wrong3" class="quiz-option-llm-type" data-correct="false">🎬 비디오</label>
 
-  <div class="feedback-llm-type" data-feedback="correct">✅ Correct! The second "L" in LLM stands for Language — they take text in and produce text out. If there is anything to internalize from these 5 days, this is it!</div>
-  <div class="feedback-llm-type" data-feedback="wrong1">❌ Image generation models exist, but LLMs specifically work with text. The "Language" in Large Language Model is the clue!</div>
-  <div class="feedback-llm-type" data-feedback="wrong2">❌ Audio models exist (like Whisper), but LLMs are all about text. The second "L" stands for Language!</div>
-  <div class="feedback-llm-type" data-feedback="wrong3">❌ Video generation is a thing, but LLMs specifically generate text. Think: Large *Language* Model.</div>
+  <div class="feedback-llm-type" data-feedback="correct">✅ 정답입니다! LLM의 두 번째 "L"은 Language(언어)를 의미합니다 — 텍스트를 입력받아 텍스트를 출력합니다. 이 5일 동안 단 하나만 마음에 새겨야 한다면, 바로 이것입니다!</div>
+  <div class="feedback-llm-type" data-feedback="wrong1">❌ 이미지 생성 모델도 존재하지만, LLM은 특히 텍스트를 다룹니다. Large Language Model에서 "Language"가 바로 그 힌트입니다!</div>
+  <div class="feedback-llm-type" data-feedback="wrong2">❌ Whisper와 같은 오디오 모델도 존재하지만, LLM은 전적으로 텍스트에 관한 것입니다. 두 번째 "L"은 Language를 뜻합니다!</div>
+  <div class="feedback-llm-type" data-feedback="wrong3">❌ 비디오 생성도 존재하지만, LLM은 특히 텍스트를 생성합니다. Large *Language* Model이라는 점을 기억하세요.</div>
 </div>
 </div>
 
-> **Key takeaway:** LLMs take **text** as input, and produce **text** as output. That's it.
+> **핵심 요점:** LLM은 **텍스트**를 입력으로 받아 **텍스트**를 출력으로 만들어냅니다. 그게 전부입니다.
 >
 > `Text → LLM → Text`
 
 
-## 🤖 Generative AI Models :id=generative-ai-models
+## 🤖 생성형 AI 모델 :id=generative-ai-models
 
-There are a lot of things surrounding the model: configuration, data verification, safety, serving infrastructure, observability, tools & APIs, process automation, data preparation, analysis & evaluation, user interface, process management tools, vector databases, and more.
+모델을 둘러싸고 있는 것들은 매우 많습니다. 구성(configuration), 데이터 검증, 안전성, 서빙 인프라, 관찰 가능성(observability), 도구 및 API, 프로세스 자동화, 데이터 준비, 분석 및 평가, 사용자 인터페이스, 프로세스 관리 도구, 벡터 데이터베이스 등이 있습니다.
 
-![There are a lot of things surrounding the model](images/model-ecosystem.png)
+![모델을 둘러싼 수많은 요소들](images/model-ecosystem.png)
 
-All of these extend the model's capabilities. But let's start with focusing on **just the model**.
+이 모든 것들이 모델의 역량을 확장시킵니다. 하지만 먼저 **모델 자체**에만 집중해 봅시다.
 
-![Let's focus on just the model](images/model-focus.png)
-
-
-## 📜 4 Truths about GenAI Models :id=truths-about-genai-models
-
-There are **4 fundamental truths** about how GenAI models behave. Let's explore each one through hands-on exercises:
-
-1. **They only speak when spoken to**
-2. **They are non-deterministic** (random)
-3. **They don't speak the truth, they speak the probable**
-4. **They have no memory**
-
-Let's see them in action!
+![모델 자체에만 집중해 봅시다](images/model-focus.png)
 
 
-## 🔍 Truth 1: They only speak when spoken to :id=truth-1-they-only-speak-when-spoken-to
+## 📜 GenAI 모델에 대한 4가지 진실 :id=truths-about-genai-models
 
-The model itself doesn't do anything unless we **prompt** it.
+GenAI 모델이 작동하는 방식에 대해 **4가지 근본적인 진실**이 있습니다. 실습을 통해 하나씩 살펴보겠습니다.
 
-Unless prompted (i.e. an input is sent), the model won't output anything. Imagine it as a coffee machine; unless you ask for a coffee, it won't produce anything.
+1. **말을 걸어야만 답한다**
+2. **비결정적(non-deterministic)이다** (무작위적)
+3. **진실을 말하는 게 아니라 가능성이 높은 것을 말한다**
+4. **기억력이 없다**
 
-![Coffee machine analogy](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcm51bjBqazB4emVtdnNuN2Vxc3ZiNjU1dTBqYjRta3ppMWY3MjlhayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YA6FYcwm2QUHpDtvF2/giphy.gif)
+실제로 확인해 봅시다!
 
-### 🔍 Hands-on: Let's play! :id=hands-on-lets-play
 
-Go ahead and use the chat interface below. Ask the model anything — try something simple like:
+## 🔍 진실 1: 말을 걸어야만 답한다 :id=truth-1-they-only-speak-when-spoken-to
+
+우리가 **프롬프트**를 보내지 않으면 모델 자체는 아무것도 하지 않습니다.
+
+프롬프트가 주어지지 않으면(즉 입력이 전송되지 않으면), 모델은 아무것도 출력하지 않습니다. 커피 머신을 떠올려 보세요. 커피를 요청하지 않으면 아무것도 만들어내지 않습니다.
+
+![커피 머신 비유](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcm51bjBqazB4emVtdnNuN2Vxc3ZiNjU1dTBqYjRta3ppMWY3MjlhayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YA6FYcwm2QUHpDtvF2/giphy.gif)
+
+### 🔍 실습: 직접 해보기! :id=hands-on-lets-play
+
+아래 채팅 인터페이스를 사용해 보세요. 모델에게 무엇이든 물어보세요. 예를 들어 간단하게 이렇게 물어볼 수 있습니다.
 
 ```
 Hi, how are you feeling today?
@@ -140,22 +140,22 @@ Hi, how are you feeling today?
 	loading="lazy">
 </iframe>
 
-Notice how the model only responds **after** you send it something. It never initiates a conversation on its own.
+모델이 무언가를 보낸 **후에만** 응답한다는 점에 주목하세요. 모델은 결코 스스로 먼저 대화를 시작하지 않습니다.
 
 
-## 🎲 Truth 2: They are non-deterministic :id=truth-2-they-are-non-deterministic
+## 🎲 진실 2: 비결정적(non-deterministic)이다 :id=truth-2-they-are-non-deterministic
 
-Do you always get the same answer back from an LLM?
+LLM에게서 항상 같은 답을 받게 될까요?
 
-### 🔍 Hands-on: Test it yourself :id=hands-on-test-it-yourself
+### 🔍 실습: 직접 테스트해보기 :id=hands-on-test-it-yourself
 
-Ask the model the **exact same question twice**:
+모델에게 **정확히 같은 질문을 두 번** 해보세요.
 
 ```
 Hi, how are you feeling today?
 ```
 
-Compare the two responses. Did you get the same answer?
+두 응답을 비교해 보세요. 같은 답을 받았나요?
 
 <iframe
 	src="https://ai-orientation-app-ai501.<CLUSTER_DOMAIN>/chat?embed"
@@ -169,8 +169,8 @@ Compare the two responses. Did you get the same answer?
 <!-- 🍿 Pop Quiz – Same answer? -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 Pop Quiz</h3>
-<p style="color:#495057; font-weight:500;">Do you always get the same answer back from an LLM?</p>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 깜짝 퀴즈</h3>
+<p style="color:#495057; font-weight:500;">LLM에게서 항상 같은 답을 받게 될까요?</p>
 
 <style>
 .quiz-container-deterministic{position:relative}
@@ -188,24 +188,24 @@ Compare the two responses. Did you get the same answer?
 
 <div class="quiz-container-deterministic">
   <input type="radio" name="quiz-deterministic" id="deterministic-wrong1" class="quiz-radio-deterministic">
-  <label for="deterministic-wrong1" class="quiz-option-deterministic" data-correct="false">✅ TRUE — Yes, always the same answer</label>
+  <label for="deterministic-wrong1" class="quiz-option-deterministic" data-correct="false">✅ TRUE — 네, 항상 같은 답입니다</label>
 
   <input type="radio" name="quiz-deterministic" id="deterministic-correct" class="quiz-radio-deterministic">
-  <label for="deterministic-correct" class="quiz-option-deterministic" data-correct="true">❌ FALSE — No, the answer varies</label>
+  <label for="deterministic-correct" class="quiz-option-deterministic" data-correct="true">❌ FALSE — 아니요, 답은 매번 달라집니다</label>
 
-  <div class="feedback-deterministic" data-feedback="correct">✅ Correct! LLMs are non-deterministic — they use randomness when generating answers, so you'll get different responses each time. This also means it never tires of your question!</div>
-  <div class="feedback-deterministic" data-feedback="wrong1">❌ Nope! As you just saw, the same question gives different answers. LLMs include a degree of randomness in their generation process.</div>
+  <div class="feedback-deterministic" data-feedback="correct">✅ 정답입니다! LLM은 비결정적(non-deterministic)입니다 — 답을 생성할 때 무작위성을 사용하므로, 매번 다른 응답을 받게 됩니다. 이는 동시에 당신의 질문에 결코 지치지 않는다는 뜻이기도 합니다!</div>
+  <div class="feedback-deterministic" data-feedback="wrong1">❌ 아닙니다! 방금 보았듯이 같은 질문에도 다른 답이 나옵니다. LLM은 생성 과정에 어느 정도의 무작위성을 포함하고 있습니다.</div>
 </div>
 </div>
 
 
-## 🤥 Truth 3: They don't speak the truth, they speak the probable :id=truth-3-they-dont-speak-the-truth-they-speak-the-probable
+## 🤥 진실 3: 진실을 말하는 게 아니라 가능성이 높은 것을 말한다 :id=truth-3-they-dont-speak-the-truth-they-speak-the-probable
 
-LLMs don't actually "know" anything! They produce the **most probable** next words based on patterns they've seen during training.
+LLM은 사실 아무것도 "알지" 못합니다! 학습 과정에서 본 패턴을 바탕으로 **가장 가능성이 높은** 다음 단어를 생성할 뿐입니다.
 
-### 🔍 Hands-on: Can the model lie? :id=hands-on-can-the-model-lie
+### 🔍 실습: 모델이 거짓말을 할 수 있을까? :id=hands-on-can-the-model-lie
 
-Try asking the model:
+모델에게 다음과 같이 물어보세요.
 
 ```
 What are the last two digits of pi?
@@ -220,23 +220,23 @@ What are the last two digits of pi?
 	loading="lazy">
 </iframe>
 
-Did the model give you an answer? Pi is an **irrational number** — it has no "last two digits." Yet the model will confidently produce an answer anyway!
+모델이 답을 주었나요? 파이(pi)는 **무리수(irrational number)**입니다 — "마지막 두 자리"라는 것이 존재하지 않습니다. 그럼에도 모델은 자신 있게 답을 내놓을 것입니다!
 
-![OMG — did the model just lie to us?](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG5sdWRianF6OXQ3bHZ2bzRzemMxYXNheTR2anc1aTJnN3IxNXAzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nm8ZPAGOwZUQM/giphy.gif)
+![어머, 모델이 방금 우리에게 거짓말을 한 걸까요?](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG5sdWRianF6OXQ3bHZ2bzRzemMxYXNheTR2anc1aTJnN3IxNXAzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nm8ZPAGOwZUQM/giphy.gif)
 
-> It's kind of like a parrot repeating something it has heard before, without knowing if it's true or not. And it replies to you **confidently!**
+> 마치 전에 들었던 말을 그것이 진실인지 아닌지도 모른 채 그대로 따라 말하는 앵무새와 비슷합니다. 그리고 그 대답은 **자신 있게** 전달됩니다!
 
 
-## 🧠 Truth 4: They have no memory :id=truth-4-they-have-no-memory
+## 🧠 진실 4: 기억력이 없다 :id=truth-4-they-have-no-memory
 
-Can LLMs learn from what you write to them?
+LLM은 당신이 말한 것으로부터 배울 수 있을까요?
 
-### 🔍 Hands-on: Does the model remember you? :id=hands-on-does-the-model-remember-you
+### 🔍 실습: 모델이 당신을 기억할까? :id=hands-on-does-the-model-remember-you
 
-Try this in two steps:
+다음을 두 단계로 시도해 보세요.
 
-1. **Tell your name to the model** (e.g., "Hi, my name is Robert")
-2. **Start a new conversation** and ask: "What is my name?"
+1. **모델에게 당신의 이름을 알려주세요** (예: "Hi, my name is Robert")
+2. **새로운 대화를 시작**하고 물어보세요: "What is my name?"
 
 <iframe
 	src="https://ai-orientation-app-ai501.<CLUSTER_DOMAIN>/chat?embed"
@@ -247,13 +247,13 @@ Try this in two steps:
 	loading="lazy">
 </iframe>
 
-Did the model remember your name? Probably not!
+모델이 당신의 이름을 기억했나요? 아마 아닐 것입니다!
 
 <!-- 🍿 Pop Quiz – Memory -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 Pop Quiz</h3>
-<p style="color:#495057; font-weight:500;">The model learned your name.</p>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 깜짝 퀴즈</h3>
+<p style="color:#495057; font-weight:500;">모델이 당신의 이름을 학습했습니다.</p>
 
 <style>
 .quiz-container-memory{position:relative}
@@ -276,23 +276,24 @@ Did the model remember your name? Probably not!
   <input type="radio" name="quiz-memory" id="memory-correct" class="quiz-radio-memory">
   <label for="memory-correct" class="quiz-option-memory" data-correct="true">❌ FALSE</label>
 
-  <div class="feedback-memory" data-feedback="correct">✅ Correct! The model didn't *learn* your name — it has no persistent memory. Each new conversation starts completely fresh. It never learned our name :'(</div>
-  <div class="feedback-memory" data-feedback="wrong1">❌ The model does NOT learn from your conversations. If you told it your name in one session and started a new one, it has absolutely no idea who you are. Each conversation starts from scratch.</div>
+  <div class="feedback-memory" data-feedback="correct">✅ 정답입니다! 모델은 당신의 이름을 *학습*하지 않았습니다 — 지속적인 메모리가 없기 때문입니다. 새로운 대화는 매번 완전히 처음부터 시작됩니다. 모델은 결국 우리의 이름을 배우지 못했습니다 :'(</div>
+  <div class="feedback-memory" data-feedback="wrong1">❌ 모델은 대화로부터 학습하지 않습니다. 한 세션에서 이름을 알려주고 새 세션을 시작하면, 모델은 당신이 누구인지 전혀 알지 못합니다. 모든 대화는 처음부터 다시 시작됩니다.</div>
 </div>
 </div>
 
-> This also means it **never tires of your question!** You can ask it the same thing a million times and it will happily answer each time as if it's the first 🙈
+> 이는 또한 모델이 **당신의 질문에 결코 지치지 않는다는** 뜻이기도 합니다! 같은 것을 백만 번 물어봐도, 매번 처음인 것처럼 기꺼이 답해줄 것입니다 🙈
 
 
-## ✅ Recap :id=recap
+## ✅ 요약 :id=recap
 
-We've now demystified the **4 truths about GenAI models**:
+이제 **GenAI 모델에 대한 4가지 진실**의 베일을 벗겨 보았습니다.
 
-| Truth | What it means in practice |
+| 진실 | 실제로 의미하는 것 |
 |-------|--------------------------|
-| They only speak when spoken to | It didn't do anything unless we sent it something |
-| They are non-deterministic | It replies differently each time |
-| They don't speak the truth, they speak the probable | It can straight up lie to us, **confidently** |
-| They have no memory | It never learned our name :'( |
+| 말을 걸어야만 답한다 | 무언가를 보내지 않으면 모델은 아무것도 하지 않았다 |
+| 비결정적이다 | 매번 다르게 응답한다 |
+| 진실을 말하는 게 아니라 가능성이 높은 것을 말한다 | **자신 있게** 우리에게 그냥 거짓말을 할 수도 있다 |
+| 기억력이 없다 | 결국 우리의 이름을 배우지 못했다 :'( |
 
-Now that we understand *how* models behave, let's learn how to **control** that behavior through prompting.
+이제 모델이 *어떻게* 행동하는지 이해했으니, 프롬프팅을 통해 그 행동을 **제어**하는 방법을 배워봅시다.
+</content>

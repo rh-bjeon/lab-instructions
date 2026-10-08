@@ -1,54 +1,54 @@
-# Securing MCP Servers
+# MCP 서버 보안 적용하기
 
-Your agent now has powerful tools - it can read calendars, schedule meetings, and access sensitive data. But wait... who's allowed to use these tools? Right now, **anyone** can access your MCP server!
+이제 agent는 강력한 도구들을 갖게 되었습니다 - 캘린더를 읽고, 미팅을 예약하고, 민감한 데이터에 접근할 수 있습니다. 그런데 잠깐... 누가 이 도구들을 사용할 수 있도록 허용되어 있을까요? 지금은 **누구나** MCP 서버에 접근할 수 있습니다!
 
-Think of it like a university library. The open stacks are free for everyone, but the rare book collection? You need to show your student ID. MCP servers work the same way - we use **OAuth 2.1** to verify who's knocking on the door.
+대학 도서관을 떠올려 보세요. 개가식 서가(open stacks)는 누구에게나 열려 있지만, 희귀 도서 컬렉션은 어떨까요? 학생증을 보여줘야 합니다. MCP 서버도 같은 방식으로 동작합니다 - 누가 문을 두드리고 있는지 확인하기 위해 **OAuth 2.1**을 사용합니다.
 
-## When Do You Need Authentication?
+## 언제 인증이 필요한가?
 
-According to the [MCP Authorization Guide](https://modelcontextprotocol.io/docs/tutorials/security/authorization#when-should-you-use-authorization), you need security when:
+[MCP Authorization Guide](https://modelcontextprotocol.io/docs/tutorials/security/authorization#when-should-you-use-authorization)에 따르면, 다음과 같은 경우 보안이 필요합니다.
 
-- **Multiple users** access the server (each with different permissions)
-- **Sensitive data** is involved (calendars, grades, personal info)
-- **Write operations** can modify state (creating/deleting events)
+- **여러 사용자(multiple users)**가 서버에 접근하는 경우 (각자 다른 권한을 가짐)
+- **민감한 데이터(sensitive data)**가 관련된 경우 (캘린더, 성적, 개인정보)
+- **쓰기 작업(write operations)**이 상태를 변경할 수 있는 경우 (이벤트 생성/삭제)
 
-Our calendar MCP server checks all three boxes! Students should only see their own events, and we don't want random requests creating fake meetings.
+우리의 calendar MCP 서버는 이 세 가지 항목 모두에 해당합니다! 학생들은 자신의 이벤트만 볼 수 있어야 하며, 무작위 요청이 가짜 미팅을 만들어내는 것도 원하지 않습니다.
 
-## The MCP Authorization Flow
+## MCP 인증(Authorization) 흐름
 
-Here's how token-based security works for MCP leveraging OAuth:
+OAuth를 활용한 MCP의 토큰 기반 보안이 동작하는 방식은 다음과 같습니다.
 
 ![MCP OAuth Flow](images/mcp-auth.png)
 
-**What's happening:**
+**무슨 일이 일어나고 있나요:**
 
-1. Client tries to access MCP Server without a token → **401 Unauthorized**
-2. Client authenticates with Keycloak (username + password)
-3. Keycloak returns an **access token** with granted scopes
-4. Client retries with `Authorization: Bearer <token>`
-5. MCP Server validates the token via **introspection**
-6. If valid, a request proceeds to Calendar API
-7. Success!
+1. 클라이언트가 토큰 없이 MCP 서버에 접근을 시도 → **401 Unauthorized**
+2. 클라이언트가 Keycloak으로 인증(사용자 이름 + 비밀번호)
+3. Keycloak이 부여된 scope가 담긴 **access token**을 반환
+4. 클라이언트가 `Authorization: Bearer <token>`으로 재시도
+5. MCP 서버가 **introspection**을 통해 토큰을 검증
+6. 유효하다면, 요청이 Calendar API로 진행됨
+7. 성공!
 
-The key insight: the MCP server never sees passwords. It only validates tokens issued by a trusted authority (Keycloak).
+핵심은 이것입니다: MCP 서버는 비밀번호를 절대 보지 않습니다. 신뢰할 수 있는 기관(Keycloak)이 발급한 토큰만 검증할 뿐입니다.
 
-## Try It Out
+## 직접 해보기
 
-Open the notebook `8-agents/5-mcp-servers-auth.ipynb` in your workbench to see OAuth in action.
+워크벤치에서 `8-agents/5-mcp-servers-auth.ipynb` 노트북을 열어 OAuth가 실제로 동작하는 모습을 확인하세요.
 
-## Key Takeaways
+## 핵심 요약
 
-| Concept | Why It Matters |
+| 개념 | 왜 중요한가 |
 |---------|----------------|
-| **Authentication** | Only users with valid credentials get tokens |
-| **Authorization** | Scopes control what operations are allowed |
-| **Token Expiration** | Tokens expire after 10 minutes, limiting exposure |
-| **Centralized Control** | Keycloak manages users, clients, and permissions |
+| **Authentication (인증)** | 유효한 자격 증명을 가진 사용자만 토큰을 받습니다 |
+| **Authorization (권한 부여)** | Scope가 어떤 작업이 허용되는지를 제어합니다 |
+| **Token Expiration (토큰 만료)** | 토큰은 10분 후 만료되어 노출 범위를 제한합니다 |
+| **Centralized Control (중앙 집중 관리)** | Keycloak이 사용자, 클라이언트, 권한을 관리합니다 |
 
-With OAuth protecting your MCP server, you can safely deploy agents in production without worrying about unauthorized access!
+OAuth로 MCP 서버를 보호하면, 무단 접근을 걱정하지 않고도 프로덕션에 agent를 안전하게 배포할 수 있습니다!
 
 ---
 
-## 🤔 Think About It
+## 🤔 생각해 볼 질문
 
-We've secured the MCP server... but is that the whole picture? Consider this: **what other attack surfaces exist in our agentic architecture?**
+MCP 서버는 보안을 적용했습니다... 하지만 이것이 전체 그림일까요? 생각해 보세요: **우리의 agentic 아키텍처에는 또 어떤 공격 표면(attack surface)이 존재할까요?**

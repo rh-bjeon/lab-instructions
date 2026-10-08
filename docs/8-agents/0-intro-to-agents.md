@@ -1,35 +1,35 @@
-# Try Agents at the playground
+# 플레이그라운드에서 Agent 체험하기
 
-LLMs are powerful, but on their own they're stuck in the past — they only know what they were trained on.
-Give them **tools**, and suddenly they can reach out to the real world: check live data, call APIs, run calculations, and more.
+LLM은 강력하지만, 혼자서는 과거에 갇혀 있습니다 — 학습된 내용만 알 수 있을 뿐입니다.
+여기에 **tools**(도구)를 부여하면, 모델은 갑자기 실제 세상에 손을 뻗을 수 있게 됩니다. 실시간 데이터를 확인하거나, API를 호출하거나, 계산을 수행하는 등의 일이 가능해집니다.
 
-Let's see this in action before diving into the code!
+코드를 살펴보기 전에, 먼저 실제로 동작하는 모습을 확인해 봅시다!
 
-1. We've connected a **weather MCP server** to the playground, so the model can fetch real-time weather data instead of guessing.
-   
-   You can see that it is available for you to use at OpenShift AI Dashboard > Gen AI studio > AI asset endpoints > `MCP Servers`
+1. 플레이그라운드에 **weather MCP server**(날씨 MCP 서버)를 연결해 두었습니다. 이를 통해 모델은 추측 대신 실시간 날씨 데이터를 가져올 수 있습니다.
 
-2. Go to OpenShift AI Dashboard > Gen AI studio > Playground > and make sure you have `<USER_NAME>-canopy` selected as the project.
+   OpenShift AI Dashboard > Gen AI studio > AI asset endpoints > `MCP Servers`에서 이 서버가 사용 가능하게 등록되어 있는 것을 확인할 수 있습니다.
+
+2. OpenShift AI Dashboard > Gen AI studio > Playground 으로 이동해서, 프로젝트가 `<USER_NAME>-canopy`로 선택되어 있는지 확인하세요.
 
 
-3. Try asking the model something it normally couldn't answer accurately:
+3. 모델이 평소에는 정확히 답할 수 없는 질문을 해 보세요.
 
     ```
     What is the weather like in Raleigh right now?
     ```
 
-    Without any tools, the model would either refuse or make something up.
+    도구가 없다면, 모델은 답을 거부하거나 그냥 지어낸 내용을 말할 것입니다.
 
-4. Now at the `MCP` section, enable `Weather MCP Server` by checking the box.
+4. 이제 `MCP` 섹션에서 `Weather MCP Server` 체크박스를 선택해 활성화하세요.
 
     ![playground-weather-mcp.png](./images/playground-weather-mcp.png)
 
-5. You should see the model **pause and think**. At that moment a call to the weather tool is happening, then you'll get a respond with actual current data — not a hallucination.
+5. 모델이 **잠시 멈추고 생각하는** 모습을 보게 될 것입니다. 바로 그 순간 날씨 도구에 대한 호출이 일어나고 있으며, 그 후 실제 현재 데이터를 반영한 응답을 받게 됩니다 — 환각(hallucination)이 아닙니다.
 
-    Try a few more cities if you like. Notice how the model decides *when* to use the tool and *how* to phrase the response.
+    원한다면 다른 도시들로도 몇 번 더 시도해 보세요. 모델이 도구를 사용할 *시점*과 응답을 *표현하는 방식*을 어떻게 결정하는지 살펴보세요.
 
-    (unfortunately the MCP server is only able to fetch data for the US cities 🙈)
+    (아쉽게도 이 MCP 서버는 미국 도시에 대해서만 데이터를 가져올 수 있습니다 🙈)
 
-The core idea: the LLM decides *what* to do and *when* — but it's the backend that actually executes the tool call and hands the result back. The model itself never makes any external calls; it just knows how to ask.
+핵심 개념은 이렇습니다: LLM은 *무엇을* 할지와 *언제* 할지를 결정하지만, 실제로 도구 호출을 실행하고 결과를 돌려주는 것은 백엔드입니다. 모델 자체는 외부 호출을 전혀 수행하지 않으며, 단지 어떻게 요청해야 하는지를 아는 것뿐입니다.
 
-Now let's look at how this actually works under the hood — continue to **What are tools?**
+이제 이것이 실제로 어떻게 동작하는지 내부 구조를 살펴봅시다 — **What are tools?**(도구란 무엇인가?)로 계속 진행하세요.

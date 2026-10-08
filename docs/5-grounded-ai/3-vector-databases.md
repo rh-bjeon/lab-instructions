@@ -1,33 +1,33 @@
 # Vector Databases - Milvus
 
-Now that we know what embeddings are, we need to be able to store and search them somewhere, preferably that's not just local.  
-For this, we will use Milvus, a high-performant opensource **Vector Database** (as we saw in the previous chapter, embeddings are vectors so they fit perfectly with a vector database).  
-Vector databases are optimized to store and search across millions of vectors efficiently.
+이제 embeddings가 무엇인지 알았으니, 이를 어딘가에 저장하고 검색할 수 있어야 하는데, 가능하면 로컬에만 저장하는 방식은 피하는 것이 좋습니다.
+이를 위해 고성능 오픈소스 **Vector Database**인 Milvus를 사용하겠습니다 (이전 장에서 보았듯이 embeddings는 벡터이므로 vector database와 완벽하게 맞아떨어집니다).
+Vector database는 수백만 개의 벡터를 효율적으로 저장하고 검색할 수 있도록 최적화되어 있습니다.
 
-## Using Milvus
+## Milvus 사용하기
 
-1. Before we can use Milvus, let's deploy it inside our Canopy project.  
+1. Milvus를 사용하기 전에, 먼저 우리 Canopy 프로젝트 안에 배포해보겠습니다.
 
-    Start by going to the OpenShift console -> Helm -> Releases (make sure you are in `<USER_NAME>-canopy` project) -> Create Helm Release and deploy Milvus.
+    OpenShift console -> Helm -> Releases로 이동한 뒤 (`<USER_NAME>-canopy` 프로젝트에 있는지 확인하세요) -> Create Helm Release를 눌러 Milvus를 배포합니다.
 
-    Press `Create` again when you see the yaml view, no need to change any settings.
+    yaml 화면이 보이면 설정을 바꿀 필요 없이 다시 `Create`를 누릅니다.
 
     ![deploy-milvus](./images/deploy-milvus.png)
 
-2. Wait for Milvus to be fully deployed.  
-    You should also see something called **Attu** be deployed together with Milvus. Attu is the frontend for Milvus which we can use to browse the vectors we store in Milvus.  
-    Open it and check what it looks like.
+2. Milvus가 완전히 배포될 때까지 기다립니다.
+    Milvus와 함께 **Attu**라는 것도 함께 배포되는 것을 볼 수 있습니다. Attu는 Milvus의 프런트엔드로, Milvus에 저장된 벡터들을 browse할 때 사용할 수 있습니다.
+    열어서 어떤 모습인지 확인해보세요.
 
     ![open-attu](./images/open-attu.png)
 
-3. To log into Attu, use the following Address and Database:
+3. Attu에 로그인하려면 다음 Address와 Database를 사용하세요:
     - Milvus Address: `http://milvus.<USER_NAME>-canopy.svc.cluster.local:19530`
     - Database: `default`
 
     ![attu](./images/attu.png)
 
-    I promise, it will soon look more interesting!
+    약속하건대, 곧 훨씬 더 흥미로운 모습을 보게 될 것입니다!
 
-4. Go to your workbench and run through the notebook `experiments/5-rag/2-vector-databases.ipynb`
+4. workbench로 이동해 `experiments/5-rag/2-vector-databases.ipynb` 노트북을 실행해보세요.
 
-After you are done with the notebook you can continue to learn about [Docling](4-docling.md), which will teach you ways to process more complex document and formats.
+노트북을 마쳤다면, 더 복잡한 문서와 형식을 처리하는 방법을 알려주는 [Docling](4-docling.md)에 대해 계속 배워볼 수 있습니다.

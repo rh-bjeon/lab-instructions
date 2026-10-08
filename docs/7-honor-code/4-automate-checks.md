@@ -1,19 +1,19 @@
-# Automate Jailbreak Scenarios
+# Jailbreak 시나리오 자동화하기
 
-So far we created good regex rules and added some guardrails to prevent misuse of our application and to make sure it stays in its intended scope of the application. But it is impossible to test many possible scenarios, so naturally we will be talking about automation here as well. For that, we are going to introduce an open source tool called `Spikee` 🦔🦔
+지금까지 우리는 좋은 regex 규칙을 만들고 애플리케이션 오용을 방지하고 의도된 범위 안에 머물도록 몇 가지 guardrails를 추가했습니다. 하지만 가능한 모든 시나리오를 테스트하는 것은 불가능하므로, 당연히 자동화에 대해서도 이야기해야 합니다. 이를 위해 `Spikee`🦔🦔라는 오픈소스 도구를 소개합니다.
 
-## Test Your System for Prompt Injection with Spikee
+## Spikee로 Prompt Injection에 대한 시스템 테스트하기
 
-Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injection Kit for Evaluation and Exploitation. It will help us to benchmark our system against known prompt injection attacks. 
+Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt Injection Kit for Evaluation and Exploitation"입니다. 이를 사용해 알려진 prompt injection 공격에 대해 우리 시스템을 벤치마크해 볼 수 있습니다.
 
-1. Let's go back to your workbench and run the below commands in your terminal:
+1. workbench로 돌아가 터미널에서 아래 명령어를 실행합니다.
 
     ```bash
     cd /opt/app-root/src/experiments/7-guardrails/spikee
     spikee init
     ```
 
-2. For spikee to work with our vLLM endpoint and Llama Stack endpoint, we need to define two targets. Move the existing python files that are pointing to our model and Llama Stack server under `targets/` folder by running the below commands:
+2. Spikee가 우리의 vLLM 엔드포인트와 Llama Stack 엔드포인트와 함께 동작하도록 하려면, 두 개의 target을 정의해야 합니다. 아래 명령어를 실행해, 모델과 Llama Stack 서버를 가리키는 기존 파이썬 파일들을 `targets/` 폴더로 옮깁니다.
 
     ```bash
     cd /opt/app-root/src/experiments/7-guardrails/spikee
@@ -21,32 +21,32 @@ Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injectio
     mv vllm_local.py targets/
     ```
 
-3. Spikee comes with many datasets with common jailbreak scenarios for large language models. Check some example prompts by opening up the files under `spikee/datasets` folder.
+3. Spikee에는 대형 언어 모델에 대한 일반적인 jailbreak 시나리오를 담은 여러 데이터셋이 포함되어 있습니다. `spikee/datasets` 폴더 아래의 파일들을 열어 몇 가지 예시 프롬프트를 확인해 보세요.
 
-    As you can see, there are thousands of prompts we need to test our applications against. But of course it will take time. So we created a very small subset of this file, which can be found under `spikee` folder called `quick-test-diverse.jsonl`. Check the prompts there as well.
+    보시다시피, 우리 애플리케이션을 테스트해야 할 프롬프트가 수천 개나 있습니다. 하지만 당연히 시간이 많이 걸립니다. 그래서 이 파일의 매우 작은 서브셋을 미리 만들어 두었습니다. `spikee` 폴더 아래에 있는 `quick-test-diverse.jsonl`이라는 파일입니다. 그곳의 프롬프트들도 확인해 보세요.
 
-    Then let's move this file under spikee's datasets folder.
+    그런 다음 이 파일을 spikee의 datasets 폴더로 옮깁니다.
 
     ```bash
     cd /opt/app-root/src/experiments/7-guardrails/spikee
     mv quick-test-diverse.jsonl datasets/
     ```
 
-4. We are now ready to run some tests! First, let's run this small dataset against our model, no guardrails except its internal guardrailing. And see how the model behaves.
+4. 이제 몇 가지 테스트를 실행할 준비가 되었습니다! 먼저, 이 작은 데이터셋을 모델에 대해 실행해 봅시다. 내부적인 guardrailing 외에는 다른 guardrails가 없는 상태입니다. 모델이 어떻게 반응하는지 지켜보세요.
 
     ```bash
     spikee test --dataset datasets/quick-test-diverse.jsonl --target vllm_local  --attack best_of_n --attack-iterations 1
     ```
 
-    It may take some time to complete the test. (and don't worry about if it gives some time out error. We have a 60 seconds timeout for the response.)
+    테스트가 완료되기까지 시간이 좀 걸릴 수 있습니다. (그리고 타임아웃 오류가 나더라도 걱정하지 마세요. 응답에 대해 60초의 타임아웃이 설정되어 있습니다.)
 
-5. Let's look at the results now:
+5. 이제 결과를 살펴봅시다.
 
     ```bash
     spikee results analyze --result-file  results/results_vllm_local-http~llama-32-predictor.ai501.svc.cluster.local~8080~v1_quick-test-diverse_*.jsonl | sed -n '1,/=== Breakdown by Jailbreak Type ===/p' | head -n -1
     ```
 
-    You should see something like this:
+    아래와 같은 결과가 보일 것입니다.
 
     ```bash
 
@@ -75,20 +75,20 @@ Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injectio
     ```
 
 
-6.  Apparently model's internal guardrailing is not great! Good thing that we put those detectors in place. Let's test them as well! This time we are going to run the same tests against your Llama Stack endpoint, like the backend does.
+6. 보시는 것처럼 모델의 내부 guardrailing은 그다지 훌륭하지 않습니다! 다행히 우리가 그 detector들을 추가해 두었죠. 이번에는 그것들도 테스트해 봅시다! 이번에는 백엔드가 하는 것처럼, 같은 테스트를 Llama Stack 엔드포인트에 대해 실행해 봅니다.
 
-    Let's run the test:
+    테스트를 실행합니다.
 
     ```bash
     spikee test --dataset datasets/quick-test-diverse.jsonl --target llama_stack_nemo  --attack best_of_n --attack-iterations 1
     ```
 
-7. Let's see the results:
+7. 결과를 확인해 봅시다.
 
     ```bash
     spikee results analyze --result-file  results/results_llama_stack_nemo-shields_enabled_quick-test-diverse*.jsonl | sed -n '1,/=== Breakdown by Jailbreak Type ===/p' | head -n -1
     ```
-    You should get a result like this:
+    아래와 같은 결과가 나와야 합니다.
 
     ```bash
 
@@ -116,7 +116,7 @@ Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injectio
     Attack Success Rate (Improvement from Dynamic Attack): 0.00%
     ```
 
-8. This was only a couple prompts though. If you'd like to do a more realistic test, you can run a test based on the different datasets provided by Spikee under `dataset` folder. But these datasets are huge, for example `seeds-cybersec-2025-04` would take ~7 hours with our setup, but then it'll give you a more realistic results. If you are still curious; this is how you can use the existing dataset:
+8. 이는 겨우 몇 개의 프롬프트에 대한 테스트였습니다. 좀 더 현실적인 테스트를 해보고 싶다면, `dataset` 폴더에 있는 다양한 데이터셋 중 하나를 기반으로 테스트를 실행할 수 있습니다. 다만 이 데이터셋들은 매우 크며, 예를 들어 `seeds-cybersec-2025-04`는 우리 환경에서 약 7시간 정도 걸리지만 훨씬 더 현실적인 결과를 줄 것입니다. 여전히 궁금하다면, 기존 데이터셋을 다음과 같이 사용할 수 있습니다.
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-bash"> 
@@ -124,9 +124,9 @@ Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injectio
     </code></pre> 
     </div>
 
-    And then you can start the test by pointing to the generated dataset as below. ‼️ BUUUTT, as in all good cooking shows, you don't have to wait for the results. We got you covered! Continue to read for the results 😌
+    그런 다음 생성된 데이터셋을 가리켜 아래와 같이 테스트를 시작할 수 있습니다. ‼️ 하지만, 좋은 요리 방송이 늘 그렇듯, 결과를 기다릴 필요는 없습니다! 저희가 대신 처리해 두었어요. 계속 읽어서 결과를 확인해 보세요 😌
 
-9. After some waiting, when we checked the results, this is what we got:
+9. 잠시 기다린 후 결과를 확인해 보니, 이런 결과가 나왔습니다.
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-bash"> 
@@ -155,7 +155,7 @@ Spikee, as their [website](https://spikee.ai/) says, is a Simple Prompt Injectio
     </code></pre> 
     </div>
 
-    When you run such test, you can check the details in the report and see what kind of attacks got successful and plan what you need to improve; maybe a better prompt injection model or retrain the existing one, maybe some simple additions to regex..
+    이런 테스트를 실행할 때는 리포트에서 세부 정보를 확인해서 어떤 종류의 공격이 성공했는지 살펴보고 무엇을 개선해야 할지 계획할 수 있습니다. 더 나은 prompt injection 모델을 사용하거나, 기존 모델을 재학습하거나, 아니면 regex에 간단한 추가 사항을 넣는 것일 수도 있겠죠.
 
 
-Time to take the guardrails to higher environments 🌳🛡️
+이제 guardrails를 상위 환경으로 가져갈 시간입니다 🌳🛡️

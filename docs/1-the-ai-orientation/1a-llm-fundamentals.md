@@ -1,36 +1,36 @@
-# LLM Fundamentals :id=llm-fundamentals
+# LLM 기본 개념 :id=llm-fundamentals
 
-## 📚 Contents :id=contents
-- [LLM Fundamentals](#llm-fundamentals)
-  - [📚 Contents](#contents)
-  - [🔍 What is a Token?](#what-is-a-token)
-  - [🔄 Next-Token Prediction](#next-token-prediction)
-  - [🧠 Context Length and Window](#context-length-and-window)
-  - [🔮 Are LLMs Fixed or Do They Change?](#are-llms-fixed-or-do-they-change)
+## 📚 목차 :id=contents
+- [LLM 기본 개념](#llm-fundamentals)
+  - [📚 목차](#contents)
+  - [🔍 토큰이란 무엇인가?](#what-is-a-token)
+  - [🔄 다음 토큰 예측](#next-token-prediction)
+  - [🧠 컨텍스트 길이와 윈도우](#context-length-and-window)
+  - [🔮 LLM은 고정되어 있을까, 변할까?](#are-llms-fixed-or-do-they-change)
 
-## 🔍 What is a Token? :id=what-is-a-token
+## 🔍 토큰이란 무엇인가? :id=what-is-a-token
 
-Before an AI model can understand or generate text, it breaks everything down into tiny pieces called **tokens**.
+AI 모델이 텍스트를 이해하거나 생성하기 전에, 먼저 모든 것을 **토큰(token)**이라고 불리는 작은 조각으로 쪼갭니다.
 
-A token is not quite a word — it could be:
-- A whole short word: `"The"` → 1 token
-- Parts of a longer word: `"unbelievable"` → 3 tokens (`"un"`, `"believ"`, `"able"`)
-- Punctuation: `","` or `"."` might each be 1 token
+토큰은 완전한 단어와 똑같지는 않습니다. 다음과 같을 수 있습니다.
+- 짧은 단어 전체: `"The"` → 1개의 토큰
+- 긴 단어의 일부: `"unbelievable"` → 3개의 토큰 (`"un"`, `"believ"`, `"able"`)
+- 구두점: `","` 또는 `"."`는 각각 1개의 토큰일 수 있음
 
-These are the basic building blocks the model sees. It doesn’t understand text the way humans do — it just sees a stream of tokens and learns patterns in how they appear.
+이것이 모델이 보는 기본 단위입니다. 모델은 인간처럼 텍스트를 이해하지 않습니다. 단지 토큰의 흐름을 보고, 그것이 나타나는 패턴을 학습할 뿐입니다.
 
-You may ask "why not just feed it words or letters?"  
-There are two main reasons to use tokens:
-- Regardless of what we use, we need to convert it into numbers because ultimately the computer only understands numbers 🔢 And, there are too many words to give them all a number each.
-- They are designed to be as large but also as reusable as possible, so that the **number** of inputs we send to the LLM is as few as possible. For example, if I send the word `unbelievable` it would be 12 inputs if I sent each letter, but only 3 tokens. The number of inputs are important which we explain... now 👇
+"왜 그냥 단어나 글자를 그대로 입력하지 않나요?"라고 물을 수도 있습니다.
+토큰을 사용하는 데는 두 가지 주요 이유가 있습니다.
+- 무엇을 사용하든 결국 숫자로 변환해야 합니다. 컴퓨터는 궁극적으로 숫자만 이해하기 때문입니다 🔢. 그리고 모든 단어에 각각 숫자를 부여하기에는 단어의 수가 너무 많습니다.
+- 토큰은 가능한 한 크면서도 재사용 가능하도록 설계되어, LLM에 보내는 입력의 **개수**를 최소화합니다. 예를 들어 `unbelievable`이라는 단어를 글자 단위로 보내면 12개의 입력이 되지만, 토큰 단위로는 3개의 토큰에 불과합니다. 입력의 개수가 왜 중요한지는... 지금부터 설명하겠습니다 👇
 
-When you start working with LLMs you will often see people counting tokens. We don't just do this for fun, it's because the number of tokens is now how large our input into the LLM is.  
-An LLM can only input and output a certain number of tokens in the same request (think of it as how much context/information it can see at once).  
-Besides that, the more we input the more memory it needs to use (GPU memory specifically) to keep track of all the inputs and outputs (remember that the output turns into input in the next step). 
+LLM을 다루기 시작하면 사람들이 토큰 수를 세는 모습을 자주 보게 될 것입니다. 이는 단순히 재미로 하는 것이 아니라, 토큰의 수가 바로 LLM에 들어가는 입력의 크기를 나타내기 때문입니다.
+LLM은 한 번의 요청에서 입력하고 출력할 수 있는 토큰 수에 제한이 있습니다(한 번에 볼 수 있는 컨텍스트/정보의 양이라고 생각하면 됩니다).
+그뿐만 아니라 입력이 많아질수록 모든 입력과 출력을 추적하기 위해 더 많은 메모리(특히 GPU 메모리)가 필요합니다(출력이 다음 단계에서 입력으로 바뀐다는 점을 기억하세요).
 
 ![input-output.png](images/input-output.png)
 
-Here you can try your hands on how sentences get converted into tokens:
+여기에서 문장이 어떻게 토큰으로 변환되는지 직접 체험해볼 수 있습니다.
 <iframe
 	src="https://agents-course-the-tokenizer-playground.static.hf.space"
 	frameborder="0"
@@ -40,26 +40,26 @@ Here you can try your hands on how sentences get converted into tokens:
 	loading="lazy">
 ></iframe>
 
-*The App is from [HuggingFace Learning Course](https://agents-course-the-tokenizer-playground.static.hf.space)*
+*이 앱은 [HuggingFace Learning Course](https://agents-course-the-tokenizer-playground.static.hf.space)에서 제공합니다*
 
-Let’s test your understanding with a quick quiz!
+간단한 퀴즈로 이해도를 확인해 봅시다!
 
 <!-- 🔍 Token‐capacity calculation (typed answer) -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
-  <h3 style="margin:0 0 8px;color:#5a5a5a;">🔤 Quiz</h3>
+  <h3 style="margin:0 0 8px;color:#5a5a5a;">🔤 퀴즈</h3>
   <p style="color:#495057; font-weight:500;">
-    You’re working on a big codebase (thousands of lines long) and you don't feel like reading through it line-by-line. <br>
-    So instead, you decide to get help from your favorite LLM 🤖<br>
-    You start off by writing some instructions:
+    당신은 수천 줄에 달하는 대형 코드베이스 작업을 하고 있는데, 한 줄 한 줄 읽고 싶지는 않습니다. <br>
+    그래서 대신 가장 좋아하는 LLM에게 도움을 받기로 합니다 🤖<br>
+    먼저 다음과 같은 지시문을 작성합니다.
 
-    “Explain what this code does, step by step, in simple terms...”
+    “이 코드가 무엇을 하는지 단계별로, 쉬운 말로 설명해줘...”
   <p style="color:#495057; font-weight:500;">
-    Which takes 96 tokens in total.<br>
-    Then you start feeding it the code, line by line, where each line takes about 12 tokens per line.<br>
-    Now, you also happen to know that the model only can handle 4096 tokens at the same time.<br>
+    이 지시문은 전체 96개의 토큰을 차지합니다.<br>
+    그런 다음 코드를 한 줄씩 입력하기 시작하는데, 한 줄당 약 12개의 토큰을 차지합니다.<br>
+    그리고 이 모델은 한 번에 최대 4096개의 토큰까지만 처리할 수 있다는 것을 알고 있습니다.<br>
   </p>
   <p style="color:#495057; font-weight:500;">
-    👉 <strong>How many <em>full</em> lines of code can you send the LLM at a time?</strong>
+    👉 <strong>한 번에 LLM에 보낼 수 있는 <em>완전한</em> 코드 줄 수는 몇 줄일까요?</strong>
   </p>
 
   <style>
@@ -95,8 +95,8 @@ Let’s test your understanding with a quick quiz!
     step="1"
     required>
 
-  <div class="feedback-cap" data-feedback="correct">✅ Right! 333 lines.</div>
-  <div class="feedback-cap" data-feedback="wrong">❌ Nope, that’s not it.</div>
+  <div class="feedback-cap" data-feedback="correct">✅ 정답입니다! 333줄입니다.</div>
+  <div class="feedback-cap" data-feedback="wrong">❌ 아쉽지만 정답이 아닙니다.</div>
 </div>
 
 <script>
@@ -109,39 +109,39 @@ Let’s test your understanding with a quick quiz!
     });
 </script>
 
-## 🔄 Next-Token Prediction :id=next-token-prediction
+## 🔄 다음 토큰 예측 :id=next-token-prediction
 
-At their core, Large Language Models (LLMs) do something surprisingly simple:
-They guess the **next token**.
+대형 언어 모델(LLM)이 근본적으로 하는 일은 놀랍도록 단순합니다.
+바로 **다음 토큰**을 추측하는 것입니다.
 
-You give them a string of text, and the model continues it by predicting the most likely next piece. Then it does it again. And again. And again.
+텍스트 문자열을 주면, 모델은 가장 가능성이 높은 다음 조각을 예측하여 그 텍스트를 이어갑니다. 그리고 이 작업을 또 하고, 또 하고, 계속 반복합니다.
 
-It’s like a very fast autocomplete — but one that’s been trained on a massive collection of text from books, websites, conversations, and more.
+이것은 매우 빠른 자동완성과 비슷하지만, 책, 웹사이트, 대화 등 방대한 텍스트 모음으로 학습된 것입니다.
 
-For example:
-> Input: “Photosynthesis is the process by which plants”  
-> Model prediction: `“ convert sunlight into energy”`
+예를 들어:
+> 입력: “Photosynthesis is the process by which plants”  
+> 모델의 예측: `“ convert sunlight into energy”`
 
-This step-by-step guessing game is called **inference**.
+이렇게 한 단계씩 추측해 나가는 과정을 **추론(inference)**이라고 부릅니다.
 
-Because the model is trying to predict what *usually* comes next, it’s sensitive to clues and patterns in your prompt — and sometimes a small change can lead to a very different outcome.
+모델은 *보통* 다음에 무엇이 오는지를 예측하려고 하기 때문에, 프롬프트 속의 단서와 패턴에 민감합니다. 그래서 작은 변화가 아주 다른 결과로 이어지기도 합니다.
 
-Let’s see how well it guesses in a specific context:
+특정 맥락에서 모델이 얼마나 잘 추측하는지 살펴봅시다.
 
 
 <!-- 🔄 Next token – tricky semantic cue -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">📝 Quiz 1</h3>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">📝 퀴즈 1</h3>
 <p style="color:#495057; font-weight:500;">
-Imagine a prompt sent to an LLM reads exactly like this:
+LLM에 보낸 프롬프트가 정확히 다음과 같다고 상상해 보세요.
 </p>
 
 <p style="color:#495057; font-weight:500;">
 "It rains like cats and..."
 </p>
 
-<p style="color:#495057; font-weight:500;">Which <em>single token</em> is the model most likely to produce next?</p>
+<p style="color:#495057; font-weight:500;">모델이 다음으로 생성할 가능성이 가장 높은 <em>단일 토큰</em>은 무엇일까요?</p>
 
 <style>
 .quiz-container-next-easy{position:relative}
@@ -168,19 +168,19 @@ Imagine a prompt sent to an LLM reads exactly like this:
   <input type="radio" name="quiz-next-easy" id="next-easy-wrong2" class="quiz-radio-next-easy">
   <label for="next-easy-wrong2" class="quiz-option-next-easy" data-correct="false">🐭 mice</label>
 
-  <div class="feedback-next-easy" data-feedback="correct">✅ Exactly!</div>
-  <div class="feedback-next-easy" data-feedback="wrong1">❌ "Frogs" doesn't sound quite right, although technically I guess frogs are more likely to rain than the other options...</div>
-  <div class="feedback-next-easy" data-feedback="wrong2">❌ Raining cats and mice, hmm, there is probably a Tom and Jerry episode about that but it's not quite the idiom we are going for.</div>
+  <div class="feedback-next-easy" data-feedback="correct">✅ 정답입니다!</div>
+  <div class="feedback-next-easy" data-feedback="wrong1">❌ "Frogs"는 조금 어색합니다. 다만 기술적으로는 다른 선택지보다 개구리가 비처럼 내릴 가능성이 더 높긴 하겠지만요...</div>
+  <div class="feedback-next-easy" data-feedback="wrong2">❌ "비처럼 고양이와 쥐가 쏟아진다"라니, 아마 톰과 제리에 그런 에피소드가 있을 법도 하지만, 우리가 찾는 관용구는 아닙니다.</div>
 </div>
 </div>
 
 
 
-The LLM predicts what will likely be the next token, and puts a probability on each of the tokens.  
-The higher the probability, the higher the chance it will be chosen.
+LLM은 다음에 올 가능성이 가장 높은 토큰을 예측하고, 각 토큰에 확률을 부여합니다.
+확률이 높을수록 선택될 가능성도 높아집니다.
 
 <details>
-<summary> 🕵️ Spoilers! Press here after done with the quiz.</summary>  
+<summary> 🕵️ 스포일러! 퀴즈를 마친 후 눌러보세요.</summary>  
 <br>
 
 ![images/cats-and-dogs.png](images/cats-and-dogs.png)
@@ -189,24 +189,24 @@ The higher the probability, the higher the chance it will be chosen.
 
 </details>
 
-In some cases, like with the above quiz, it's pretty clear what it will predict.  
-In other cases, it will not be as clear, like the below for example:
+위 퀴즈처럼 어떤 경우에는 모델이 무엇을 예측할지 꽤 분명합니다.
+하지만 다른 경우에는 아래 예시처럼 그렇게 명확하지 않을 수 있습니다.
 
 
 
 <!-- 🔄 Next token – tricky semantic cue -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">📝 Quiz 2</h3>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">📝 퀴즈 2</h3>
 <p style="color:#495057; font-weight:500;">
-Imagine a prompt sent to an LLM reads exactly like this:
+LLM에 보낸 프롬프트가 정확히 다음과 같다고 상상해 보세요.
 </p>
 
 <p style="color:#495057; font-weight:500;">
 "John carefully packed his bag with essentials for the desert hike: water, sunscreen, and a wide-brimmed hat. He double-checked everything twice. When he arrived, the blazing sun made him immediately grateful he'd remembered his..."
 </p>
 
-<p style="color:#495057; font-weight:500;">Which <em>single token</em> is the model most likely to produce next?</p>
+<p style="color:#495057; font-weight:500;">모델이 다음으로 생성할 가능성이 가장 높은 <em>단일 토큰</em>은 무엇일까요?</p>
 
 <style>
 .quiz-container-next-tricky{position:relative}
@@ -237,15 +237,15 @@ Imagine a prompt sent to an LLM reads exactly like this:
   <input type="radio" name="quiz-next-tricky" id="next-tricky-wrong3" class="quiz-radio-next-tricky">
   <label for="next-tricky-wrong3" class="quiz-option-next-tricky" data-correct="false">🕶️ sunglasses</label>
 
-  <div class="feedback-next-tricky" data-feedback="correct">✅ Exactly! Context indicates intense sun ("blazing sun"), making "hat" the strongest logical continuation.</div>
-  <div class="feedback-next-tricky" data-feedback="wrong1">❌ While water is essential for desert hikes, "blazing sun" specifically emphasizes the need for sun protection.</div>
-  <div class="feedback-next-tricky" data-feedback="wrong2">❌ Sunscreen protects from UV rays, but the phrase "blazing sun" in the context suggests immediate physical protection.</div>
-  <div class="feedback-next-tricky" data-feedback="wrong3">❌ Sunglasses weren't mentioned in the packing list, so the model is more likely to complete with items already established in the context.</div>
+  <div class="feedback-next-tricky" data-feedback="correct">✅ 정답입니다! 맥락상 "blazing sun"(타는 듯한 햇살)이 강하게 암시되므로, "hat"이 가장 논리적인 다음 단어입니다.</div>
+  <div class="feedback-next-tricky" data-feedback="wrong1">❌ 물은 사막 하이킹에 필수적이지만, "blazing sun"이라는 표현은 특히 자외선 차단이 필요함을 강조합니다.</div>
+  <div class="feedback-next-tricky" data-feedback="wrong2">❌ 선크림은 자외선으로부터 피부를 보호하지만, 맥락에서 "blazing sun"이라는 표현은 즉각적인 물리적 보호를 암시합니다.</div>
+  <div class="feedback-next-tricky" data-feedback="wrong3">❌ 선글라스는 짐 목록에 언급되지 않았으므로, 모델은 이미 맥락에서 등장한 물건으로 문장을 완성할 가능성이 더 높습니다.</div>
 </div>
 </div>
 
 <details>
-<summary> 🕵️ Spoilers! Press here after done with the quiz.</summary>  
+<summary> 🕵️ 스포일러! 퀴즈를 마친 후 눌러보세요.</summary>  
 <br>
 
 ![images/bring-to-beach.png](images/bring-to-beach.png)
@@ -253,33 +253,33 @@ Imagine a prompt sent to an LLM reads exactly like this:
 
 </details>
 
-## 🧠 Context Length and Window :id=context-length-and-window
+## 🧠 컨텍스트 길이와 윈도우 :id=context-length-and-window
 
-  LLMs can't have infinitely long inputs. When you send a message, the model needs room to:
+  LLM은 입력의 길이에 제한이 없을 수 없습니다. 메시지를 보내면 모델은 다음을 위한 공간이 필요합니다.
 
-  - Read your prompt
-  - Think through it
-  - And generate a response
+  - 프롬프트를 읽는 것
+  - 그것을 바탕으로 추론하는 것
+  - 응답을 생성하는 것
 
-  That whole process happens inside a fixed space called the **context window** (or sometimes **max model length** and other similar combinations).
+  이 모든 과정은 **컨텍스트 윈도우(context window)**(때로는 **최대 모델 길이(max model length)** 등 비슷한 용어로도 불림)라는 고정된 공간 안에서 일어납니다.
 
-  Think of it like a whiteboard. If you write too much — either in your question or in the answer you expect — the board runs out of space. The model might give up or cut things off.
+  화이트보드를 떠올려 보세요. 질문이든, 기대하는 답변이든 너무 많은 내용을 쓰면 보드의 공간이 부족해집니다. 모델은 포기하거나 내용을 중간에 잘라버릴 수 있습니다.
 
-  Typical context window sizes:
+  일반적인 컨텍스트 윈도우 크기:
 
-  - Small models: 2,000–4,000 tokens
-  - Bigger models: 8,000–128,000 tokens
-  - Some cutting-edge models: even more!
+  - 소형 모델: 2,000~4,000 토큰
+  - 대형 모델: 8,000~128,000 토큰
+  - 일부 최신 모델: 그보다 훨씬 더 많음!
 
-  So when you send a really long prompt, or ask for a really long answer, you can run into the model’s limits.
+  그래서 매우 긴 프롬프트를 보내거나 매우 긴 답변을 요청하면 모델의 한계에 부딫힐 수 있습니다.
 
-  There’s also something you can control yourself called `max_tokens` (or *max completion tokens*). This tells the model “Only give me up to this many tokens in your answer.”
+  또한 직접 제어할 수 있는 `max_tokens`(또는 *max completion tokens*)라는 값도 있습니다. 이는 모델에게 "답변에서 이 토큰 수까지만 줘"라고 알려주는 역할을 합니다.
 
-  It’s like giving the model a writing limit. Let's try this:
+  모델에게 글쓰기 분량 제한을 주는 것과 비슷합니다. 한번 시도해 봅시다.
 
-  Ask the model `I need a Spanish tortilla recipe.` and change the `max_token` until you get a delicious recipe 🇪🇸
+  모델에게 `I need a Spanish tortilla recipe.`라고 물어보고, 맛있는 레시피가 나올 때까지 `max_token` 값을 조정해 보세요 🇪🇸
 
-  _Note: if you need, you can close the menu on the left by clicking the ㈢ button on top to view the exercise better_
+  _참고: 실습을 더 잘 보기 위해 필요하다면 상단의 ㈢ 버튼을 클릭해 왼쪽 메뉴를 닫을 수 있습니다_
 
 <iframe
 	src="https://ai-orientation-app-ai501.<CLUSTER_DOMAIN>/context?embed"
@@ -291,16 +291,16 @@ Imagine a prompt sent to an LLM reads exactly like this:
 </iframe>
 
 
-  What is the number you are happy with?
+  만족스러운 숫자는 얼마였나요?
 
-  But remember — the model’s total capacity doesn’t change. The context window is fixed, and it includes both:
+  하지만 기억하세요 — 모델의 전체 용량 자체는 변하지 않습니다. 컨텍스트 윈도우는 고정되어 있으며, 다음 두 가지를 모두 포함합니다.
 
-  - The input (your prompt)
-  - The output (the model’s response, up to max_tokens)
+  - 입력(당신의 프롬프트)
+  - 출력(모델의 응답, 최대 max_tokens까지)
 
-  So if you set `max_tokens` too high, and your input is already long, the model might not have enough room — and it could return an error.
+  따라서 `max_tokens`를 너무 높게 설정했는데 입력이 이미 길다면, 모델에게 충분한 공간이 남지 않아 오류가 발생할 수 있습니다.
 
-  So maybe you want to be more sophisticated and ask the model with a bit more details. Send this next and see what happens:
+  그러니 조금 더 세심하게, 더 많은 세부 사항을 담아 모델에게 물어보고 싶을 수도 있습니다. 다음 내용을 보내고 어떤 일이 일어나는지 확인해 보세요.
 
   ```
   I'm interested in learning how to make an authentic Spanish tortilla de patatas, also known as a Spanish omelette. 
@@ -316,35 +316,35 @@ Imagine a prompt sent to an LLM reads exactly like this:
 	loading="lazy">
 </iframe>
 
- Uh-oh. You probably got an error message. Why?
+ 이런. 아마 오류 메시지를 받았을 것입니다. 왜 그럴까요?
 
-  The model has a limited memory space — a fixed number of tokens it can handle per request. That space has to fit:
+  모델은 한정된 메모리 공간, 즉 요청당 처리할 수 있는 고정된 토큰 수를 가지고 있습니다. 그 공간에는 다음 두 가지가 모두 들어가야 합니다.
 
-  - Your prompt (the question or instruction), plus
+  - 당신의 프롬프트(질문이나 지시문), 그리고
 
-  - The answer it’s going to generate
+  - 모델이 생성할 답변
 
-  In this case, your longer question already took up a big chunk of that space. On top of that, the model was asked to generate a long, detailed recipe — and it simply didn’t have room to do both. So it gave up and returned an error.
+  이 경우, 더 길어진 질문이 이미 그 공간의 많은 부분을 차지했습니다. 게다가 모델은 길고 상세한 레시피를 생성하라는 요청까지 받았으니, 둘 다 수행할 공간이 충분하지 않았습니다. 그래서 모델은 포기하고 오류를 반환한 것입니다.
 
-  Again, this space limit is called the maximum context length. It's something set when the model is started, and it affects how much input and output the model can handle together.
+  다시 말해, 이 공간 제한을 최대 컨텍스트 길이(maximum context length)라고 부릅니다. 이는 모델이 시작될 때 설정되는 값으로, 모델이 한 번에 처리할 수 있는 입력과 출력의 총량에 영향을 줍니다.
 
-  Setting it too high might waste memory; setting it too low might truncate outputs or fail to serve longer prompts.
+  이 값을 너무 높게 설정하면 메모리가 낭비될 수 있고, 너무 낮게 설정하면 출력이 잘리거나 긴 프롬프트를 처리하지 못할 수 있습니다.
 
 
 <!-- 🧠 Context window – chunking strategy -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);
             padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">🧠 Quiz</h3>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">🧠 퀴즈</h3>
 
 <p style="color:#495057;font-weight:500;">
-Someone gave you the task to create a Q&amp;A over a 90-page contract.<br>
-Naturally, you decided to use an LLM to summarize it into a Q&amp;A for you (who reads these days anyway?).
-However, those 90 pages amount to about 45 000 tokens, while your model only have a context window of 8 000.
+누군가 당신에게 90페이지 분량의 계약서를 바탕으로 Q&amp;A를 만들어달라는 업무를 맡겼습니다.<br>
+당연히 당신은 LLM을 사용해 이를 Q&amp;A 형태로 요약하기로 했습니다(요즘 누가 다 읽겠어요?).
+그런데 그 90페이지는 약 45,000 토큰에 달하는 반면, 당신의 모델은 8,000 토큰의 컨텍스트 윈도우만 가지고 있습니다.
 </p>
 
 <p style="color:#495057;font-weight:500;">
-Which approach is the <em>most practical</em>?</p>
+<em>가장 현실적인</em> 접근 방식은 무엇일까요?</p>
 
 <style>
 .ctxOpt{display:block;margin:4px 0;padding:8px 16px;background:#f8f9fa;border-radius:6px;cursor:pointer;
@@ -364,28 +364,28 @@ Which approach is the <em>most practical</em>?</p>
 <div>
   <input type="radio" id="ctx-w1" name="ctx" class="ctxRadio">
   <label for="ctx-w1" class="ctxOpt" data-correct="false">
-    📚 Fine-tune a new model overnight with the entire contract baked in.
+    📚 계약서 전체를 통째로 집어넣어 밤새 새 모델을 파인튜닝한다.
   </label>
 
   <input type="radio" id="ctx-good" name="ctx" class="ctxRadio">
   <label for="ctx-good" class="ctxOpt" data-correct="true">
-    🔍 Split the contract into ~1000-token chunks and  
-    insert only the chunks relevant to each question.
+    🔍 계약서를 약 1000 토큰 단위의 청크(chunk)로 나누고,  
+    각 질문과 관련된 청크만 삽입한다.
   </label>
 
   <input type="radio" id="ctx-w2" name="ctx" class="ctxRadio">
   <label for="ctx-w2" class="ctxOpt" data-correct="false">
-    ⛓️ Chain multiple 6K prompts in one request; the backend will stitch them automatically.
+    ⛓️ 하나의 요청 안에서 6K 토큰짜리 프롬프트 여러 개를 연결한다. 백엔드가 자동으로 이어붙여줄 것이다.
   </label>
 
   <div class="ctxFeed" data-type="good">
-    ✅ Right — on-demand retrieval of multiple 1K chunks respects the 8K limit and allows for some extra context to be added outside the chunks.
+    ✅ 맞습니다 — 1K 청크 여러 개를 필요에 따라 불러오는 방식은 8K 한도를 지키면서, 청크 외부에도 추가 컨텍스트를 넣을 여유를 남깁니다.
   </div>
   <div class="ctxFeed" data-type="bad1">
-    ❌ Fine-tuning requires training data, significant compute resources, and time.
+    ❌ 파인튜닝에는 학습 데이터, 상당한 컴퓨팅 자원, 그리고 시간이 필요합니다.
   </div>
   <div class="ctxFeed" data-type="bad2">
-    ❌ Chaining multiple 6K prompts resets context between each prompt, losing the coherent understanding needed for Q&A.
+    ❌ 6K 프롬프트를 여러 개 연결하면 프롬프트마다 컨텍스트가 초기화되어, Q&A에 필요한 일관된 이해를 잃게 됩니다.
   </div>
 </div>
 </div>
@@ -393,29 +393,29 @@ Which approach is the <em>most practical</em>?</p>
 
 
 
-## 🔮 Are LLMs Fixed or Do They Change? :id=are-llms-fixed-or-do-they-change
+## 🔮 LLM은 고정되어 있을까, 변할까? :id=are-llms-fixed-or-do-they-change
 
-Once a large language model is trained, it becomes **frozen** — it doesn’t learn new things by talking to you. Every time you send a message (called a **prompt**), the model uses what it already knows and responds based only on:
-- Its original training data
-- The content of your current prompt
-- Randomness in the generation process
+대형 언어 모델은 한 번 학습되고 나면 **고정(frozen)**됩니다 — 당신과 대화한다고 해서 새로운 것을 배우지는 않습니다. 메시지를 보낼 때마다(이것을 **프롬프트(prompt)**라고 부름), 모델은 이미 알고 있는 것을 바탕으로 다음 요소들만 사용해 응답합니다.
+- 원래의 학습 데이터
+- 현재 프롬프트의 내용
+- 생성 과정에서의 무작위성
 
-Even if you tell the model something new today, it won’t “remember” it tomorrow unless you keep mentioning it in your prompt.
+오늘 모델에게 새로운 것을 알려주더라도, 프롬프트에서 계속 그것을 언급하지 않는 한 모델은 내일 그것을 "기억"하지 못합니다.
 
-So how does systems “remember” facts between conversations?
+그렇다면 시스템은 대화와 대화 사이에 어떻게 사실을 "기억"할까요?
 
-Let's see if you can figure it out through this quiz:
+다음 퀴즈를 통해 알아낼 수 있는지 확인해 봅시다.
 
 <!-- 🔮 Frozen-model memory dilemma (harder) -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
-<h3 style="margin:0 0 8px;color:#5a5a5a;">🧠 Quiz</h3>
+<h3 style="margin:0 0 8px;color:#5a5a5a;">🧠 퀴즈</h3>
 <p style="color:#495057; font-weight:500;">
-You’re building a helpful AI assistant for your company’s HR team.<br>
-During today’s chat, team members type in names of new employees who just joined: Emily Zhang, Jasper Müller, Amina Idris, etc.<br>
-The assistant keeps up easily during the conversation.<br>
-However, tomorrow, when the chat starts fresh in a brand-new session, the assistant must still remember all of those names.
-<p style="color:#495057; font-weight:500;">What is the <em>most practical</em> way to achieve that.</p>
+당신은 회사의 HR 팀을 위한 유용한 AI 어시스턴트를 만들고 있습니다.<br>
+오늘 대화 중에 팀원들이 새로 입사한 직원들의 이름, 예를 들어 Emily Zhang, Jasper Müller, Amina Idris 등을 입력합니다.<br>
+어시스턴트는 그 대화 안에서는 문제없이 잘 따라갑니다.<br>
+하지만 내일, 완전히 새로운 세션으로 대화가 다시 시작되어도 어시스턴트는 이 모든 이름을 여전히 기억해야 합니다.
+<p style="color:#495057; font-weight:500;">이를 달성하기 위한 <em>가장 현실적인</em> 방법은 무엇일까요.</p>
 
 <style>
 .quiz-container-sku{position:relative}
@@ -435,22 +435,22 @@ However, tomorrow, when the chat starts fresh in a brand-new session, the assist
 
 <div class="quiz-container-sku">
   <input type="radio" name="quiz-sku" id="sku-wrong1" class="quiz-radio-sku">
-  <label for="sku-wrong1" class="quiz-option-sku" data-correct="false">🔖 Append “Remember these forever” to the end of today’s prompt</label>
+  <label for="sku-wrong1" class="quiz-option-sku" data-correct="false">🔖 오늘 프롬프트의 맨 끝에 "이것들을 영원히 기억해"라고 덧붙인다</label>
 
   <input type="radio" name="quiz-sku" id="sku-wrong2" class="quiz-radio-sku">
-  <label for="sku-wrong2" class="quiz-option-sku" data-correct="false">🧹 Increase the models context window so <em>today’s</em> chat fits in tomorrow’s prompt untouched</label>
+  <label for="sku-wrong2" class="quiz-option-sku" data-correct="false">🧹 모델의 컨텍스트 윈도우를 늘려서 <em>오늘</em>의 대화가 내일의 프롬프트에 그대로 들어가게 한다</label>
 
   <input type="radio" name="quiz-sku" id="sku-wrong3" class="quiz-radio-sku">
-  <label for="sku-wrong3" class="quiz-option-sku" data-correct="false">🔧 Retrain the model overnight on the new employees</label>
+  <label for="sku-wrong3" class="quiz-option-sku" data-correct="false">🔧 밤사이에 새 직원 정보로 모델을 재학습시킨다</label>
 
   <input type="radio" name="quiz-sku" id="sku-correct" class="quiz-radio-sku">
-  <label for="sku-correct" class="quiz-option-sku" data-correct="true">📦 Store the names in a database and auto-inject them into tomorrow’s prompt</label>
+  <label for="sku-correct" class="quiz-option-sku" data-correct="true">📦 이름들을 데이터베이스에 저장하고 내일 프롬프트에 자동으로 삽입한다</label>
 
-  <div class="feedback-sku" data-feedback="correct">✅ Correct! Frozen weights can't learn overnight—you must feed yesterday's employee names back in (fetching from a database is fastest and cheapest).</div>
-  <div class="feedback-sku" data-feedback="wrong1">❌ Simple instructions like "Remember these forever" don't modify the model's weights. The model will still only know what's in the current prompt.</div>
-  <div class="feedback-sku" data-feedback="wrong2">❌ Expanding context windows gets expensive and doesn't scale well. You'd need massive context for every conversation, wasting resources on old chat history.</div>
-  <div class="feedback-sku" data-feedback="wrong3">❌ Retraining is slow, expensive, and overkill for frequently changing data like new employee names.</div>
+  <div class="feedback-sku" data-feedback="correct">✅ 정답입니다! 고정된 가중치는 밤사이에 새로운 것을 배울 수 없으므로, 어제의 직원 이름을 다시 입력해 주어야 합니다(데이터베이스에서 가져오는 것이 가장 빠르고 저렴합니다).</div>
+  <div class="feedback-sku" data-feedback="wrong1">❌ "이것들을 영원히 기억해"와 같은 단순한 지시문은 모델의 가중치를 바꾸지 않습니다. 모델은 여전히 현재 프롬프트에 있는 내용만 알 수 있습니다.</div>
+  <div class="feedback-sku" data-feedback="wrong2">❌ 컨텍스트 윈도우를 늘리는 것은 비용이 많이 들고 확장성이 좋지 않습니다. 모든 대화마다 거대한 컨텍스트가 필요해져서, 오래된 대화 기록에 자원을 낭비하게 됩니다.</div>
+  <div class="feedback-sku" data-feedback="wrong3">❌ 재학습은 느리고 비용이 많이 들며, 신입 직원 이름처럼 자주 바뀌는 데이터에는 과도한 방법입니다.</div>
 </div>
 </div>
 
-
+</content>

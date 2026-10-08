@@ -1,38 +1,38 @@
 # Evaluate Agents
 
-Your agent is now live, helping students and scheduling meetings with professors. But here's the thing - how do you know it's actually working correctly?  
-Let's do like in the previous chapters and add some evalutions for our agent!
+이제 agent가 실제로 동작하고 있습니다. 학생들을 도와주고 교수님과의 미팅도 예약해주고 있죠. 그런데 과연 그것이 제대로 동작하고 있는지 어떻게 알 수 있을까요?
+이전 챕터들에서 했던 것처럼, agent를 위한 평가(evaluation)를 추가해 봅시다!
 
 ## Agent traces
 
-Just like with summarization and RAG we get traces for our agents as well, which give good insight into which tools were used and in what order.  
-Let's take a look:
+summarization이나 RAG에서처럼, agent에 대해서도 trace를 얻을 수 있으며, 이를 통해 어떤 도구가 어떤 순서로 사용되었는지 좋은 통찰을 얻을 수 있습니다.
+한번 살펴봅시다.
 
-1. Go to OpenShift AI -> Develop & train -> Experiments (MLflow) -> **<USER_NAME>-test** Project and click on your `student-assistant` experiment.
+1. OpenShift AI -> Develop & train -> Experiments (MLflow) -> **<USER_NAME>-test** 프로젝트로 이동해서 `student-assistant` experiment를 클릭하세요.
 
-2. Click on any trace and look at the `Summary` and `Details & Timeline`.
+2. 임의의 trace를 클릭하고 `Summary`와 `Details & Timeline`을 살펴보세요.
 
     ![agent-traces](./images/agent-traces.png)
 
-    Here you get the full interaction with all the tools and agent choices, all the way until the decision if it should continue or not.
-    We will use what we have in these traces as a basis for our testing.
+    여기서는 사용된 모든 도구와 agent의 선택, 그리고 계속 진행할지 여부를 결정하기까지의 전체 상호작용을 볼 수 있습니다.
+    우리는 이러한 trace에 담긴 내용을 테스트의 기반으로 활용하겠습니다.
 
 
-## Three layers of agent testing
+## Agent 테스트의 세 가지 계층
 
-When evaluating agents, we will focus on three areas:
+Agent를 평가할 때는 다음 세 가지 영역에 집중합니다.
 
-1. **Unit tests for individual tools** - Test each tool in isolation. Does the calendar API actually create events? Does the search return relevant results?
-2. **Text-to-JSON validation** - Can the LLM format tool calls correctly, and does it choose the right tools? (Spoiler: malformed JSON is where many agents break)
-3. **End-to-end evaluation** - Does the complete workflow help users?
+1. **개별 도구에 대한 Unit test** - 각 도구를 독립적으로 테스트합니다. Calendar API가 실제로 이벤트를 생성하나요? 검색이 관련성 있는 결과를 반환하나요?
+2. **Text-to-JSON 검증** - LLM이 도구 호출을 올바른 형식으로 구성할 수 있나요? 그리고 올바른 도구를 선택하나요? (스포일러: 많은 agent가 깨지는 지점은 바로 형식이 잘못된 JSON입니다)
+3. **End-to-end 평가** - 전체 워크플로가 사용자에게 실제로 도움이 되나요?
 
-We've already set up an eval framework earlier, so let's put it to work testing our agent!
+이미 앞서 eval framework를 구축해 두었으니, 이제 이를 활용해서 agent를 테스트해 봅시다!
 
-## 1. Unit Testing Agent Tools
+## 1. Agent 도구 Unit 테스트하기
 
-Before we test the whole agent, let's make sure each individual tool works correctly. Think of it like testing the ingredients before baking the cake.
+전체 agent를 테스트하기 전에, 먼저 각각의 도구가 올바르게 동작하는지 확인해 봅시다. 케이크를 굽기 전에 재료를 먼저 테스트하는 것과 같은 개념입니다.
 
-The canopy backend already has unit tests set up for the student assistant tools. Let's run them!
+canopy 백엔드에는 이미 student assistant 도구에 대한 unit test가 설정되어 있습니다. 실행해 봅시다!
 
 ```bash
 cd /opt/app-root/src/backend
@@ -40,7 +40,7 @@ pip install pytest pytest-asyncio
 pytest tests/test_tools.py -v
 ```
 
-You should see output like this:
+다음과 같은 출력을 보게 될 것입니다.
 
 ```
 tests/test_tools.py::test_search_knowledge_base PASSED                    [ 25%]
@@ -51,29 +51,29 @@ tests/test_tools.py::test_mcp_calendar_list_events PASSED                [100%]
 ======================== 4 passed in 1.22s ========================
 ```
 
-**What did we just test?**
+**방금 우리가 테스트한 것은 무엇일까요?**
 
-- **search_knowledge_base** - Verified the tool can retrieve relevant content from the vector store
-- **find_professors_by_expertise** - Checked that professor matching works correctly
-- **MCP calendar tools** - Confirmed the MCP server is reachable and exposes the right tools
+- **search_knowledge_base** - 도구가 벡터 스토어에서 관련 콘텐츠를 가져올 수 있는지 확인했습니다
+- **find_professors_by_expertise** - 교수 매칭이 올바르게 동작하는지 확인했습니다
+- **MCP calendar tools** - MCP 서버에 접근 가능하며 올바른 도구들을 노출하는지 확인했습니다
 
-**Pro tip:** Want to see what the tools are returning? Run with the `-s` flag:
+**Pro tip:** 도구가 반환하는 값을 직접 보고 싶으신가요? `-s` 플래그를 붙여서 실행해 보세요.
 
 ```bash
 pytest tests/test_tools.py -v -s
 ```
 
-This shows the actual search results and helps you understand what data your tools are working with.
+이렇게 하면 실제 검색 결과가 표시되어, 도구들이 어떤 데이터를 다루고 있는지 이해하는 데 도움이 됩니다.
 
-## 2. Add Unit Tests to CI/CD Pipeline
+## 2. CI/CD 파이프라인에 Unit 테스트 추가하기
 
-Now that we've verified the unit tests work locally, let's automate them in our CI/CD pipeline! This ensures every code change is tested before being promoted to production.
+로컬에서 unit test가 잘 동작하는 것을 확인했으니, 이제 CI/CD 파이프라인에서 이를 자동화해 봅시다! 이렇게 하면 모든 코드 변경 사항이 프로덕션으로 승격되기 전에 반드시 테스트를 거치게 됩니다.
 
-### Enable Unit Tests in the Tekton Pipeline
+### Tekton 파이프라인에서 Unit 테스트 활성화하기
 
-The evaluation pipeline can run unit tests alongside the other evaluations. Let's enable this step:
+평가 파이프라인은 다른 평가들과 함께 unit test도 실행할 수 있습니다. 이 단계를 활성화해 봅시다.
 
-1. Go to `genaiops-gitops/toolings/evaluation-pipeline/config.yaml` in your workbench and update the config file to enable a unit test step:
+1. 워크벤치에서 `genaiops-gitops/toolings/evaluation-pipeline/config.yaml`로 이동해서, unit test 단계를 활성화하도록 설정 파일을 업데이트하세요.
 
     ```yaml
     chart_path: charts/canopy-evals-pipeline
@@ -86,7 +86,7 @@ The evaluation pipeline can run unit tests alongside the other evaluations. Let'
       enableUnitTests: true     # 👈 Add this
     ```
 
-2. Push it to git:
+2. 이를 git에 push하세요.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -96,27 +96,27 @@ The evaluation pipeline can run unit tests alongside the other evaluations. Let'
     git push
     ```
 
-3. To make sure it was added, go to OpenShift Console -> Pipelines -> canopy-evals-pipeline and see that `tool-unit-tests` is in there.  
+3. 제대로 추가되었는지 확인하기 위해, OpenShift Console -> Pipelines -> canopy-evals-pipeline로 이동해서 `tool-unit-tests`가 거기에 있는지 확인하세요.
 
     ![unit-test-step.png](images/unit-test-step.png)
 
-We will see it action soon, but first, let's make sure that our end-to-end tests works for our agent as well.
+실제 동작하는 모습은 곧 확인하겠지만, 먼저 agent에 대한 end-to-end 테스트도 잘 동작하는지 확인해 봅시다.
 
-### Adding Agent E2E Tests
+### Agent E2E 테스트 추가하기
 
-1. Go to your workbench and navigate to the `evals` repository:
+1. 워크벤치로 이동해서 `evals` 저장소로 이동하세요.
 
     ```bash
     cd /opt/app-root/src/evals
     ```
 
-2. Create a new folder for the student assistant tests:
+2. student assistant 테스트를 위한 새 폴더를 생성하세요.
 
     ```bash
     mkdir student-assistant
     ```
 
-3. Create the test configuration file. Open a new file `student-assistant/student_assistant_tests.yaml` and paste this:
+3. 테스트 설정 파일을 생성하세요. 새 파일 `student-assistant/student_assistant_tests.yaml`을 열고 다음을 붙여넣으세요.
 
 ```yaml
 name: student_assistant_tests
@@ -143,7 +143,7 @@ tests:
         - find_professors_by_expertise
 ```
 
-And also add a `judge_prompt.txt` in the same folder:
+같은 폴더에 `judge_prompt.txt`도 추가하세요.
 ```bash
 You are an expert evaluator judging the quality of a generated answer to a question.
 
@@ -170,11 +170,11 @@ Answer "no" if it gives incorrect information, contradicts the expected answer, 
 Respond with only "yes" or "no".
 ```
 
-4. Notice the `expected_tools` field in the tests - this tells the evaluator which tools the agent should call. This is used by the two new scorers `tool_call_correctness` and `tool_call_efficiency`. The eval pipeline will now check:
-    - Did the agent call `search_knowledge_base` for the canopy question?
-    - Did it call `find_professors_by_expertise` for the professor question?
+4. 테스트 안의 `expected_tools` 필드를 눈여겨보세요 - 이는 agent가 어떤 도구를 호출해야 하는지 평가자에게 알려줍니다. 이 필드는 `tool_call_correctness`와 `tool_call_efficiency`라는 두 가지 새로운 scorer에서 사용됩니다. 이제 eval 파이프라인은 다음을 확인하게 됩니다.
+    - canopy 질문에 대해 agent가 `search_knowledge_base`를 호출했는가?
+    - 교수 질문에 대해 `find_professors_by_expertise`를 호출했는가?
 
-6. Commit and push your changes:
+6. 변경 사항을 커밋하고 push하세요.
 
     ```bash
     cd /opt/app-root/src/evals/student-assistant
@@ -183,7 +183,7 @@ Respond with only "yes" or "no".
     git push
     ```
 
-7. The eval pipeline should trigger automatically. Go to **OpenShift Pipelines** in your `<USER_NAME>-toolings` project to watch it run!
+7. eval 파이프라인이 자동으로 트리거되어야 합니다. `<USER_NAME>-toolings` 프로젝트에서 **OpenShift Pipelines**로 이동해 실행되는 모습을 확인해 보세요!
 
 
-After it has completed you can see the evaluation results MLflow 🎉
+완료되면 MLflow에서 평가 결과를 확인할 수 있습니다 🎉

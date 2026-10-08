@@ -1,20 +1,20 @@
 # 🎯 Fine-tuning
 
-You've got three tools in your AI customization toolkit: **prompt engineering**, **context engineering** (like RAG), and **fine-tuning**.  
-We have seen how we can use prompt engineering and context to enhance the model responses, grounding them amongst other things.
+AI 커스터마이징 도구에는 세 가지가 있습니다: **프롬프트 엔지니어링(prompt engineering)**, **컨텍스트 엔지니어링(context engineering)**(RAG 같은 것), 그리고 **파인튜닝(fine-tuning)**입니다.  
+지금까지 프롬프트 엔지니어링과 컨텍스트를 활용해서 모델 응답을 개선하고, 다른 것들과 함께 응답을 그라운딩(grounding)하는 방법을 살펴봤습니다.
 
-So where does fine-tuning come in?  
-There are a few things that fine-tuning does better than just improved prompts or added context:  
+그럼 파인튜닝은 어디에 쓰일까요?  
+단순히 프롬프트를 개선하거나 컨텍스트를 추가하는 것보다 파인튜닝이 더 잘하는 몇 가지가 있습니다:
 
-- Model needs consistent *behavior*
-- Model needs domain terminology
-- Prompts are getting too long
+- 모델이 일관된 *행동(behavior)*을 보여야 할 때
+- 모델이 도메인 전문 용어를 알아야 할 때
+- 프롬프트가 너무 길어질 때
 
-## 📚 The Socratic Tutor Use Case
+## 📚 소크라테스식 튜터(Socratic Tutor) 사용 사례
 
-To improve Canopy, we want a feature where Canopy acts as a Socratic tutor, leading the students towards the right answers with clever follow-up questions rather than straight up giving the answers. This requires quite a long prompt and becomes fragile, so we instead decide to fine-tune this behaviour into our model.
+Canopy를 개선하기 위해, 우리는 Canopy가 소크라테스식 튜터처럼 행동해서, 학생들에게 정답을 바로 알려주지 않고 영리한 후속 질문으로 정답을 스스로 찾아가도록 유도하는 기능을 추가하고자 합니다. 이를 위해서는 꽤 긴 프롬프트가 필요하고 그만큼 깨지기 쉬워지기 때문에, 대신 이 행동을 모델에 파인튜닝하기로 결정합니다.
 
-The prompt would be something like this?
+프롬프트는 대략 이런 모습이 될 것입니다.
 
 ```
 You are a Socratic math tutor for Redwood Digital University...
@@ -23,69 +23,69 @@ FORBIDDEN BEHAVIORS: Do not solve the problem for them...
 EXAMPLE INTERACTIONS: [Student]: How do I solve 2x + 5 = 13?...
 ```
 
-**How fine-tuning can help?:**
+**파인튜닝이 어떻게 도움이 될까요?**
 
 
-| Challenge | How Fine-Tuning Helps |
+| 문제점 | 파인튜닝이 돕는 방식 |
 |-----------|----------------------|
-| 800-token system prompt | Reduce to ~10 tokens |
-| Jailbreak vulnerability | Behavior is in weights, not suggestions |
-| Inconsistent responses | Learn from hundreds of examples |
-| Per-request token cost | 72% reduction in input tokens |
-| Latency | Fewer tokens = faster time-to-first-token |
+| 800토큰짜리 시스템 프롬프트 | 약 10토큰으로 축소 |
+| 탈옥(jailbreak) 취약점 | 행동이 제안이 아니라 가중치(weights)에 담김 |
+| 일관되지 않은 응답 | 수백 개의 예제로부터 학습 |
+| 요청당 토큰 비용 | 입력 토큰 72% 절감 |
+| 지연 시간(latency) | 토큰이 적을수록 첫 토큰까지의 시간이 빨라짐 |
 
-So after fine tuning, all you need to say: 
+그래서 파인튜닝 후에는 이렇게만 말하면 됩니다.
 
 ```
 You are Canopy, RDU's math tutor.
 ```
 
-In another word, the Socratic behavior would be *in the weights*.
+다시 말해, 소크라테스식 행동이 *가중치 안에* 들어있게 되는 것입니다.
 
 
-## Preliminary setup
+## 사전 설정
 
-Before we can start, we need to give our workbenches some more memory.
+시작하기 전에, 워크벤치(Workbench)에 메모리를 좀 더 할당해 줘야 합니다.
 
-1. Go to OpenShift AI Dashboard -> <USER_NAME>-canopy project -> Workbenches
+1. OpenShift AI Dashboard -> <USER_NAME>-canopy 프로젝트 -> Workbenches로 이동합니다.
 ![userx-project](images/userx-project.png)
 
-2. Edit your workbench by clicking on the ⋮ and then `Edit workbench`
+2. ⋮를 클릭한 다음 `Edit workbench`를 눌러서 워크벤치를 편집합니다.
 ![edit-workbench](images/edit-workbench.png)
 
-3. Finally, scroll down to `Deployment size` and change `Memory requests` and `Memory limits` to 8GB each, then click `Update workbench`
+3. 마지막으로 `Deployment size`로 스크롤을 내려서 `Memory requests`와 `Memory limits`를 각각 8GB로 변경한 다음 `Update workbench`를 클릭합니다.
 ![set-memory](images/set-memory.png)
 
-Now you are ready to start running the notebooks!
+이제 노트북을 실행할 준비가 끝났습니다!
 
-## Tuning eats data 🐟
+## 튜닝은 데이터를 먹습니다 🐟
 
-Before we can start tuning our model, we need data (at least 500-1000+ examples for our Socratic tutor).  
-Unfortunately, good data is quite difficult to come by and is often a very manual job.  
-Luckily, there are now techniques for generating synthetic data that we can use to compliment our existing data.
+모델 튜닝을 시작하기 전에 데이터가 필요합니다(소크라테스식 튜터를 위해서는 최소 500~1000개 이상의 예제가 필요합니다).  
+안타깝게도 좋은 데이터는 구하기가 꽤 어렵고, 보통 매우 수작업이 많이 들어가는 일입니다.  
+다행히 이제는 기존 데이터를 보완할 수 있는 합성 데이터 생성 기법들이 존재합니다.
 
-These approaches are called **Synthetic Data Generation**.
+이러한 접근 방식을 **합성 데이터 생성(Synthetic Data Generation)**이라고 부릅니다.
 
-To try it out, go to your workbench, open up **`experiments/12-fine-tuning/1-synthetic-data-generation.ipynb`** and follow the instructions.
+직접 시도해 보려면, 워크벤치로 가서 **`experiments/12-fine-tuning/1-synthetic-data-generation.ipynb`**를 열고 안내를 따라가세요.
 
-## Let's Fine-Tune!
+## 이제 파인튜닝을 해봅시다!
 
-You've seen how synthetic data generation works. Now let's actually train the model to be a Socratic tutor.
+합성 데이터 생성이 어떻게 동작하는지 살펴봤습니다. 이제 실제로 모델이 소크라테스식 튜터가 되도록 학습시켜 봅시다.
 
-We will use LoRA (Low Rank Adaptation) to fine-tune our model. It cleverly updates only a small part of the model, making it much faster and cost efficient than a full training, while still giving good results.
+우리는 LoRA(Low Rank Adaptation, 저랭크 적응)를 사용해서 모델을 파인튜닝합니다. LoRA는 모델의 작은 일부분만 영리하게 업데이트하기 때문에, 전체 학습(full training)보다 훨씬 빠르고 비용 효율적이면서도 좋은 결과를 얻을 수 있습니다.
 
-Go back to your workbench and run **`experiments/12-fine-tuning/2-lora-training.ipynb`** to fine-tune our small model!
+다시 워크벤치로 돌아가서 **`experiments/12-fine-tuning/2-lora-training.ipynb`**를 실행해서 작은 모델을 파인튜닝하세요!
 
-## Evaluate and Save
+## 평가 및 저장
 
-We will have our standard online evaluations that we will use when updating Canopy, but here we also do some offline evaluations before the model gets deployed just to have a sanity check that it's better than our existing one.  
+Canopy를 업데이트할 때 사용하는 표준 온라인 평가도 물론 진행하지만, 여기서는 모델이 배포되기 전에 기존 모델보다 더 나은지 간단히 확인하는 차원에서 오프라인 평가도 함께 수행합니다.
 
-Before you save the model though, you will need to make sure you are logged into the cluster in your workbench.  
-Please run this in the workbench terminal before going through notebook `4-save-model.ipynb`:
+다만 모델을 저장하기 전에, 워크벤치에서 클러스터에 로그인되어 있는지 먼저 확인해야 합니다.  
+노트북 `4-save-model.ipynb`를 진행하기 전에 워크벤치 터미널에서 다음을 실행하세요.
 
   ```bash
     export CLUSTER_DOMAIN=<CLUSTER_DOMAIN>
     oc login --server=https://api.${CLUSTER_DOMAIN##apps.}:6443 -u <USER_NAME> -p <PASSWORD>
   ```
 
-To evaluate the new model, go through the notebook **`experiments/12-fine-tuning/3-evaluation.ipynb`** and then go to **`experiments/12-fine-tuning/4-save-model.ipynb`** to save and push the model to the model registry.
+새 모델을 평가하려면 **`experiments/12-fine-tuning/3-evaluation.ipynb`** 노트북을 진행한 다음, **`experiments/12-fine-tuning/4-save-model.ipynb`**로 가서 모델을 저장하고 모델 레지스트리(model registry)에 푸시하세요.

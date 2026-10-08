@@ -1,23 +1,24 @@
 # Module 2 - Linguistics
 
-> Prompting an AI is like giving instructions to a chef. If you just say ‘make food,’ you’ll get whatever. If you say ‘make a vegetarian pasta in under 15 minutes,’ you’re far more likely to get what you want 🍝
+> AI에게 프롬프트를 주는 것은 셰프에게 지시를 내리는 것과 비슷합니다. 그냥 '음식을 만들어줘'라고만 하면, 무엇이든 나올 것입니다. '15분 안에 채식 파스타를 만들어줘'라고 말하면, 원하는 것을 얻을 가능성이 훨씬 높아집니다 🍝
 
-# 🧑‍🍳 Module Intro
+# 🧑‍🍳 모듈 소개
 
-This module bridges the gap between raw LLM capabilities and practical applications.
+이 모듈은 LLM의 기본적인 능력과 실제 애플리케이션 사이의 간극을 메워줍니다.
 
-# 🖼️ Big Picture
+# 🖼️ 큰 그림
 ![big-picture-canopy.jpg](images/big-picture-canopy.jpg)
 
-# 🔮 Learning Outcomes
+# 🔮 학습 목표
 
-* Understand how system and user prompts shape LLM behavior and responses
-* Learn prompt engineering techniques for educational use cases
-* Practice deploying and configuring Canopy AI with custom prompts
+* 시스템 프롬프트와 사용자 프롬프트가 LLM의 행동과 응답을 어떻게 형성하는지 이해하기
+* 교육 사용 사례를 위한 프롬프트 엔지니어링 기법 배우기
+* 커스텀 프롬프트로 Canopy AI를 배포하고 구성하는 것을 실습하기
 
-# 🔨 Tools used in this module
+# 🔨 이 모듈에서 사용하는 도구
 
-* Prompt Playground - Interactive interface for experimenting with prompt engineering
-* [MLflow](https://mlflow.org/) - Provides capabilities to debug, evaluate, monitor, and optimize AI applications
-* OpenShift & Helm Charts - To deploy Canopy UI in a development environment
+* Prompt Playground - 프롬프트 엔지니어링을 실험할 수 있는 인터랙티브 인터페이스
+* [MLflow](https://mlflow.org/) - AI 애플리케이션을 디버깅, 평가, 모니터링, 최적화할 수 있는 기능을 제공
+* OpenShift & Helm Charts - 개발 환경에 Canopy UI를 배포하기 위한 도구
 
+</content>

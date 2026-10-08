@@ -1,27 +1,27 @@
 # Agentic Workflows
 
-## From tools to agents
+## 도구에서 agent로
 
-You've seen how LLMs can use tools - they understand requests, format tool calls, and interpret results. But what if the LLM needs to use *multiple* tools after each other? Or *reason* about which tool to use?  
+LLM이 도구를 사용하는 방법을 보셨습니다 - 요청을 이해하고, 도구 호출을 구성하고, 결과를 해석합니다. 그런데 LLM이 여러 도구를 *연속으로* 사용해야 한다면 어떨까요? 또는 어떤 도구를 사용할지 *추론(reason)*해야 한다면요?
 
-This is where **agentic workflows** come in.
+바로 이때 **agentic workflows**(에이전틱 워크플로)가 등장합니다.
 
-Instead of hardcoding "call tool A, then tool B", we give the LLM autonomy to figure out the right sequence of actions.
+"도구 A를 호출한 다음 도구 B를 호출하라"고 하드코딩하는 대신, LLM이 올바른 작업 순서를 스스로 파악할 수 있는 자율성을 부여합니다.
 
-## ReAct: Reasoning + Acting
+## ReAct: Reasoning + Acting (추론 + 행동)
 
-The most common agentic pattern is **ReAct** (Reasoning and Acting). It's simple but powerful:
+가장 흔한 agentic 패턴은 **ReAct**(Reasoning and Acting)입니다. 단순하지만 강력합니다.
 
-1. **Thought**: The LLM explains what it's thinking
-2. **Action**: The LLM calls a tool
-3. **Observation**: The tool returns results
-4. **Repeat**: Until the task is complete
+1. **Thought(사고)**: LLM이 자신이 생각하고 있는 바를 설명합니다
+2. **Action(행동)**: LLM이 도구를 호출합니다
+3. **Observation(관찰)**: 도구가 결과를 반환합니다
+4. **Repeat(반복)**: 작업이 완료될 때까지 반복합니다
 
-This pattern emerged from research showing that making LLMs "think out loud" before acting improves their decision-making. By forcing the model to articulate its reasoning, it makes better tool choices and catches its own mistakes.
+이 패턴은 LLM이 행동하기 전에 "소리 내어 생각하게" 만들면 의사결정이 개선된다는 연구 결과에서 비롯되었습니다. 모델이 자신의 추론 과정을 명확히 표현하도록 강제하면, 더 나은 도구 선택을 하게 되고 스스로의 실수도 포착하게 됩니다.
 
-Let's see this in action!  
+실제로 어떻게 동작하는지 확인해 봅시다!
 
-Go to your workbench and open **`experiments/8-agents/3-agentic-workflows.ipynb`**, then come back here after you finish that exercise.
+워크벤치로 이동해서 **`experiments/8-agents/3-agentic-workflows.ipynb`**를 열고, 해당 실습을 마친 후 다시 여기로 돌아오세요.
 
 
 <!-- ## Beyond ReAct

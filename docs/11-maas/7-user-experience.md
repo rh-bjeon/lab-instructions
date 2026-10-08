@@ -1,25 +1,25 @@
 # WIP 
 
-# 👤 User Experience
+# 👤 사용자 경험
 
-> 👤 **Persona Focus: The Consumer** — Forget infrastructure. Forget budgets. Forget OAuth configurations. You're a developer who just wants to call an AI model. "Give me an endpoint and an API key, and let me build cool stuff!"
-
----
-
-## 🎯 What You'll Learn
-
-In this lesson, you'll experience LiteMaaS from the user's perspective:
-
-* 🔑 Create and manage your API keys
-* 🚀 Make your first API call (the "Hello World" of AI!)
-* 💬 Explore the chatbot playground
-* 📊 Track your personal usage
+> 👤 **페르소나 포커스: 소비자(Consumer)** — 인프라는 잊으세요. 예산도 잊으세요. OAuth 설정도 잊으세요. 여러분은 그냥 AI 모델을 호출하고 싶은 개발자입니다. "엔드포인트와 API 키만 주면, 멋진 걸 만들 수 있어요!"
 
 ---
 
-## 🌟 The Self-Service Experience
+## 🎯 배울 내용
 
-Remember the old way?
+이 레슨에서는 사용자의 관점에서 LiteMaaS를 경험하게 됩니다:
+
+* 🔑 API 키 생성 및 관리하기
+* 🚀 첫 API 호출 해보기 (AI의 "Hello World"!)
+* 💬 챗봇 플레이그라운드 탐색하기
+* 📊 개인 사용량 추적하기
+
+---
+
+## 🌟 셀프서비스 경험
+
+예전 방식을 기억하시나요?
 
 ```
 Old Way (pre-MaaS):
@@ -49,18 +49,18 @@ RIGHT: "Using MaaS" - person relaxing in a hammock with laptop, calling an API]
 
 ---
 
-## 🔐 Step 1: Log In
+## 🔐 1단계: 로그인하기
 
-1. Open your browser and navigate to:
+1. 브라우저를 열고 다음 주소로 이동합니다:
    ```
    https://litemaas-<USER_NAME>-maas.apps.<CLUSTER_DOMAIN>
    ```
 
-2. Click **"Login with OpenShift"**
-3. Enter your OpenShift credentials
-4. You're in! 🎉
+2. **"Login with OpenShift"**를 클릭합니다
+3. OpenShift 자격 증명을 입력합니다
+4. 로그인 완료! 🎉
 
-As a regular user, you'll see a simplified dashboard:
+일반 사용자로서, 간소화된 대시보드를 보게 됩니다:
 
 [Image: User dashboard showing:
 - Welcome message with username
@@ -70,29 +70,29 @@ As a regular user, you'll see a simplified dashboard:
 
 ---
 
-## 🔑 Step 2: Create Your First API Key
+## 🔑 2단계: 첫 API 키 만들기
 
-API keys are your ticket to AI. Each key:
+API 키는 AI로 가는 여러분의 티켓입니다. 각 키는:
 
-* 🎫 Authenticates your requests
-* 🤖 Can be scoped to specific models
-* 💰 Has its own budget (optional)
-* 📊 Tracks usage separately
+* 🎫 요청을 인증합니다
+* 🤖 특정 모델로 범위를 제한할 수 있습니다
+* 💰 자체 예산을 가질 수 있습니다(선택 사항)
+* 📊 사용량을 별도로 추적합니다
 
-### Creating a Key
+### 키 만들기
 
-1. Click **"API Keys"** in the sidebar (or the quick action button)
-2. Click **"Create New Key"**
-3. Fill in the details:
+1. 사이드바에서 **"API Keys"**(또는 빠른 작업 버튼)를 클릭합니다
+2. **"Create New Key"**를 클릭합니다
+3. 세부 정보를 입력합니다:
 
-| Field | Value | Why |
+| 필드 | 값 | 이유 |
 |-------|-------|-----|
-| **Name** | `my-first-key` | Descriptive names help you manage multiple keys |
-| **Description** | `Testing the MaaS platform` | Optional but helpful |
-| **Models** | Select `granite-8b` | Which models this key can access |
-| **Budget** | `$10` (optional) | Per-key spending limit |
+| **Name** | `my-first-key` | 설명적인 이름은 여러 키를 관리하는 데 도움이 됨 |
+| **Description** | `Testing the MaaS platform` | 선택 사항이지만 도움이 됨 |
+| **Models** | `granite-8b` 선택 | 이 키가 접근할 수 있는 모델 |
+| **Budget** | `$10` (선택 사항) | 키당 지출 한도 |
 
-4. Click **Create**
+4. **Create**를 클릭합니다
 
 [Image: Create API Key modal showing:
 - Name input field
@@ -101,9 +101,9 @@ API keys are your ticket to AI. Each key:
 - Budget input with currency symbol
 - Create/Cancel buttons]
 
-### ⚠️ Save Your Key!
+### ⚠️ 키를 저장하세요!
 
-After creation, you'll see your API key **exactly once**:
+생성 후, API 키는 **정확히 한 번만** 보게 됩니다:
 
 ```
 sk-litemaas-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -116,17 +116,17 @@ sk-litemaas-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 - Warning: "This key will only be shown once. Copy it now!"
 - "I've copied my key" button to dismiss]
 
-> 🔒 **Security Note:** LiteMaaS doesn't store your key in plain text. If you lose it, you'll need to create a new one.
+> 🔒 **보안 참고:** LiteMaaS는 키를 평문으로 저장하지 않습니다. 키를 잃어버리면, 새로 만들어야 합니다.
 
 ---
 
-## 🚀 Step 3: The "Hello World" of AI
+## 🚀 3단계: AI의 "Hello World"
 
-Time for the moment of truth — your first API call!
+진실의 순간입니다 — 첫 API 호출!
 
-### Using curl
+### curl 사용하기
 
-Open your terminal and run:
+터미널을 열고 다음을 실행하세요:
 
 ```bash
 curl https://litemaas-<USER_NAME>-maas.apps.<CLUSTER_DOMAIN>/v1/chat/completions \
@@ -140,7 +140,7 @@ curl https://litemaas-<USER_NAME>-maas.apps.<CLUSTER_DOMAIN>/v1/chat/completions
   }'
 ```
 
-### The Response
+### 응답
 
 ```json
 {
@@ -166,14 +166,14 @@ curl https://litemaas-<USER_NAME>-maas.apps.<CLUSTER_DOMAIN>/v1/chat/completions
 }
 ```
 
-🎉 **Congratulations!** You just made your first MaaS API call!
+🎉 **축하합니다!** 방금 첫 MaaS API 호출을 했습니다!
 
 [Image: Celebratory "Achievement Unlocked" style graphic with:
 - 🏆 "First API Call!"
 - "You're now officially an AI developer"
 - Confetti effects]
 
-### Using Python
+### Python 사용하기
 
 ```python
 import requests
@@ -194,16 +194,16 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json()["choices"][0]["message"]["content"])
 ```
 
-Output:
+출력:
 ```
 Servers in the sky,
 Data flows like morning mist—
 Infinite, yet near.
 ```
 
-### Using the OpenAI Python SDK
+### OpenAI Python SDK 사용하기
 
-Since LiteMaaS is OpenAI-compatible, you can use the official OpenAI SDK:
+LiteMaaS가 OpenAI 호환이므로, 공식 OpenAI SDK를 사용할 수 있습니다:
 
 ```python
 from openai import OpenAI
@@ -223,17 +223,17 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-> 💡 **This is powerful!** Any application built for OpenAI can work with your private MaaS — just change the `base_url`.
+> 💡 **이것이 강력한 이유!** OpenAI용으로 만들어진 모든 애플리케이션이 여러분의 프라이빗 MaaS와 함께 동작할 수 있습니다 — `base_url`만 바꾸면 됩니다.
 
 ---
 
-## 💬 Step 4: The Chatbot Playground
+## 💬 4단계: 챗봇 플레이그라운드
 
-Don't want to write code? Use the built-in playground!
+코드를 작성하고 싶지 않으신가요? 내장된 플레이그라운드를 사용하세요!
 
-1. Navigate to **Playground** in the sidebar
-2. Select a model from the dropdown
-3. Start chatting!
+1. 사이드바에서 **Playground**로 이동합니다
+2. 드롭다운에서 모델을 선택합니다
+3. 채팅을 시작합니다!
 
 [Image: Playground interface showing:
 - Model selector dropdown (granite-8b selected)
@@ -242,37 +242,37 @@ Don't want to write code? Use the built-in playground!
 - Settings panel on right: Temperature slider, Max tokens, System prompt
 - Token counter showing current session usage]
 
-### Playground Features
+### 플레이그라운드 기능
 
-| Feature | Description |
+| 기능 | 설명 |
 |---------|-------------|
-| **Model Switching** | Try different models mid-conversation |
-| **System Prompt** | Set the AI's personality/behavior |
-| **Temperature** | Control creativity (0 = focused, 1 = creative) |
-| **Max Tokens** | Limit response length |
-| **Token Counter** | Real-time usage tracking |
-| **Export** | Download conversation as JSON |
+| **Model Switching** | 대화 중간에 다른 모델을 시도해보기 |
+| **System Prompt** | AI의 성격/행동 설정하기 |
+| **Temperature** | 창의성 조절(0 = 집중, 1 = 창의적) |
+| **Max Tokens** | 응답 길이 제한하기 |
+| **Token Counter** | 실시간 사용량 추적 |
+| **Export** | 대화를 JSON으로 다운로드 |
 
-### Exercise: Compare Models
+### 실습: 모델 비교하기
 
-If you have multiple models available:
+여러 모델을 사용할 수 있다면:
 
-1. Ask the same question to `granite-8b`
-2. Switch to a different model
-3. Ask the same question again
-4. Compare the responses!
+1. `granite-8b`에 같은 질문을 합니다
+2. 다른 모델로 전환합니다
+3. 같은 질문을 다시 합니다
+4. 응답을 비교해보세요!
 
-This is a great way to evaluate which model works best for your use case.
+이는 여러분의 사용 사례에 어떤 모델이 가장 잘 맞는지 평가하는 좋은 방법입니다.
 
 ---
 
-## 📊 Step 5: Track Your Usage
+## 📊 5단계: 사용량 추적하기
 
-As a responsible developer (and budget-conscious human), you'll want to know how much you're using.
+책임감 있는 개발자(그리고 예산에 신경 쓰는 사람)로서, 얼마나 사용하고 있는지 알고 싶을 것입니다.
 
-### Your Personal Dashboard
+### 개인 대시보드
 
-Navigate to **Dashboard** to see:
+**Dashboard**로 이동하면 다음을 볼 수 있습니다:
 
 [Image: Personal usage dashboard showing:
 - This Month card: $12.50 spent of $100 budget (progress bar at 12.5%)
@@ -280,18 +280,18 @@ Navigate to **Dashboard** to see:
 - Top Models: Pie chart showing usage by model
 - Recent Requests: Table with last 10 API calls]
 
-### Detailed Usage View
+### 상세 사용량 보기
 
-Click on **Usage** in the sidebar for more details:
+더 자세한 정보를 보려면 사이드바에서 **Usage**를 클릭하세요:
 
-| View | Shows |
+| 보기 | 보여주는 것 |
 |------|-------|
-| **By Day** | Daily token consumption |
-| **By Model** | Which models you use most |
-| **By API Key** | Usage per key (useful if you have multiple) |
-| **By Application** | If you've tagged requests with metadata |
+| **By Day** | 일별 토큰 소비량 |
+| **By Model** | 가장 많이 사용하는 모델 |
+| **By API Key** | 키별 사용량(여러 키를 가지고 있을 때 유용함) |
+| **By Application** | 메타데이터로 요청에 태그를 붙인 경우 |
 
-### Understanding Token Usage
+### 토큰 사용량 이해하기
 
 ```
 Your usage breakdown:
@@ -311,30 +311,30 @@ Actually:
 (Tokens are cheap! The budget is generous for learning.)
 ```
 
-> 💡 **Pro Tip:** Output tokens typically cost 2-3x more than input tokens because generation is more computationally expensive.
+> 💡 **꿀팁:** 출력 토큰은 생성이 연산적으로 더 비용이 많이 들기 때문에 입력 토큰보다 보통 2-3배 더 비쌉니다.
 
 ---
 
-## 🔑 Managing Multiple API Keys
+## 🔑 여러 API 키 관리하기
 
-As you build more applications, you'll want separate keys for each:
+더 많은 애플리케이션을 만들면서, 각각을 위한 별도의 키를 원하게 될 것입니다:
 
-| Key Name | Purpose | Budget |
+| 키 이름 | 목적 | 예산 |
 |----------|---------|--------|
-| `dev-testing` | Local development and experiments | $5 |
-| `canopy-backend` | Production Canopy application | $50 |
-| `jupyter-notebooks` | Data science experiments | $20 |
+| `dev-testing` | 로컬 개발 및 실험 | $5 |
+| `canopy-backend` | 프로덕션 Canopy 애플리케이션 | $50 |
+| `jupyter-notebooks` | 데이터 과학 실험 | $20 |
 
-### Best Practices
+### 모범 사례
 
-1. **One key per application** — Easier to track usage and revoke if needed
-2. **Descriptive names** — Future you will thank present you
-3. **Separate dev/prod keys** — Don't use your production key for testing
-4. **Regular rotation** — Regenerate keys periodically for security
+1. **애플리케이션당 하나의 키** — 사용량 추적과 필요시 취소가 더 쉬움
+2. **설명적인 이름** — 미래의 여러분이 지금의 여러분에게 감사할 것임
+3. **개발/프로덕션 키 분리** — 테스트에 프로덕션 키를 사용하지 말 것
+4. **정기적인 교체** — 보안을 위해 주기적으로 키를 재생성할 것
 
-### Viewing Your Keys
+### 키 보기
 
-Navigate to **API Keys** to see all your keys:
+**API Keys**로 이동하면 모든 키를 볼 수 있습니다:
 
 [Image: API Keys list showing:
 - Table with columns: Name, Created, Last Used, Models, Budget Used, Status
@@ -342,78 +342,78 @@ Navigate to **API Keys** to see all your keys:
 - "Create New Key" button
 - Actions: View Details, Regenerate, Delete]
 
-> ⚠️ **Note:** You can't see the actual key values — only metadata. If you need the key value, you'll have to create a new one.
+> ⚠️ **참고:** 실제 키 값은 볼 수 없습니다 — 메타데이터만 볼 수 있습니다. 키 값이 필요하다면, 새로 만들어야 합니다.
 
 ---
 
-## 🎮 Hands-on Exercises
+## 🎮 실습
 
-### Exercise 1: Create a Specialized Key
+### 실습 1: 전용 키 만들기
 
-1. Create a new API key called `poetry-generator`
-2. Give it access to only one model
-3. Set a budget of $2
-4. Use it to generate 5 poems
+1. `poetry-generator`라는 새 API 키를 만듭니다
+2. 모델 하나에만 접근 권한을 줍니다
+3. 예산을 $2로 설정합니다
+4. 이를 사용해서 시 5개를 생성합니다
 
-### Exercise 2: Explore the Playground
+### 실습 2: 플레이그라운드 탐색하기
 
-1. Open the Playground
-2. Set a system prompt: "You are a helpful assistant who only responds in rhymes."
-3. Ask it about the weather
-4. Try changing the temperature and see how responses differ
+1. 플레이그라운드를 엽니다
+2. 시스템 프롬프트를 설정합니다: "You are a helpful assistant who only responds in rhymes."
+3. 날씨에 대해 물어봅니다
+4. temperature를 바꿔보고 응답이 어떻게 달라지는지 확인합니다
 
-### Exercise 3: Track Your Usage
+### 실습 3: 사용량 추적하기
 
-1. Make 10 API calls with different prompts
-2. Go to Usage and find today's usage
-3. Calculate the average tokens per request
-4. Identify which request used the most tokens
-
----
-
-## 🧪 Knowledge Check
-
-<details>
-<summary>❓ Why should you create separate API keys for different applications?</summary>
-
-✅ **Answer:** Separate keys give you:
-- Better usage tracking (know which app uses what)
-- Easier revocation (if one app's key leaks, others are unaffected)
-- Per-application budgets (control costs per project)
-- Cleaner audit trails
-</details>
-
-<details>
-<summary>❓ What makes LiteMaaS "OpenAI-compatible"?</summary>
-
-✅ **Answer:** LiteMaaS uses the same API format as OpenAI (`/v1/chat/completions`, same request/response structure). This means any application written for OpenAI can work with LiteMaaS by just changing the base URL and API key.
-</details>
-
-<details>
-<summary>❓ Why do output tokens typically cost more than input tokens?</summary>
-
-✅ **Answer:** Output tokens require generation — the model has to "think" and produce new text. Input tokens just need to be processed and understood. Generation is more computationally expensive, so it costs more.
-</details>
+1. 다른 프롬프트로 API 호출을 10번 합니다
+2. Usage로 이동해서 오늘의 사용량을 찾습니다
+3. 요청당 평균 토큰 수를 계산합니다
+4. 어떤 요청이 가장 많은 토큰을 사용했는지 파악합니다
 
 ---
 
-## 🎯 What You've Accomplished
+## 🧪 지식 확인
 
-As a Consumer, you've now:
+<details>
+<summary>❓ 왜 애플리케이션마다 별도의 API 키를 만들어야 할까요?</summary>
 
-* ✅ Created your first API key
-* ✅ Made the "Hello World" of AI — your first API call!
-* ✅ Explored the chatbot playground
-* ✅ Learned to track your personal usage
+✅ **답:** 별도의 키는 다음을 제공합니다:
+- 더 나은 사용량 추적(어떤 앱이 무엇을 사용하는지 알 수 있음)
+- 더 쉬운 취소(한 앱의 키가 유출되어도 다른 앱은 영향받지 않음)
+- 애플리케이션별 예산(프로젝트별 비용 통제)
+- 더 깔끔한 감사 기록
+</details>
+
+<details>
+<summary>❓ LiteMaaS를 "OpenAI 호환"으로 만드는 것은 무엇인가요?</summary>
+
+✅ **답:** LiteMaaS는 OpenAI와 동일한 API 형식(`/v1/chat/completions`, 동일한 요청/응답 구조)을 사용합니다. 이는 OpenAI용으로 작성된 모든 애플리케이션이 base URL과 API 키만 바꾸면 LiteMaaS와 함께 동작할 수 있다는 의미입니다.
+</details>
+
+<details>
+<summary>❓ 왜 출력 토큰이 입력 토큰보다 보통 더 비쌀까요?</summary>
+
+✅ **답:** 출력 토큰은 생성이 필요합니다 — 모델이 "생각"하고 새로운 텍스트를 만들어내야 합니다. 입력 토큰은 그냥 처리되고 이해되기만 하면 됩니다. 생성은 연산적으로 더 비용이 많이 들기 때문에 더 비쌉니다.
+</details>
+
+---
+
+## 🎯 달성한 것
+
+소비자로서, 이제 여러분은:
+
+* ✅ 첫 API 키를 만들었습니다
+* ✅ AI의 "Hello World" — 첫 API 호출을 했습니다!
+* ✅ 챗봇 플레이그라운드를 탐색했습니다
+* ✅ 개인 사용량을 추적하는 방법을 배웠습니다
 
 [Image: Achievement badge with "👤 AI Developer" text and subtitle "You're now building with AI — no GPU knowledge required!"]
 
 ---
 
-## 🎯 Next Steps
+## 🎯 다음 단계
 
-Now you know how to use MaaS as a consumer. But what about the big picture? How does the organization track usage across *everyone*?
+이제 소비자로서 MaaS를 사용하는 방법을 알게 되었습니다. 하지만 큰 그림은 어떨까요? 조직은 *모든 사람*에 걸친 사용량을 어떻게 추적할까요?
 
-Put your 📊 **Owner/Accountant** hat back on — it's time to dive into observability and chargeback!
+📊 **오너/회계 담당자** 모자를 다시 써봅시다 — observability와 차지백에 대해 깊이 알아볼 시간입니다!
 
-**Continue to [Usage & Observability](./5-usage-observability.md)** →
+**[Usage & Observability](./5-usage-observability.md)로 계속하기** →
