@@ -1,4 +1,12 @@
 ---
+# Pin module execution to the exact interpreter running ansible-playbook itself
+# (our plays are hosts: localhost / connection: local), instead of leaving it to
+# Ansible's interpreter auto-discovery -- which can silently pick a different
+# python3 than the one ansible-core itself depends on, especially on RHEL hosts
+# where multiple python3.x streams coexist (default stream vs AppStream
+# alternatives like python3.11/python3.12).
+ansible_python_interpreter: "{{ ansible_playbook_python }}"
+
 # Student OpenShift usernames follow "<student_username_prefix><N>", e.g. user1, user2, ...
 student_username_prefix: user
 student_start_index: 1
@@ -13,8 +21,8 @@ password_overrides: {}
 # (the same convention docs/index.html already used). Override only if a given cluster differs.
 gitea_console_url: "gitea-gitea.{{ openshift_cluster_ingress_domain }}"
 
-# Lab guide content source (this repo) -- override to point at a fork/branch if needed.
-content_git_repo_url: "https://github.com/rhoai-genaiops/lab-instructions.git"
+# Lab guide content source -- override with -e content_git_repo_url=... / -e content_git_repo_ref=...
+content_git_repo_url: "https://github.com/rh-bjeon/lab-instructions.git"
 content_git_repo_ref: main
 
 # Generic images used for every student -- no custom image build. See docs/index.html.
