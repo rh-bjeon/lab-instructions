@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>GenAIOps 실습 가이드</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
+  <meta name="description" content="GenAIOps 실습 가이드 (AI501)">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; frame-src https:; default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
@@ -31,33 +31,33 @@
 
   <div class="user-name-form">
       <div class="user-inputs">
-        <label for="uname">User Name</label><br/>
-        <input type="text" id="uname" name="username" placeholder="Your username..">
+        <label for="uname">사용자 이름</label><br/>
+        <input type="text" id="uname" name="username" placeholder="사용자 이름을 입력하세요..">
       </div>
 
       <div class="user-inputs">
-        <label for="pass">Password</label><br/>
-        <input type="text" id="pass" name="password" placeholder="Your password">
+        <label for="pass">비밀번호</label><br/>
+        <input type="text" id="pass" name="password" placeholder="비밀번호를 입력하세요">
       </div>
 
       <div class="user-inputs">
-        <label for="cdomain">Cluster Domain</label><br/>
-        <input type="text" id="cdomain" name="clusterdomain" placeholder="Your cluster domain..">
+        <label for="cdomain">클러스터 도메인</label><br/>
+        <input type="text" id="cdomain" name="clusterdomain" placeholder="클러스터 도메인을 입력하세요..">
       </div>
 
       <div class="user-inputs" style="display: none;">
-        <label for="gitserver">Git Server (optional)</label><br/>
-        <input type="text" id="gitserver" name="gitserver" placeholder="Your git server..">
+        <label for="gitserver">Git 서버 (선택)</label><br/>
+        <input type="text" id="gitserver" name="gitserver" placeholder="Git 서버를 입력하세요..">
       </div>
 
       <div style="display: flex; align-items: center; margin-left: 1px;">
         <div style="display: flex; flex-direction: column;">
-          <button class="storage-btns" onclick="setNamesInStorage()">Save</button>
-          <button class="storage-btns" onclick="clearStorage()">Clear</button>
+          <button class="storage-btns" onclick="setNamesInStorage()">저장</button>
+          <button class="storage-btns" onclick="clearStorage()">초기화</button>
         </div>
 
         <div class="dropdown">
-          <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">Quick Links</button>
+          <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">바로가기</button>
           <div class="dropdown-content" id="dynamic-links">
             <!-- Links will be populated dynamically with JavaScript -->
           </div>
@@ -66,8 +66,24 @@
   </div>
 
   <div id="app"></div>
-    
+
+  <script src="env-config.js"></script>
   <script>
+    // Deployment env vars (user/password/openshift_cluster_ingress_domain/gitea_console_url) are
+    // rendered into env-config.js as window.__ENV__ at container start (see ansible/files/generate-env-config.sh).
+    // Seed localStorage from it once, only where a value isn't already saved, so students can still
+    // edit the form below and Save to override.
+    (function seedFromEnv() {
+      if (typeof window.__ENV__ === 'undefined') return;
+      var map = { USER_NAME: 'USER_NAME', PASSWORD: 'PASSWORD', CLUSTER_DOMAIN: 'CLUSTER_DOMAIN', GIT_SERVER: 'GIT_SERVER' };
+      Object.keys(map).forEach(function (k) {
+        var v = window.__ENV__[k];
+        if (v && !localStorage.getItem(map[k])) {
+          localStorage.setItem(map[k], v);
+        }
+      });
+    })();
+
     document.getElementById("uname").value = localStorage.getItem('USER_NAME') ? localStorage.getItem('USER_NAME') : '';
     document.getElementById("pass").value = localStorage.getItem('PASSWORD') ? localStorage.getItem('PASSWORD') : '';
     document.getElementById("cdomain").value = localStorage.getItem('CLUSTER_DOMAIN') ? localStorage.getItem('CLUSTER_DOMAIN') : '';
@@ -88,9 +104,9 @@
       
       // Add dynamic links
       const links = [
-        { name: '☕️ Git Server', url: `https://${gitServer}` },
-        { name: '📺 OpenShift Console', url: `https://console-openshift-console.${clusterDomain}` },
-        { name: '🧠 OpenShift AI Dashboard', url: `https://data-science-gateway.${clusterDomain}` },
+        { name: '☕️ Git 서버', url: `https://${gitServer}` },
+        { name: '📺 OpenShift 콘솔', url: `https://console-openshift-console.${clusterDomain}` },
+        { name: '🧠 OpenShift AI 대시보드', url: `https://data-science-gateway.${clusterDomain}` },
         { name: '🐙 Argo CD', url: `https://argocd-server-${username}-toolings.${clusterDomain}` }
       ];
       
@@ -117,16 +133,16 @@
                     : document.getElementById('gitserver').value.toLowerCase();
 
       // Check inputs
-      if (uname == '') {        
-        alert('Please enter a username');
+      if (uname == '') {
+        alert('사용자 이름을 입력하세요');
         return;
       }
-      if (pass == '') {        
-        alert('Please enter your password');
+      if (pass == '') {
+        alert('비밀번호를 입력하세요');
         return;
       }
-      if (cdomain == '') {        
-        alert('Please enter a cluster domain');
+      if (cdomain == '') {
+        alert('클러스터 도메인을 입력하세요');
         return;
       }
 
@@ -181,7 +197,7 @@
     window.$docsify = {
       auto2top: true,
       executeScript: true,
-      name: 'GenAIOps Lab Exercises',
+      name: 'GenAIOps 실습 가이드',
       repo: 'https://github.com/rhoai-genaiops/lab-instructions',
       loadSidebar: true,
       subMaxLevel: 0,
@@ -239,7 +255,7 @@
 
           const footer = `<hr/>
             <footer>
-            <span><a href="https://github.com/rhoai-genaiops"> 🤖 GenAIOps Git Repository</a> </span>
+            <span><a href="https://github.com/rhoai-genaiops"> 🤖 GenAIOps Git 저장소</a> </span>
             </footer>
             `;
 
