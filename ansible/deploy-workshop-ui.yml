@@ -13,8 +13,6 @@
   gather_facts: false
   vars_files:
     - defaults.yml
-  vars:
-    workshop_ui_secret_key: "{{ workshop_ui_secret_key | default(lookup('password', '/dev/null length=32 chars=ascii_letters,digits')) }}"
 
   tasks:
     - name: Validate required variables
@@ -25,6 +23,10 @@
         fail_msg: >-
           workshop_ui_admin_password is required (it has no insecure default),
           e.g. -e workshop_ui_admin_password='some-strong-password'
+
+    - name: Resolve a random secret key when one wasn't provided
+      ansible.builtin.set_fact:
+        workshop_ui_secret_key: "{{ workshop_ui_secret_key | default(lookup('password', '/dev/null length=32 chars=ascii_letters,digits')) }}"
 
     - name: Ensure namespace exists
       kubernetes.core.k8s:
