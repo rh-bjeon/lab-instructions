@@ -17,14 +17,13 @@ class Workshop(Base):
     id = Column(Integer, primary_key=True, default=1)
     title = Column(String, nullable=False, default="GenAIOps Workshop")
     description = Column(String, nullable=True, default="")
-    password_hash = Column(String, nullable=False)
+    password = Column(String, nullable=False)
     redirect_enabled = Column(Boolean, nullable=False, default=False)
     registration_mode = Column(String, nullable=False, default="open")  # "open" | "pre_registration"
     username_prefix = Column(String, nullable=False, default="user")
     student_count = Column(Integer, nullable=False, default=0)
     cluster_ingress_domain = Column(String, nullable=True, default="")
-    gitea_console_url = Column(String, nullable=True, default="")
-    labguide_route_name = Column(String, nullable=False, default="labguide")
+    labguide_url_template = Column(String, nullable=False, default="https://labguide-{username}-labguide.{clusterdomain}")
     default_user_password = Column(String, nullable=True, default="")
 
 
@@ -45,3 +44,14 @@ class WorkshopUser(Base):
     def unassign(self) -> None:
         self.assigned_email = None
         self.assigned_at = None
+
+
+class InfoLink(Base):
+    """Admin-managed extra link/info box shown on the student info page,
+    in addition to the built-in Lab Guide and OpenShift Console boxes."""
+
+    __tablename__ = "info_link"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    label = Column(String, nullable=False)
+    url_template = Column(String, nullable=False)

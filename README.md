@@ -61,7 +61,7 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 - 콘텐츠는 `content_git_repo_url`(기본값: 이 repo)의 `content_git_repo_ref`(기본값: `main`) 브랜치를 clone해옵니다. 아직 `main`에 merge되지 않은 브랜치의 내용을 배포하려면(워크샵 디렉터리/로그인 앱 등) `-e content_git_repo_ref=<브랜치명>`을 함께 전달하세요. 이 두 변수는 `deploy-labguide.yml`과 `deploy-workshop-ui.yml` 모두에 동일하게 적용됩니다.
 - `default_password`는 모든 학생에게 적용되며, `password_overrides`(사용자명 → 비밀번호의 JSON map)는 특정 학생에게만 다른 값을 적용합니다.
 
-이 Ansible 변수들은 컨테이너 env var로 매핑되고, 이는 다시 문서(`docs/index.html` 참고)에 치환되는 placeholder로 매핑됩니다:
+이 Ansible 변수들은 컨테이너 env var로 매핑되고, 이는 다시 문서(`docs/index.html` 참고)에 치환되는 placeholder로 매핑됩니다. 임시 클러스터 환경이라는 점을 고려해 이 값들은 모두 일반 ConfigMap(`labguide-values`)으로만 관리하며(`password` 포함, 별도 Secret 없음), 페이지 상단의 수동 입력 폼은 이 값들이 env var로 이미 채워져 있을 때는 자동으로 숨겨집니다:
 
 | Ansible 변수 | 컨테이너 env var | 문서 placeholder |
 |---|---|---|
@@ -72,7 +72,7 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 
 #### 워크샵 디렉터리/로그인 앱 (`workshop-ui/`)
 
-실습자가 OpenShift 사용자 이름을 미리 알 필요 없이, 이메일 + 공용 워크샵 비밀번호만 입력하면 `ansible/deploy-labguide.yml`이 이미 프로비저닝한 `user1`..`userN` 중 하나에 자동으로 매칭되는 작은 디렉터리/로그인 앱입니다. 관리자(admin) 모드에서 워크샵 제목/설명/비밀번호/등록 방식(open 또는 pre-registration)/리다이렉트 여부를 설정하고, 이메일↔사용자 할당 현황을 확인·관리할 수 있습니다. 자세한 내용은 [`workshop-ui/README.md`](./workshop-ui/README.md) 참고.
+실습자가 OpenShift 사용자 이름을 미리 알 필요 없이, 이메일 + 공용 워크샵 비밀번호만 입력하면 `ansible/deploy-labguide.yml`이 이미 프로비저닝한 `user1`..`userN` 중 하나에 자동으로 매칭되는 작은 디렉터리/로그인 앱입니다. 관리자(admin) 모드에서 워크샵 제목/설명/비밀번호(현재 값도 그대로 확인 가능)/등록 방식(open 또는 pre-registration)/리다이렉트 여부/랩가이드 URL 템플릿(`{username}`, `{clusterdomain}`, `{password}` 치환 가능)을 설정하고, 이메일↔사용자 할당 현황 및 사용자 정보 페이지에 추가로 보여줄 커스텀 링크(label + URL 템플릿)를 확인·관리할 수 있습니다. 자세한 내용은 [`workshop-ui/README.md`](./workshop-ui/README.md) 참고.
 
 랩 가이드 사이트와 동일하게 커스텀 이미지 빌드 없이 배포됩니다(`git-cloner` initContainer + 범용 `registry.access.redhat.com/ubi9/python-312` 이미지, 시작 시 `pip install`). 다만 랩 가이드와 달리 **학생 1명당 1개가 아니라 워크샵/클러스터당 1개**만 배포하며, 할당 데이터(SQLite)를 Pod 재시작 후에도 보존하기 위해 `emptyDir`이 아니라 PVC를 사용합니다. 이 앱은 Ansible을 직접 트리거하지 않습니다 — `ansible/deploy-labguide.yml`로 이미 프로비저닝된 것과 동일한 `student_count`/`cluster_ingress_domain`/`default_user_password`를 admin 대시보드에 입력해두면, 명명 규칙에 따라 각 사용자의 콘솔/랩가이드 URL을 계산해서 보여줄 뿐입니다.
 

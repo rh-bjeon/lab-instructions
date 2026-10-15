@@ -38,13 +38,21 @@
     <span class="label">Password</span>
     <code>{{ info.password }}</code>
   </div>
-  {% if info.gitea_console_url %}
-  <div class="info-row">
-    <span class="label">Gitea</span>
-    <a href="https://{{ info.gitea_console_url }}" target="_blank">{{ info.gitea_console_url }}</a>
-  </div>
-  {% endif %}
   <label>oc login command</label>
   <div class="copy-field"><pre>{{ info.oc_login_command }}</pre></div>
 </div>
+
+{% if info.custom_links %}
+<hr class="section-divider">
+
+<div class="card">
+  <h2>Additional Resources</h2>
+  {% for link in info.custom_links %}
+  <div class="info-row">
+    <span class="label">{{ link.label }}</span>
+    <a href="{{ link.url }}" target="_blank">{{ link.url }}</a>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 {% endblock %}

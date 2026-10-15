@@ -84,6 +84,20 @@
       });
     })();
 
+    // When the Deployment's env vars already provide USER_NAME/PASSWORD/CLUSTER_DOMAIN
+    // (i.e. this is a real OpenShift deployment, not local/GitHub Pages preview),
+    // students never need to type/edit these values -- hide the manual form and
+    // the "맞춤 설정" explainer section entirely.
+    function envProvided() {
+      return !!(window.__ENV__ && window.__ENV__.USER_NAME && window.__ENV__.PASSWORD && window.__ENV__.CLUSTER_DOMAIN);
+    }
+    if (envProvided()) {
+      document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('.user-name-form');
+        if (form) form.style.display = 'none';
+      });
+    }
+
     document.getElementById("uname").value = localStorage.getItem('USER_NAME') ? localStorage.getItem('USER_NAME') : '';
     document.getElementById("pass").value = localStorage.getItem('PASSWORD') ? localStorage.getItem('PASSWORD') : '';
     document.getElementById("cdomain").value = localStorage.getItem('CLUSTER_DOMAIN') ? localStorage.getItem('CLUSTER_DOMAIN') : '';
@@ -250,6 +264,23 @@
             if (container && !container.hasChildNodes()) {
               // Replace with your actual Gradio app URL
               createGradioEmbed(container, 'https://your-gradio-app-url.com');
+            }
+
+            // Re-applied on every page render since docsify re-renders #app's
+            // content (including docs/README.md) on each navigation. There's no
+            // wrapper element around this markdown section, so hide the heading
+            // itself plus every sibling up to (not including) the next heading.
+            if (envProvided()) {
+              const headings = document.querySelectorAll('.markdown-section h2');
+              headings.forEach(function (heading) {
+                if (heading.textContent.indexOf('가이드 내용 맞춤 설정하기') === -1) return;
+                heading.style.display = 'none';
+                let node = heading.nextElementSibling;
+                while (node && node.tagName !== 'H2') {
+                  node.style.display = 'none';
+                  node = node.nextElementSibling;
+                }
+              });
             }
           });
 

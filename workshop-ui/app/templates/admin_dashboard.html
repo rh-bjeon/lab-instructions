@@ -23,8 +23,8 @@
     <textarea id="description" name="description" placeholder="Shown next to the login box on the user access page.">{{ workshop.description or '' }}</textarea>
 
     <label for="password">Access Password <span class="required">*</span></label>
-    <input type="text" id="password" name="password" placeholder="Leave blank to keep the current password">
-    <div class="help">Shared password students enter alongside their email. Leave blank to keep it unchanged.</div>
+    <input type="text" id="password" name="password" required value="{{ workshop.password }}">
+    <div class="help">Shared password students enter alongside their email.</div>
 
     <div class="toggle-row">
       <input type="checkbox" id="redirect_enabled" name="redirect_enabled" {% if workshop.redirect_enabled %}checked{% endif %}>
@@ -44,8 +44,9 @@
     <label for="cluster_ingress_domain">OpenShift Cluster Ingress Domain</label>
     <input type="text" id="cluster_ingress_domain" name="cluster_ingress_domain" placeholder="apps.example.com" value="{{ workshop.cluster_ingress_domain or '' }}">
 
-    <label for="gitea_console_url">Gitea Console URL</label>
-    <input type="text" id="gitea_console_url" name="gitea_console_url" placeholder="gitea-gitea.apps.example.com" value="{{ workshop.gitea_console_url or '' }}">
+    <label for="labguide_url_template">Lab Guide URL Template</label>
+    <input type="text" id="labguide_url_template" name="labguide_url_template" value="{{ workshop.labguide_url_template }}">
+    <div class="help">Use <code>{username}</code> and <code>{clusterdomain}</code> as placeholders, e.g. <code>https://labguide-test-{username}.{clusterdomain}</code>.</div>
 
     <label for="default_user_password">Default OpenShift User Password</label>
     <input type="text" id="default_user_password" name="default_user_password" value="{{ workshop.default_user_password or '' }}">
@@ -102,6 +103,42 @@
     <label for="emails">Emails (one per line) — assigned to the next free slots in order</label>
     <textarea id="emails" name="emails" rows="6" placeholder="alice@example.com&#10;bob@example.com"></textarea>
     <button type="submit">Assign</button>
+  </form>
+</div>
+
+<hr class="section-divider">
+
+<div class="card">
+  <h2>Additional Links</h2>
+  <div class="help">Extra info boxes shown on the student info page, alongside the built-in Lab Guide and OpenShift Console boxes. Use <code>{username}</code>, <code>{clusterdomain}</code> and <code>{password}</code> as placeholders in the URL.</div>
+  <table>
+    <thead>
+      <tr><th>Label</th><th>URL Template</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for link in links %}
+      <tr>
+        <td>{{ link.label }}</td>
+        <td><code>{{ link.url_template }}</code></td>
+        <td>
+          <form method="post" action="/admin/links/{{ link.id }}/delete">
+            <button type="submit" class="secondary">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form method="post" action="/admin/links/add" style="display:flex; gap:8px; align-items:flex-end; margin-top:16px;">
+    <div style="flex:1;">
+      <label for="link_label">Label</label>
+      <input type="text" id="link_label" name="label" placeholder="Gitea Console" required>
+    </div>
+    <div style="flex:2;">
+      <label for="link_url_template">URL Template</label>
+      <input type="text" id="link_url_template" name="url_template" placeholder="https://gitea-gitea.{clusterdomain}" required>
+    </div>
+    <button type="submit">Add</button>
   </form>
 </div>
 {% endblock %}

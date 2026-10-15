@@ -52,11 +52,13 @@ def _dashboard_context(request: Request, db: Session, **extra):
     workshop = crud.get_workshop(db)
     crud.ensure_user_pool(db, workshop)
     users = crud.list_users(db)
+    links = crud.list_links(db)
     assigned, total = crud.assigned_count(db)
-    user_infos = {u.username: computed.user_info(workshop, u) for u in users}
+    user_infos = {u.username: computed.user_info(workshop, u, links) for u in users}
     context = {
         "workshop": workshop,
         "users": users,
+        "links": links,
         "user_infos": user_infos,
         "assigned_count": assigned,
         "total_count": total,
@@ -76,24 +78,25 @@ def update_workshop(
     db: Session = Depends(get_db),
     title: str = Form(...),
     description: str = Form(""),
-    password: str = Form(""),
+    password: str = Form(...),
     redirect_enabled: bool = Form(False),
     registration_mode: str = Form("open"),
     student_count: int = Form(0),
     cluster_ingress_domain: str = Form(""),
-    gitea_console_url: str = Form(""),
+    labguide_url_template: str = Form(""),
     default_user_password: str = Form(""),
 ):
     workshop = crud.get_workshop(db)
     workshop.title = title.strip()
     workshop.description = description.strip()
-    if password.strip():
-        workshop.password_hash = security.hash_password(password.strip())
+    workshop.password = password.strip()
     workshop.redirect_enabled = redirect_enabled
     workshop.registration_mode = "pre_registration" if registration_mode == "pre_registration" else "open"
     workshop.student_count = max(0, student_count)
     workshop.cluster_ingress_domain = cluster_ingress_domain.strip()
-    workshop.gitea_console_url = gitea_console_url.strip()
+    workshop.labguide_url_template = (
+        labguide_url_template.strip() or "https://labguide-{username}-labguide.{clusterdomain}"
+    )
     workshop.default_user_password = default_user_password.strip()
     db.commit()
     crud.ensure_user_pool(db, workshop)
@@ -101,6 +104,19 @@ def update_workshop(
     return templates.TemplateResponse(
         request, "admin_dashboard.html", _dashboard_context(request, db, notice="저장되었습니다.")
     )
+
+
+@router.post("/links/add", dependencies=[Depends(require_admin)])
+def add_link(request: Request, db: Session = Depends(get_db), label: str = Form(...), url_template: str = Form(...)):
+    if label.strip() and url_template.strip():
+        crud.add_link(db, label.strip(), url_template.strip())
+    return templates.TemplateResponse(request, "admin_dashboard.html", _dashboard_context(request, db, notice="링크가 추가되었습니다."))
+
+
+@router.post("/links/{link_id}/delete", dependencies=[Depends(require_admin)])
+def delete_link(request: Request, link_id: int, db: Session = Depends(get_db)):
+    crud.delete_link(db, link_id)
+    return templates.TemplateResponse(request, "admin_dashboard.html", _dashboard_context(request, db, notice="링크가 삭제되었습니다."))
 
 
 @router.post("/users/{username}/assign", dependencies=[Depends(require_admin)])

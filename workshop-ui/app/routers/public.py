@@ -49,7 +49,7 @@ def login(
     if security.is_rate_limited(throttle_key):
         return error("너무 많이 시도했습니다. 잠시 후 다시 시도해주세요.")
 
-    if not security.verify_password(password, workshop.password_hash):
+    if not security.constant_time_eq(password, workshop.password):
         security.record_failed_attempt(throttle_key)
         return error("이메일 또는 워크샵 비밀번호가 올바르지 않습니다.")
 
@@ -94,7 +94,8 @@ def workshop_page(
     user = db.get(WorkshopUser, username) if username else None
     if not user or not user.assigned_email:
         return RedirectResponse("/", status_code=303)
-    info = computed.user_info(workshop, user)
+    links = crud.list_links(db)
+    info = computed.user_info(workshop, user, links)
     return templates.TemplateResponse(request, "workshop.html", {"workshop": workshop, "info": info})
 
 

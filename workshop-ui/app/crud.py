@@ -3,8 +3,7 @@ import re
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import security
-from .models import Workshop, WorkshopUser
+from .models import InfoLink, Workshop, WorkshopUser
 
 WORKSHOP_ID = 1
 
@@ -18,7 +17,7 @@ def _sort_key(username: str):
 def get_workshop(db: Session) -> Workshop:
     workshop = db.get(Workshop, WORKSHOP_ID)
     if workshop is None:
-        workshop = Workshop(id=WORKSHOP_ID, password_hash=security.hash_password("changeme"))
+        workshop = Workshop(id=WORKSHOP_ID, password="changeme")
         db.add(workshop)
         db.commit()
         db.refresh(workshop)
@@ -56,3 +55,19 @@ def assigned_count(db: Session) -> tuple[int, int]:
     users = list_users(db)
     assigned = sum(1 for u in users if u.assigned_email)
     return assigned, len(users)
+
+
+def list_links(db: Session) -> list[InfoLink]:
+    return list(db.scalars(select(InfoLink).order_by(InfoLink.id)))
+
+
+def add_link(db: Session, label: str, url_template: str) -> None:
+    db.add(InfoLink(label=label, url_template=url_template))
+    db.commit()
+
+
+def delete_link(db: Session, link_id: int) -> None:
+    link = db.get(InfoLink, link_id)
+    if link:
+        db.delete(link)
+        db.commit()

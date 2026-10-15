@@ -28,13 +28,6 @@
     state: present
     definition: "{{ lookup('template', 'templates/configmap-values.yaml.j2') }}"
 
-- name: "{{ student_username }}: apply password Secret"
-  kubernetes.core.k8s:
-    kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
-    context: "{{ k8s_context | default(omit) }}"
-    state: present
-    definition: "{{ lookup('template', 'templates/secret.yaml.j2') }}"
-
 - name: "{{ student_username }}: apply Deployment"
   kubernetes.core.k8s:
     kubeconfig: "{{ k8s_kubeconfig | default(omit) }}"
