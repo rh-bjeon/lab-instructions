@@ -58,6 +58,7 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 ```
 
 - 보통 전달해야 하는 변수는 `student_count`와 `openshift_cluster_ingress_domain` 뿐입니다. `gitea_console_url`은 기본적으로 `gitea-gitea.<openshift_cluster_ingress_domain>`로 설정되며, 클러스터의 Gitea가 이 규칙을 따르지 않는 경우에만 `-e gitea_console_url=...`로 명시하면 됩니다. 모든 기본값은 `ansible/defaults.yml`을 참고하세요.
+- 콘텐츠는 `content_git_repo_url`(기본값: 이 repo)의 `content_git_repo_ref`(기본값: `main`) 브랜치를 clone해옵니다. 아직 `main`에 merge되지 않은 브랜치의 내용을 배포하려면(워크샵 디렉터리/로그인 앱 등) `-e content_git_repo_ref=<브랜치명>`을 함께 전달하세요. 이 두 변수는 `deploy-labguide.yml`과 `deploy-workshop-ui.yml` 모두에 동일하게 적용됩니다.
 - `default_password`는 모든 학생에게 적용되며, `password_overrides`(사용자명 → 비밀번호의 JSON map)는 특정 학생에게만 다른 값을 적용합니다.
 
 이 Ansible 변수들은 컨테이너 env var로 매핑되고, 이는 다시 문서(`docs/index.html` 참고)에 치환되는 placeholder로 매핑됩니다:
