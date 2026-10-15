@@ -267,20 +267,30 @@
             }
 
             // Re-applied on every page render since docsify re-renders #app's
-            // content (including docs/README.md) on each navigation. There's no
-            // wrapper element around this markdown section, so hide the heading
-            // itself plus every sibling up to (not including) the next heading.
+            // content (including docs/README.md) on each navigation. The section
+            // is wrapped in <!-- customize-section-start/end --> HTML comments
+            // (docs/README.md) rather than a heading-text match, since this
+            // section sits at the end of the page, right before docsify-pagination's
+            // injected prev/next nav -- walking "until the next heading" would run
+            // off the end of the content and swallow that nav along with it.
             if (envProvided()) {
-              const headings = document.querySelectorAll('.markdown-section h2');
-              headings.forEach(function (heading) {
-                if (heading.textContent.indexOf('가이드 내용 맞춤 설정하기') === -1) return;
-                heading.style.display = 'none';
-                let node = heading.nextElementSibling;
-                while (node && node.tagName !== 'H2') {
-                  node.style.display = 'none';
-                  node = node.nextElementSibling;
-                }
-              });
+              const section = document.querySelector('.markdown-section');
+              if (section) {
+                let hiding = false;
+                section.childNodes.forEach(function (node) {
+                  if (node.nodeType === Node.COMMENT_NODE && node.data.trim() === 'customize-section-start') {
+                    hiding = true;
+                    return;
+                  }
+                  if (node.nodeType === Node.COMMENT_NODE && node.data.trim() === 'customize-section-end') {
+                    hiding = false;
+                    return;
+                  }
+                  if (hiding && node.nodeType === Node.ELEMENT_NODE) {
+                    node.style.display = 'none';
+                  }
+                });
+              }
             }
           });
 
