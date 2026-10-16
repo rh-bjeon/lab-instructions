@@ -26,7 +26,12 @@
 <body>
   <!-- Added Top Navigation with Dropdown -->
   <div class="top-navigation">
-
+    <div class="dropdown">
+      <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">바로가기</button>
+      <div class="dropdown-content" id="dynamic-links">
+        <!-- Links will be populated dynamically with JavaScript -->
+      </div>
+    </div>
   </div>
 
   <div class="user-name-form">
@@ -50,18 +55,9 @@
         <input type="text" id="gitserver" name="gitserver" placeholder="Git 서버를 입력하세요..">
       </div>
 
-      <div style="display: flex; align-items: center; margin-left: 1px;">
-        <div style="display: flex; flex-direction: column;">
-          <button class="storage-btns" onclick="setNamesInStorage()">저장</button>
-          <button class="storage-btns" onclick="clearStorage()">초기화</button>
-        </div>
-
-        <div class="dropdown">
-          <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">바로가기</button>
-          <div class="dropdown-content" id="dynamic-links">
-            <!-- Links will be populated dynamically with JavaScript -->
-          </div>
-        </div>
+      <div style="display: flex; flex-direction: column; margin-left: 1px;">
+        <button class="storage-btns" onclick="setNamesInStorage()">저장</button>
+        <button class="storage-btns" onclick="clearStorage()">초기화</button>
       </div>
   </div>
 
