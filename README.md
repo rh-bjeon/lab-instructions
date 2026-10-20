@@ -74,3 +74,7 @@ ansible-playbook ansible/destroy-workshop-ui.yml
 - `workshop_ui_admin_password`는 **필수**이며 안전하지 않은 기본값이 없습니다(미전달 시 플레이북이 즉시 실패).
 - `workshop_ui_secret_key`(세션 서명 키)는 전달하지 않으면 실행마다 무작위로 생성됩니다 — 재배포 간 세션을 유지하려면 직접 값을 지정하세요.
 - 워크샵 제목/설명/비밀번호/등록 방식 등 나머지 설정은 Ansible 변수가 아니라, 배포 후 admin 대시보드(`/admin`)에서 직접 입력합니다.
+
+#### 워크샵 웹페이지 설정
+- 워크샵 UI가 배포되면 해당 route 주소 끝에 /admin을 붙여 어드민 페이지로 접속합니다. (패스워드는 배포 시에 지정한 orkshop_ui_admin_password 값을 입력)
+- 어드민 페이지에서 이 워크샵의 제목, 설명, 유저 몇명을 배정할 수 있게 할지, 클러스터 도메인 주소 등을 지정하여 저장합니다. 
