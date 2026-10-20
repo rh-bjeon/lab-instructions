@@ -31,6 +31,8 @@ pip3.12 install -r ansible/requirements.txt
 ansible-galaxy collection install -r ansible/requirements.yml
 ```
 
+#### 랩가이드 배포
+
 ```shell
 # user1..userN 배포 (예: student_count=30 -> user1-labguide .. user30-labguide)
 ansible-playbook ansible/deploy-labguide.yml \
@@ -56,7 +58,7 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 | `openshift_cluster_ingress_domain` | `openshift_cluster_ingress_domain` | `<CLUSTER_DOMAIN>` |
 | `gitea_console_url` | `gitea_console_url` | `<GIT_SERVER>` |
 
-#### 워크샵 디렉터리/로그인 앱 (`workshop-ui/`)
+#### 워크샵 웹페이지 배포 (유저 배정) (`workshop-ui/`)
 
 실습자가 OpenShift 사용자 이름을 미리 알 필요 없이, 이메일 + 공용 워크샵 비밀번호만 입력하면 `ansible/deploy-labguide.yml`이 이미 프로비저닝한 `user1`..`userN` 중 하나에 자동으로 매칭되는 작은 디렉터리/로그인 앱입니다. 관리자(admin) 모드에서 워크샵 제목/설명/비밀번호(현재 값도 그대로 확인 가능)/등록 방식(open 또는 pre-registration)/리다이렉트 여부/랩가이드 URL 템플릿(`{username}`, `{clusterdomain}`, `{password}` 치환 가능)을 설정하고, 이메일↔사용자 할당 현황 및 사용자 정보 페이지에 추가로 보여줄 커스텀 링크(label + URL 템플릿)를 확인·관리할 수 있습니다. 자세한 내용은 [`workshop-ui/README.md`](./workshop-ui/README.md) 참고.
 
