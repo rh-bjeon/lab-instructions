@@ -32,7 +32,7 @@
     git push
     ```
 
-4. 이 pipeline은 MinIO에 추가할 webhook을 제공하여, 파일을 업로드할 때 MinIO가 Tekton pipeline을 트리거할 수 있게 해줍니다.
+4. 이 pipeline은 MinIO에 추가할 webhook을 제공하여, 파일을 업로드할 때 MinIO가 Tekton pipeline을 트리거할 수 있습니다.
 MinIO([https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>](https://minio-ui-<USER_NAME>-toolings.<CLUSTER_DOMAIN>)) > `Events`로 이동해 우측 상단의 `Add Event Destination`을 클릭하세요. `Webhook`을 선택합니다:
 
     ![minio-webhook-1.png](./images/minio-webhook-1.png)

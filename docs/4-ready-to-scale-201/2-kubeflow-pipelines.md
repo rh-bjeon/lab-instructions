@@ -1,11 +1,11 @@
 # 파이프라인을 이용한 평가 자동화
 
-평가가 어떻게 동작하는지 알았으니, 이제 파이프라인을 사용하여 이를 자동화해 봅시다! 🎢  
+평가가 어떻게 동작하는지 확인했으니 이제 파이프라인으로 자동화하겠습니다. 🎢
 
 ## Kubeflow 파이프라인
 
 평가를 실행하기 위한 파이프라인 프레임워크로 Kubeflow Pipelines를 사용하겠습니다.  
-Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내에서 파이프라인 실행을 표시해 주어 OpenShift AI와 잘 연동되기 때문에 데이터 과학/AI 엔지니어링 작업에 편리합니다.
+Kubeflow Pipelines는 Python으로 파이프라인을 정의할 수 있고 실행 상태와 결과를 OpenShift AI 대시보드에서 확인할 수 있어 데이터 과학과 AI 엔지니어링 작업에 적합합니다.
 
 
 ### Kubeflow Pipelines를 위한 환경 설정
@@ -106,10 +106,10 @@ Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내�
 
     ![running-kfp-pipeline](images/running-kfp-pipeline.png)
 
-6.  실행이 완료되면, `<USER_NAME>-canopy` 작업 공간의 Experiments (MLFlow)에서, `summarization` 실험의 왼쪽 메뉴 `Evaluation runs` 아래에서 결과를 확인할 수 있습니다.
+6.  실행이 완료되면, `<USER_NAME>-canopy` 작업 공간의 Experiments (MLflow)에서, `summarization` 실험의 왼쪽 메뉴 `Evaluation runs` 아래에서 결과를 확인할 수 있습니다.
 
 ![summary_eval](./images/summary_eval.png)
 
-다음 섹션에서는 system prompt와 같은 변경 사항이 발생했을 때 이 파이프라인을 자동으로 트리거해서, 변경사항이 생겼을 때마다 자동으로 테스트를 실행하도록 구성하는 방법을 살펴보겠습니다. 
+다음 섹션에서는 시스템 프롬프트 등이 변경될 때마다 이 파이프라인을 자동으로 시작해 테스트를 실행하도록 구성합니다.
 
 그리고 GuideLLM 테스트도 잊지 말아야겠죠!

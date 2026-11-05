@@ -40,7 +40,7 @@ pip install pytest pytest-asyncio
 pytest tests/test_tools.py -v
 ```
 
-다음과 같은 출력을 보게 될 것입니다.
+다음과 같은 출력을 확인할 수 있습니다.
 
 ```
 tests/test_tools.py::test_search_knowledge_base PASSED                    [ 25%]

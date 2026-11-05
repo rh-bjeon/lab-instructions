@@ -44,9 +44,9 @@ Prometheus는 공유 vLLM 모델이 배포된 이후부터 메트릭을 계속 �
 
 ## Grafana로 메트릭 시각화하기
 
-Prometheus 쿼리는 조사를 위해서는 강력하지만, Grafana 대시보드는 팀의 모든 사람이 메트릭에 쉽게 접근할 수 있게 해줍니다. 시스템이 정상인지 확인하기 위해 PromQL을 직접 작성하고 싶은 사람은 없을 겁니다!
+Prometheus 쿼리는 상세 분석에 유용하지만 모든 팀원이 매번 PromQL을 작성하기는 어렵습니다. Grafana 대시보드를 사용하면 주요 메트릭을 누구나 쉽게 확인할 수 있습니다.
 
-RHOAI Observability 스택은 플랫폼 전역의 메트릭을 수집하지만, 이는 Canopy 배포에 대한 애플리케이션 특화 인사이트를 드러내지 않는 범용 인프라 신호일 뿐입니다. AI 어시스턴트와 관련해 중요한 것들 - 토큰 사용 패턴, LLM 지연 시간, 백엔드 API 성능 - 을 시각화하려면, 네임스페이스와 구성 요소에 특화된 필터로 Prometheus를 조회하는 커스텀 Grafana 대시보드가 필요합니다.
+RHOAI 관측성 스택은 플랫폼 전반의 메트릭을 수집하지만, 기본 화면만으로는 Canopy에 특화된 정보를 파악하기 어렵습니다. 토큰 사용 패턴과 LLM 지연 시간, 백엔드 API 성능을 시각화하려면 네임스페이스와 구성 요소에 맞는 Prometheus 쿼리로 Grafana 대시보드를 구성해야 합니다.
 
 ### Grafana 배포하기
 
@@ -85,7 +85,7 @@ Canopy의 엔드투엔드 observability 여정을 지원하기 위해 toolings �
 
     OpenShift 자격 증명을 사용하고 `Allow selected permissions`를 클릭해 로그인합니다.
 
-> ArgoCD가 동기화 중 멈춘다면, Synching을 클릭하고 sync를 Terminate한 다음, `canopy-grafana-sa-token` 오브젝트의 점 3개를 클릭해 해당 CR 오브젝트에 대한 sync를 수동으로 트리거하세요.
+> Argo CD가 동기화 중 멈춘다면, Synching을 클릭하고 sync를 Terminate한 다음, `canopy-grafana-sa-token` 오브젝트의 점 3개를 클릭해 해당 CR 오브젝트에 대한 sync를 수동으로 트리거하세요.
 
    ![Grafana Issue 1](./images/grafana-argocd-issue.png)
 

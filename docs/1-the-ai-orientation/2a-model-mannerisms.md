@@ -13,7 +13,7 @@
   - [🤥 진실 3: 진실을 말하는 게 아니라 가능성이 높은 것을 말한다](#truth-3-they-dont-speak-the-truth-they-speak-the-probable)
     - [🔍 실습: 모델이 거짓말을 할 수 있을까?](#hands-on-can-the-model-lie)
   - [🧠 진실 4: 기억력이 없다](#truth-4-they-have-no-memory)
-    - [🔍 실습: 모델이 당신을 기억할까?](#hands-on-does-the-model-remember-you)
+    - [🔍 실습: 모델이 여러분을 기억할까?](#hands-on-does-the-model-remember-you)
   - [✅ 요약](#recap)
 
 ## 🧠 세상에는 다양한 AI가 있다 :id=there-is-a-lot-of-different-ai-out-there
@@ -193,7 +193,7 @@ Hi, how are you feeling today?
   <input type="radio" name="quiz-deterministic" id="deterministic-correct" class="quiz-radio-deterministic">
   <label for="deterministic-correct" class="quiz-option-deterministic" data-correct="true">❌ FALSE — 아니요, 답은 매번 달라집니다</label>
 
-  <div class="feedback-deterministic" data-feedback="correct">✅ 정답입니다! LLM은 비결정적(non-deterministic)입니다 — 답을 생성할 때 무작위성을 사용하므로, 매번 다른 응답을 받게 됩니다. 이는 동시에 당신의 질문에 결코 지치지 않는다는 뜻이기도 합니다!</div>
+  <div class="feedback-deterministic" data-feedback="correct">✅ 정답입니다! LLM은 비결정적(non-deterministic)입니다 — 답을 생성할 때 무작위성을 사용하므로, 매번 다른 응답을 받게 됩니다. 이는 동시에 여러분의 질문에 결코 지치지 않는다는 뜻이기도 합니다!</div>
   <div class="feedback-deterministic" data-feedback="wrong1">❌ 아닙니다! 방금 보았듯이 같은 질문에도 다른 답이 나옵니다. LLM은 생성 과정에 어느 정도의 무작위성을 포함하고 있습니다.</div>
 </div>
 </div>
@@ -229,13 +229,13 @@ What are the last two digits of pi?
 
 ## 🧠 진실 4: 기억력이 없다 :id=truth-4-they-have-no-memory
 
-LLM은 당신이 말한 것으로부터 배울 수 있을까요?
+LLM은 여러분이 말한 것으로부터 배울 수 있을까요?
 
-### 🔍 실습: 모델이 당신을 기억할까? :id=hands-on-does-the-model-remember-you
+### 🔍 실습: 모델이 여러분을 기억할까? :id=hands-on-does-the-model-remember-you
 
 다음을 두 단계로 시도해 보세요.
 
-1. **모델에게 당신의 이름을 알려주세요** (예: "Hi, my name is Robert")
+1. **모델에게 여러분의 이름을 알려주세요** (예: "Hi, my name is Robert")
 2. **새로운 대화를 시작**하고 물어보세요: "What is my name?"
 
 <iframe
@@ -247,13 +247,13 @@ LLM은 당신이 말한 것으로부터 배울 수 있을까요?
 	loading="lazy">
 </iframe>
 
-모델이 당신의 이름을 기억했나요? 아마 아닐 것입니다!
+모델이 여러분의 이름을 기억했나요? 아마 아닐 것입니다!
 
 <!-- 🍿 Pop Quiz – Memory -->
 <div style="background:linear-gradient(135deg,#e8f2ff 0%,#f5e6ff 100%);padding:20px;border-radius:10px;margin:20px 0;border:1px solid #d1e7dd;">
 
 <h3 style="margin:0 0 8px;color:#5a5a5a;">🍿 깜짝 퀴즈</h3>
-<p style="color:#495057; font-weight:500;">모델이 당신의 이름을 학습했습니다.</p>
+<p style="color:#495057; font-weight:500;">모델이 여러분의 이름을 학습했습니다.</p>
 
 <style>
 .quiz-container-memory{position:relative}
@@ -276,12 +276,12 @@ LLM은 당신이 말한 것으로부터 배울 수 있을까요?
   <input type="radio" name="quiz-memory" id="memory-correct" class="quiz-radio-memory">
   <label for="memory-correct" class="quiz-option-memory" data-correct="true">❌ FALSE</label>
 
-  <div class="feedback-memory" data-feedback="correct">✅ 정답입니다! 모델은 당신의 이름을 *학습*하지 않았습니다 — 지속적인 메모리가 없기 때문입니다. 새로운 대화는 매번 완전히 처음부터 시작됩니다. 모델은 결국 우리의 이름을 배우지 못했습니다 :'(</div>
-  <div class="feedback-memory" data-feedback="wrong1">❌ 모델은 대화로부터 학습하지 않습니다. 한 세션에서 이름을 알려주고 새 세션을 시작하면, 모델은 당신이 누구인지 전혀 알지 못합니다. 모든 대화는 처음부터 다시 시작됩니다.</div>
+  <div class="feedback-memory" data-feedback="correct">✅ 정답입니다! 모델은 여러분의 이름을 *학습*하지 않았습니다 — 지속적인 메모리가 없기 때문입니다. 새로운 대화는 매번 완전히 처음부터 시작됩니다. 모델은 결국 우리의 이름을 배우지 못했습니다 :'(</div>
+  <div class="feedback-memory" data-feedback="wrong1">❌ 모델은 대화로부터 학습하지 않습니다. 한 세션에서 이름을 알려주고 새 세션을 시작하면, 모델은 여러분이 누구인지 전혀 알지 못합니다. 모든 대화는 처음부터 다시 시작됩니다.</div>
 </div>
 </div>
 
-> 이는 또한 모델이 **당신의 질문에 결코 지치지 않는다는** 뜻이기도 합니다! 같은 것을 백만 번 물어봐도, 매번 처음인 것처럼 기꺼이 답해줄 것입니다 🙈
+> 이는 또한 모델이 **여러분의 질문에 결코 지치지 않는다는** 뜻이기도 합니다! 같은 것을 백만 번 물어봐도, 매번 처음인 것처럼 기꺼이 답해줄 것입니다 🙈
 
 
 ## ✅ 요약 :id=recap

@@ -1,6 +1,6 @@
 # NeMo Guardrails를 Open GenAI Stack(Llama Stack)과 통합하기
 
-노트북에서는 NeMo Guardrails와 직접 대화했습니다. 하지만 Chapter 5에서 우리는 Llama Stack을 추상화 계층으로 소개했습니다. Llama Stack은 Canopy 백엔드로부터의 요청을 모델로 라우팅하는 역할을 합니다. NeMo를 Llama Stack의 **safety provider**로도 연결할 수 있어서, Llama Stack을 거치는 모든 요청이 자동으로 guardrails를 통과하게 됩니다.
+노트북에서는 NeMo Guardrails 엔드포인트를 직접 호출했습니다. 5장에서는 Canopy 백엔드의 요청을 모델로 전달하는 추상화 계층으로 Llama Stack을 사용했습니다. NeMo를 Llama Stack의 **safety provider**로 연결하면 Llama Stack을 지나는 모든 요청에 가드레일이 자동으로 적용됩니다.
 
 통합 구조는 다음과 같습니다.
 
@@ -37,6 +37,6 @@ Canopy Backend → Llama Stack → NeMo Guardrails → LLM
 
     ![canopy-topology.png](./images/canopy-topology.png)
 
-이제 Canopy에서 오는 모든 요청은 모델에 도달하기 전에 NeMo를 거칩니다. 백엔드는 개별 detector에 대해 아무것도 알 필요가 없습니다. 그냥 shield 이름을 전달하기만 하면 나머지는 NeMo가 처리합니다.
+이제 Canopy의 모든 요청은 모델에 도달하기 전에 NeMo를 거칩니다. 백엔드는 개별 탐지기의 구현을 알 필요 없이 shield 이름만 전달하면 되고, 나머지 처리는 NeMo가 담당합니다.
 
 이제 결과가 만족스럽다면, 이를 상위 환경에 배포하기 전에 시스템에 대한 신뢰를 한층 더 높여봅시다!

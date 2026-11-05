@@ -30,7 +30,7 @@
 
 이는 보통 입력을 받으면 자동으로 모델을 실행하는 **런타임**(runtime)을 통해 이루어집니다.
 
-이를 HTML 파일을 서빙해서 누구나 당신의 웹페이지에 접근할 수 있게 하는 것과 비슷하게 생각할 수 있습니다. 다만 HTML 대신, 텍스트 프롬프트에 응답하는 모델을 서빙하는 것입니다.
+이를 HTML 파일을 서빙해서 누구나 여러분의 웹페이지에 접근할 수 있게 하는 것과 비슷하게 생각할 수 있습니다. 다만 HTML 대신, 텍스트 프롬프트에 응답하는 모델을 서빙하는 것입니다.
 
 ## 📏 모든 모델은 똑똑하지만, 어떤 모델은 더 똑똑하다 :id=all-models-are-smart-but-some-are-smarter
 
@@ -142,7 +142,7 @@
 
 모델을 처음부터 **학습**(training)시키는 데는 엄청난 데이터, 하드웨어, 기술이 필요합니다. 세상에서 이를 성공적으로 해낼 수 있는 조직은 극히 드뭅니다.
 
-하지만 기존 모델을 당신이 원하는 방식으로 더 잘 동작하도록 **파인튜닝**(fine-tune)할 수는 있습니다. 이는 대부분의 조직이 실현 가능합니다.
+하지만 기존 모델을 여러분이 원하는 방식으로 더 잘 동작하도록 **파인튜닝**(fine-tune)할 수는 있습니다. 이는 대부분의 조직이 실현 가능합니다.
 
 | | 학습(Training) | 파인튜닝(Fine-tuning) |
 |--|----------|-------------|
@@ -154,7 +154,7 @@
 
 ## 🎯 모델은 텍스트를 어떻게 생성할까? :id=how-does-the-model-generate-text
 
-재미있는 실습을 해봅시다. 여기서 당신은 무엇을 선택하겠습니까?
+재미있는 실습을 해봅시다. 여기서 여러분은 무엇을 선택하겠습니까?
 
 > **Never gonna...**
 >
@@ -165,7 +165,7 @@
 > - say goodbye
 > - tell a lie and hurt you
 
-"give you up"이라고 답했다면 — 축하합니다, 당신은 방금 LLM처럼 행동한 것입니다!
+"give you up"이라고 답했다면 — 축하합니다, 여러분은 방금 LLM처럼 행동한 것입니다!
 
 ![Never gonna give you up](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYndwNGtsMHV3MmN4NnVicWN2aWZjdGR4MXA2bGI5azgyYWN5bHczdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lgcUUCXgC8mEo/giphy.gif)
 

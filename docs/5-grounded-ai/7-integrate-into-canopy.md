@@ -2,7 +2,7 @@
 
 ## Canopy에 RAG 통합하기
 
-Canopy backend에는 이미 feature flag 뒤에 RAG 설정이 준비되어 있습니다. 이 기능이 무엇에 관한 것인지 시스템에 알려주는 좋은 system prompt를 작성하고 feature flag를 활성화하기만 하면 됩니다.
+Canopy backend에는 이미 feature flag 뒤에 RAG 설정이 준비되어 있습니다. 이 기능이 무엇에 관한 것인지 시스템에 알려주는 좋은 시스템 프롬프트를 작성하고 feature flag를 활성화하기만 하면 됩니다.
 
 
 1. **`<USER_NAME>-toolings`** 프로젝트 아래의 OpenShift AI Dashboard > Gen AI Studio > Prompts로 이동하세요.
@@ -14,11 +14,11 @@ Canopy backend에는 이미 feature flag 뒤에 RAG 설정이 준비되어 있�
     ```
     ![information-search-prompt-2.png](./images/information-search-prompt-2.png)
 
-    우리는 항상 최신 상태를 유지하기 위해 test에서는 최신 prompt를 사용할 것이며, prod에 있는 prompt들을 위한 alias(태그)를 하나 두겠습니다. 이 alias를 prod라고 부릅니다. 새로 만든 prompt에 이 alias를 추가하세요.
+    테스트 환경은 최신 변경을 바로 검증할 수 있도록 `latest` 프롬프트를 사용합니다. 운영 환경은 검증된 버전만 사용하도록 `prod` 별칭을 지정합니다. 새 프롬프트에 이 별칭을 추가하세요.
 
 3. 그런 다음 workbench로 이동해 `genaiops-gitops/canopy/test/backend/config.yaml`과 `genaiops-gitops/canopy/prod/backend/config.yaml` 두 파일을 모두 여세요.
 
-4. 파일을 수정해 `information-search` feature flag를 포함시키세요. 이전과 마찬가지로 이것은 system prompt이므로 자유롭게 prompt를 변경해도 됩니다.
+4. 파일을 수정해 `information-search` feature flag를 포함시키세요. 이전과 마찬가지로 이것은 시스템 프롬프트이므로 자유롭게 prompt를 변경해도 됩니다.
 
 TEST(`genaiops-gitops/canopy/test/backend/config.yaml`)
 
@@ -77,9 +77,9 @@ prompt 안의 "Biotechnology"를 Minio에 업로드한 프로그램의 교육계
   ![ask-canopy.png](images/ask-canopy.png)
 
 축하합니다! 🎉  
-이제 필요에 따라 복잡한 문서를 수집(ingest)할 수 있는 완전히 동작하는 RAG 시스템이 생겼습니다.
+이제 복잡한 문서를 필요에 따라 수집할 수 있는 RAG 시스템이 완성되었습니다.
 
-이제 문제는, 매번 pipeline을 수동으로 실행할 것인지, 아니면 이를 수행하는 더 나은 방법이 있는지입니다. 그리고 production은 어떨까요? 아무런 테스트 없이 그냥 push할 건가요?!
+현재는 문서를 추가할 때마다 파이프라인을 수동으로 실행해야 합니다. 다음 단계에서는 이 과정을 자동화하고 운영 환경에 반영하기 전에 평가를 수행하도록 구성합니다.
 
 하지만 그 전에, 몇 가지 평가(eval)를 먼저 해봅시다!
 

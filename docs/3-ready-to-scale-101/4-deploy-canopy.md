@@ -1,8 +1,8 @@
 ## Canopy Test & Prod 배포하기
 
-실험 환경에서는 `canopy`를 수동으로 배포했지만, 상위 환경에서는 GitOps가 제공하는 모든 이점을 얻기 위해 정의를 Git에 저장하고 Argo CD를 통해 애플리케이션을 배포해야 합니다. 
+실험 환경에는 `Canopy`를 수동으로 배포했습니다. 테스트와 운영 환경에서는 배포 구성을 Git에 저장하고 Argo CD로 애플리케이션을 배포하여 GitOps의 이점을 활용합니다.
 
-하지만 먼저 해야 할 일이 두 가지 있습니다. 하나는 프로덕션 준비가 된 프롬프트("프로덕션으로 승격"하고자 하는 system prompt)를 위한 별도의 공간을 마련하는 것입니다. 그리고 두 번째로, test 및 production 환경에서 GenAI 애플리케이션 로직을 처리할 GitOps 저장소를 설정해야 합니다.
+하지만 먼저 해야 할 일이 두 가지 있습니다. 하나는 프로덕션 준비가 된 프롬프트("프로덕션으로 승격"하고자 하는 시스템 프롬프트)를 위한 별도의 공간을 마련하는 것입니다. 그리고 두 번째로, test 및 production 환경에서 GenAI 애플리케이션 로직을 처리할 GitOps 저장소를 설정해야 합니다.
 
 프롬프트부터 시작해 봅시다.
 
@@ -20,7 +20,7 @@
 
   ![prompt-toolings-2.png](./images/prompt-toolings-2.png)
 
-  test에서는 항상 최신 상태를 유지하기 위해 최신 프롬프트(latest)를 사용할 것이며, prod에 있는 프롬프트에는 별칭(alias, 태그)을 사용할 것입니다. 이 별칭을 `prod`라고 부릅니다.
+  테스트 환경은 변경 사항을 빠르게 검증할 수 있도록 `latest` 프롬프트를 사용합니다. 운영 환경은 검증된 버전만 사용하도록 `prod` 별칭(alias)을 지정합니다.
   새로 만든 프롬프트에 이 별칭을 추가해 보세요.
 
   ![prompt-toolings-3.png](./images/prompt-toolings-3.png)
@@ -31,7 +31,7 @@
 
 ### Argo CD로 Canopy 설정하기
 
-1. 도구(tooling)에서 했던 것과 마찬가지로, 모델 배포를 위한 `ApplicationSet` 정의를 생성해야 합니다. 우리는 `test` 환경용과 `prod` 환경용, 두 개의 별도 `ApplicationSet` 정의를 갖게 됩니다. 교육의 단순화를 위해 이들을 같은 저장소에 보관합니다. 하지만 실제 환경에서는 보호된 `main` 브랜치에 Pull Request를 통해서만 변경하는 별도의 저장소로 prod 정의를 분리하고 싶을 수도 있습니다. 나중에 prod 정의를 다른 곳으로 쉽게 옮길 수 있도록 `ApplicationSet` 정의를 분리해서 유지합니다 :)
+1. 도구를 배포할 때와 마찬가지로 모델 배포용 `ApplicationSet`을 정의합니다. `test`와 `prod` 환경은 서로 다른 `ApplicationSet`으로 관리합니다. 실습을 단순하게 유지하기 위해 두 정의를 같은 저장소에 두지만, 실제 환경에서는 운영 구성을 별도 저장소와 보호된 `main` 브랜치에서 관리하고 Pull Request로만 변경할 수 있습니다. 나중에 운영 구성을 쉽게 분리할 수 있도록 지금부터 정의를 나누어 둡니다. :)
 
     이전과 마찬가지로 `CLUSTER_DOMAIN`과 `USER_NAME` 값으로 `ApplicationSet` 정의를 업데이트합시다. `genaiops-gitops/appset-test.yaml`과 `genaiops-gitops/appset-prod.yaml` 파일을 열고 값을 교체합니다. 귀찮으신 분들을 위해 명령어도 준비해 두었습니다.
 
@@ -95,7 +95,7 @@
 
   <!-- For now, we are happy with the default Llama Stack values. We will get some exciting updates as we continue to the other chapters :) -->
 
-1. 이제 이 모든 것을 배포해 봅시다! 지금까지 수정한 내용은 아직 우리 workbench 환경에만 저장되어 있고, git 저장소에는 업로드 되어 있지 않습니다. 아래 명령어를 터미널에서 실행하여 지금 수정한 내용을 git으로 push하여 업데이트해보겠습니다. 
+1. 이제 변경 사항을 배포합니다. 지금까지 수정한 내용은 Workbench에만 있으므로 아래 명령을 실행해 Git 저장소에 커밋하고 푸시합니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -104,14 +104,14 @@
     git push 
     ```
 
-2. 애플리케이션에 모든 설정 값이 Git에 저장되었으니, 이제 Argo CD에게 이러한 환경들의 변경 사항을 가져와서 앱을 배포하라고 알려봅시다. ArgoCD가 애플리케이션을 배포할 때 참고하는 값들이 적힌 ApplicationSets를 생성하기만 하면 됩니다. 아까는 ArgoCD 화면에서 우리가 직접 하나하나 입력하여 ArgoCD Application을 생성했지만, 이번에는 미리 만들어둔 ApplicationSet 파일을 바로 적용해보겠습니다. 아래의 appset-test.yaml, appset-prod.yaml 파일을 내용을 보시면, 우리가 위에서 붙여넣은 config.yaml 파일을 참고하여 애플리케이션을 배포하도록 되어있습니다.
+2. 모든 설정이 Git에 저장되었으므로 Argo CD가 각 환경에 애플리케이션을 배포하도록 `ApplicationSet`을 생성합니다. 앞에서는 UI에서 값을 직접 입력해 Application을 만들었지만, 이번에는 미리 준비한 `appset-test.yaml`과 `appset-prod.yaml`을 적용합니다. 두 파일은 앞에서 수정한 `config.yaml`을 참조해 애플리케이션을 배포합니다.
 
     ```bash
     oc apply -f /opt/app-root/src/genaiops-gitops/appset-test.yaml -n <USER_NAME>-toolings
     oc apply -f /opt/app-root/src/genaiops-gitops/appset-prod.yaml -n <USER_NAME>-toolings
     ```
 
-3. 검색창에 `test` 또는 `prod`로 필터링하면 canopy 애플리케이션을 볼 수 있을 것입니다. 
+3. 검색창에 `test` 또는 `prod`로 필터링하면 Canopy 애플리케이션을 확인할 수 있습니다.
 
     ![canopy-gitops.png](./images/canopy-gitops.png)
 

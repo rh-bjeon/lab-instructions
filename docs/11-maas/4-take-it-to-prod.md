@@ -1,14 +1,14 @@
-# _안전하게_ Prod로 가져가기
+# 운영 환경에 _안전하게_ 적용하기
 
 ## Sealed Secrets
 
-GitOps를 말할 때, 우리는 _"Git에 없으면 존재하지 않는 것이다"_라고 말합니다. 하지만 API 키처럼 민감한 데이터를, 많은 사람이 접근할 수 있는 Git 리포지토리에 어떻게 저장해야 할까요?! Kubernetes가 시크릿을 관리하는 방법을 제공하기는 하지만, 문제는 민감한 정보를 base64 문자열로 저장한다는 것입니다 - base64 문자열은 누구나 디코딩할 수 있습니다! 따라서 `Secret` 매니페스트 파일을 그냥 그대로 저장할 수는 없습니다. 이 문제를 해결하기 위해 Sealed Secrets라는 오픈소스 도구를 사용합니다.
+GitOps에서는 Git에 기록된 선언을 배포 상태의 기준으로 삼습니다. 그렇다면 API 키처럼 민감한 값은 어떻게 Git에서 관리해야 할까요? Kubernetes `Secret`은 값을 base64로 인코딩할 뿐 암호화하지 않으므로 누구나 디코딩할 수 있습니다. 따라서 `Secret` 매니페스트를 그대로 저장해서는 안 됩니다. 이 문제를 해결하기 위해 오픈 소스 도구인 Sealed Secrets를 사용합니다.
 
-Sealed Secrets는 `kubeseal`이라는 유틸리티를 사용해서 Kubernetes 시크릿을 _봉인(seal)_할 수 있게 해줍니다. `SealedSecrets`는 컨트롤러만 복호화할 수 있는 암호화된 `Secret` 객체를 담고 있는 Kubernetes 리소스입니다. 따라서 `SealedSecret`은 퍼블릭 리포지토리에 저장해도 안전합니다.
+Sealed Secrets는 `kubeseal` 유틸리티로 Kubernetes 시크릿을 암호화합니다. 생성된 `SealedSecret`은 클러스터의 컨트롤러만 복호화할 수 있으므로 암호화된 매니페스트를 Git에 저장할 수 있습니다.
 
 ### 실제로 Sealed Secrets 사용해보기
 
-API 키를 담은 sealed secret을 만들고, Sealed Secrets 애플리케이션이 이를 우리 네임스페이스의 일반 OpenShift secret으로 변환하게 할 것입니다. 그러면 Llama Stack이 그 secret에서 API 키를 읽어서 사용할 수 있습니다.
+API 키를 담은 `SealedSecret`을 만들면 Sealed Secrets 컨트롤러가 대상 네임스페이스에 일반 OpenShift `Secret`을 생성합니다. Llama Stack은 이 `Secret`에서 API 키를 읽습니다.
 
 이를 위해, 봉인해야 할 시크릿이 무엇인지 알려줘야 합니다:
 
@@ -31,7 +31,7 @@ API 키를 담은 sealed secret을 만들고, Sealed Secrets 애플리케이션�
     EOF
     ```
 
-2. `kubeseal` 커맨드라인을 사용해서 시크릿 정의를 봉인합니다. 이는 클러스터 내부에서 실행 중인 컨트롤러에 저장된 인증서를 사용해 암호화합니다. 클러스터당 인스턴스가 하나만 존재할 수 있으므로, 이것은 이미 여러분을 위해 배포되어 있습니다.
+2. `kubeseal` 명령으로 시크릿을 봉인합니다. 클러스터의 Sealed Secrets 컨트롤러가 가진 인증서를 사용해 암호화하며, 컨트롤러는 실습 환경에 이미 배포되어 있습니다.
 
     <p class="warn">
         ⛷️ <b>참고</b> ⛷️ - Kubeseal 명령어를 실행했을 때 "Error: cannot get sealed secret service: Unauthorized" 오류가 발생하면, OpenShift에 다시 로그인하고 명령어를 다시 실행하세요.
@@ -202,4 +202,4 @@ API 키를 담은 sealed secret을 만들고, Sealed Secrets 애플리케이션�
 
 ---
 
-**우리가 방금 한 일:** Sealed Secrets를 사용해서 API 토큰을 Git에 안전하게 저장하는 보안 GitOps를 실습했습니다 — 암호화되어 있어 클러스터만 복호화할 수 있습니다. 그런 다음, backend 설정이 MaaS가 서빙하는 모델(`Llama-3.2-3B-Instruct-FP8`)을 가리키도록 업데이트함으로써, 애플리케이션 코드를 전혀 바꾸지 않고도 LiteLLM 게이트웨이를 통해 모델을 사용하도록 애플리케이션을 매끄럽게 전환했습니다. Git에 push하면 자동으로 평가 파이프라인이 시작되어, 배포 전에 모델 교체가 검증되도록 보장합니다. 이것이 제대로 된 GitOps입니다: 모든 것이 Git에 있고, 시크릿도 포함되지만, 보호되어 있습니다.
+**이번 실습에서 한 일:** Sealed Secrets로 API 토큰을 암호화해 Git에서 안전하게 관리했습니다. 이어서 백엔드가 MaaS에서 제공하는 `Llama-3.2-3B-Instruct-FP8` 모델을 사용하도록 설정해, 애플리케이션 코드를 바꾸지 않고 LiteLLM 게이트웨이로 전환했습니다. 변경 사항을 Git에 푸시하면 평가 파이프라인이 자동으로 실행되어 모델 교체를 배포 전에 검증합니다. 배포 정의는 Git에서 관리하되 민감한 값은 암호화하는 GitOps 흐름입니다.

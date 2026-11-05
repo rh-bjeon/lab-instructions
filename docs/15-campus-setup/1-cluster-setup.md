@@ -9,7 +9,7 @@
 이 저장소는 세 가지 주요 부분으로 구성됩니다.
 - **Operators**: OpenShift AI, GitOps, Pipelines, GPU 지원 등 오퍼레이터를 배포하는 Helm 차트
 - **Toolings**: MinIO, 관측성(observability) 스택, 워크벤치 템플릿 같은 공유 인프라를 구성하는 Helm 차트
-- **Student Content**: ArgoCD 인스턴스와 Data Science 프로젝트를 포함한 학생별 환경을 위한 Helm 차트
+- **Student Content**: Argo CD 인스턴스와 Data Science 프로젝트를 포함한 학생별 환경을 위한 Helm 차트
 
 ## 사전 준비 사항
 
@@ -70,7 +70,7 @@
     - 공유 툴링 인프라 배포
     - 학생 환경 생성
     - HTPasswd를 이용한 OAuth 인증 구성
-    - 멀티테넌시를 위한 ArgoCD 설정
+    - 멀티테넌시를 위한 Argo CD 설정
     - Tekton 및 사용자 워크로드 모니터링 구성
 
 ## 단계별 설치
@@ -149,9 +149,9 @@ oc patch --type=merge OAuth/cluster -p '{
 }'
 ```
 
-### 5단계: 멀티테넌시를 위한 ArgoCD 구성
+### 5단계: 멀티테넌시를 위한 Argo CD 구성
 
-학생 네임스페이스에 대해 ArgoCD를 활성화합니다. 설치 스크립트는 수강생 수를 기준으로 네임스페이스 목록을 자동으로 계산합니다.
+학생 네임스페이스에 대해 Argo CD를 활성화합니다. 설치 스크립트는 수강생 수를 기준으로 네임스페이스 목록을 자동으로 계산합니다.
 
 ```bash
 # Example for 5 attendees
@@ -224,7 +224,7 @@ AWS에서 실행 중이고 GPU 노드를 프로비저닝해야 한다면, 머신
     helm list -n ai501
     ```
 
-5. **ArgoCD 동기화 상태 모니터링**:
+5. **Argo CD 동기화 상태 모니터링**:
     ```bash
     oc get applications -A
     ```

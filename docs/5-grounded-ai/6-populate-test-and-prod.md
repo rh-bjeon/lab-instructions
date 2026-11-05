@@ -10,7 +10,7 @@
 ## 🏗️ Document Intelligence RAG Pipeline 아키텍처
 
 지금까지 작업해온, 그리고 자동화하고자 하는 현재 아키텍처는 다음과 같습니다.
-특히 새로운 문서가 우리의 vector database로 들어가는 상단 부분을 자동화하려고 합니다.
+특히 새 문서를 벡터 데이터베이스에 적재하는 앞부분을 자동화합니다.
 
 ![Pipeline Architecture](images/rag4.png)
 
@@ -49,7 +49,7 @@
 
    ![trash-gif](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG5ia3k0bWdiNWNiMDB4cWhid20yYWc2endsdm12aHZ2aHJmdnQwZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytSUKYKGw054uqCHpP/giphy.gif)
 
-6. 이제 수집(ingest)할 문서가 준비되었으니, 이를 vector database로 옮길 document ingestion pipeline을 만들어봅시다!
+6. 수집할 문서가 준비되었으니 벡터 데이터베이스에 적재하는 문서 수집 파이프라인을 만듭니다.
 
 ## 🎯 Document Ingestion Pipeline 실행하기
 
@@ -109,7 +109,7 @@
 
    ![imported-pipeline.png](./images/imported-pipeline.png)
 
-5. 제대로 동작하는지 확인하기 위해 먼저 임시로(ad-hoc) 실행해봅시다. pipeline 화면에서 `Actions`를 누르고 `Create run`을 클릭하세요.
+5. 동작을 확인하기 위해 먼저 임시 실행(ad-hoc run)을 시작합니다. 파이프라인 화면에서 `Actions`를 누르고 `Create run`을 클릭하세요.
 
    ![doc-ingest-run.png](./images/doc-ingest-run.png)
 
@@ -147,4 +147,4 @@
 
 🎉 **축하합니다!** 이제 여러분은 test와 production 데이터베이스에 대규모로 문서를 수집(ingest)할 수 있는, production에 사용할 수 있는 문서 처리 pipeline을 갖게 되었습니다.
 
-이제 다음 섹션으로 이동해 애플리케이션 안에서 RAG 기능을 활성화해봅시다! 🚀 
+다음 섹션에서는 애플리케이션의 RAG 기능을 활성화합니다. 🚀

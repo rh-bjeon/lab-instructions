@@ -1,6 +1,6 @@
 # NeMo Guardrails
 
-NeMo Guardrails는 모델을 감싸는 외부 정책 계층(policy layer)을 제공합니다. LLM이 규칙을 따르기를 바라는 대신, NeMo는 규칙을 **강제**합니다. 모든 요청이 LLM에 도달하기 전에, 그리고 모든 응답이 사용자에게 전달되기 전에 이를 가로채어 구성 가능한 rail들을 거치게 합니다.
+NeMo Guardrails는 모델 외부에 정책 계층을 제공합니다. LLM이 규칙을 따르기를 기대하는 데 그치지 않고 정책을 **강제**합니다. 요청이 LLM에 도달하기 전과 응답이 사용자에게 전달되기 전에 내용을 가로채 설정된 레일(rail)을 적용합니다.
 
 Canopy를 위해 구성한 rail들은 다음과 같습니다.
 
@@ -33,4 +33,4 @@ Canopy를 위해 구성한 rail들은 다음과 같습니다.
 experiments/7-guardrails/1-intro-to-guardrails.ipynb
 ```
 
-이 노트북은 다양한 종류의 프롬프트를 NeMo 엔드포인트로 보내보고 서로 다른 rail들이 어떻게 작동하는지 살펴보도록 안내합니다. 끝나면 여기로 돌아와서 Canopy에 연결해 봅시다!
+이 노트북에서는 다양한 프롬프트를 NeMo 엔드포인트에 보내 각 레일의 동작을 확인합니다. 실습을 마치면 NeMo를 Canopy에 연결하겠습니다.

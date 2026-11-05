@@ -1,12 +1,12 @@
 # 🚀 LiteMaaS 배포하기
 
-> 🔧 **페르소나 포커스: AI 엔지니어** — 이제 인프라 담당자의 모자를 쓸 시간입니다! 여러분은 모델을 한 번 배포해서 다른 모든 사람이 혜택을 볼 수 있게 하는 전문가입니다. 다른 모든 사람이 그냥 수도꼭지를 틀면 되도록 정수 처리장을 짓는 사람이라고 생각하세요.
+> 🔧 **페르소나: AI 엔지니어** — 모델을 한 번 배포하고 여러 사용자가 공유하도록 만드는 인프라 담당자의 관점에서 실습합니다. 모두가 수도꼭지만 열면 깨끗한 물을 쓸 수 있도록 정수장을 운영하는 역할과 비슷합니다.
 
 ---
 
 ## 🎯 무엇을 만들 것인가
 
-이 레슨을 마치면, OpenShift에서 완전히 동작하는 LiteMaaS 배포를 갖게 됩니다:
+이 레슨에서는 OpenShift에 다음 구조의 LiteMaaS 환경을 배포합니다.
 
 ```mermaid
 flowchart TB
@@ -35,7 +35,7 @@ flowchart TB
 
 ## ✅ 사전 준비 사항 확인
 
-시작하기 전에, 모든 것이 준비되어 있는지 확인해봅시다. 워크스페이스로 돌아가서 터미널에서 아래 명령어들을 실행하세요.
+시작하기 전에 필요한 환경이 준비되었는지 확인합니다. Workbench 터미널에서 아래 명령을 실행하세요.
 
 ### 1. OpenShift 접근
 
@@ -75,7 +75,7 @@ oc new-project <USER_NAME>-maas
 
 ## 📦 1단계: LiteMaaS 리포지토리 클론하기
 
-LiteMaaS 코드를 가져옵시다:
+LiteMaaS 저장소를 복제합니다.
 
   ```bash
   cd /opt/app-root/src
@@ -109,7 +109,7 @@ cd deployment/helm/litemaas
 cp values.yaml my-values.yaml
 ```
 
-파일을 편집해서 모든 `changeme` 필드를 더 견고한 비밀번호로 수정하세요.
+파일을 열어 모든 `changeme` 값을 안전한 비밀번호로 변경합니다.
 
 > ⚠️ **참고:** 실제 배포에서는 적절한 시크릿 관리(예: External Secrets Operator, Vault)를 사용해야 합니다. 지금은 단순하게 유지하지만, 이 주제는 곧 다루게 될 것입니다 :)
 
@@ -117,7 +117,7 @@ cp values.yaml my-values.yaml
 
 ## 🚀 3단계: OpenShift에 배포하기
 
-이제 재미있는 부분입니다 — 배포해봅시다!
+이제 LiteMaaS를 배포합니다.
 
 1. 여전히 `litemaas/deployment/helm/litemaas` 폴더에 있습니다.
 2. 배포를 시작하기 위해 배포 명령어를 실행합니다:
@@ -175,7 +175,7 @@ Post-deployment:
 oc set env deployment/litemaas-litellm DISABLE_SCHEMA_UPDATE=false -n <USER_NAME>-maas
 ```
 
-4. 네 개의 파드가 모두 up and running 상태가 될 때까지(Ready 열 아래 `1/1`) 배포를 지켜보세요
+4. 네 개의 파드가 모두 실행되고 `Ready` 열에 `1/1`이 표시될 때까지 기다립니다.
 
 ```bash
 # Watch pods come up
@@ -207,7 +207,7 @@ LiteMaaS 로그인 페이지가 보일 것입니다! OpenShift 자격 증명을 
 
 ![litemaas-ui.png](./images/litemaas-ui.png)
 
-기본적으로 관리자 권한을 가지고 있습니다. 그래서 왼쪽에 `Administrator` 섹션이 보이지만, 다른 사용자들은 이를 볼 수 없습니다. 하지만 여러분도 일반 사용자로서 LiteMaaS를 사용할 수 있습니다. 하지만 먼저, 모델을 몇 개 추가해야 합니다!
+현재 계정에는 관리자 권한이 있어 왼쪽에 `Administrator` 메뉴가 표시됩니다. 일반 사용자에게는 이 메뉴가 보이지 않습니다. 사용자 기능을 시험하기 전에 관리자로서 모델을 몇 개 등록하겠습니다.
 
 ---
 
@@ -215,7 +215,7 @@ LiteMaaS 로그인 페이지가 보일 것입니다! OpenShift 자격 증명을 
 
 LiteMaaS는 백엔드 프록시로 [LiteLLM](https://github.com/BerriAI/litellm)을 사용합니다. LiteLLM에게 사용 가능한 모델들에 대해 알려줘야 합니다.
 
-1. 먼저 초기 클라우드 모델을 첫 번째로 추가해봅시다. `Administator` > `Model Management`로 이동해서 `Create Model`을 클릭합니다.
+1. 먼저 클라우드 모델을 등록합니다. `Administrator` > `Model Management`로 이동해 `Create Model`을 클릭합니다.
 
   ![create-model.png](./images/create-model.png)
 
@@ -291,4 +291,4 @@ LiteMaaS는 백엔드 프록시로 [LiteLLM](https://github.com/BerriAI/litellm)
 
   ![maas-models-list.png](./images/maas-models-list.png)
 
-인프라가 준비됐습니다! 이제 Canopy가 이 MaaS 인스턴스로부터 모델을 사용하도록 만들어봅시다!
+인프라 구성이 끝났습니다. 다음 단계에서는 Canopy가 이 MaaS 인스턴스의 모델을 사용하도록 연결합니다.

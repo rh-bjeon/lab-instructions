@@ -73,7 +73,7 @@
 
 지금까지 Canopy는 항상 모델과 직접 통신했습니다 — 단일한 하드코딩된 엔드포인트였죠. 프롬프트를 보내고 응답을 받는 것만 필요했을 때는 그것만으로도 충분했습니다.
 
-RAG는 두 번째 요소인 vector database를 추가합니다. 팀마다 서로 다른 vector database를 사용하며, 요구사항이 변화함에 따라 우리의 vector database도 교체하고 싶을 수 있습니다. 애플리케이션은 자신이 어떤 vector database와 통신하는지 알거나 신경 쓸 필요가 없어야 합니다.
+RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합니다. 팀이나 요구 사항에 따라 사용하는 벡터 데이터베이스가 달라질 수 있지만, 애플리케이션 코드는 구체적인 제품에 의존하지 않는 편이 좋습니다.
 
 **OGX **(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
 
@@ -83,9 +83,9 @@ RAG는 두 번째 요소인 vector database를 추가합니다. 팀마다 서로
 - **Contextual chunking(컨텍스트 기반 청킹)** — 문서를 토큰 수로 단순히 나누는 대신, LLM이 저장되기 전에 각 chunk를 주변 컨텍스트로 보강하여 검색 정확도를 훨씬 높입니다
 - **Multiple embedding models(다중 embedding 모델)** — 애플리케이션 코드를 변경하지 않고도 nomic-embed, BGE, MiniLM, 또는 어떤 sentence-transformers 모델이든 전환할 수 있습니다
 
-오늘은 이 기능들을 전부 사용하지는 않겠지만, 필요할 때 사용할 수 있도록 마련되어 있습니다. 더 자세한 내용은 다음에서 확인할 수 있습니다: [https://ogx-ai.github.io/docs/concepts/file_operations_vector_stores#search-capabilities](https://ogx-ai.github.io/docs/concepts/file_operations_vector_stores#search-capabilities)
+이번 실습에서 모든 기능을 사용하지는 않지만 필요할 때 확장할 수 있습니다. 자세한 내용은 [OGX 검색 기능 문서](https://ogx-ai.github.io/docs/concepts/file_operations_vector_stores#search-capabilities)에서 확인하세요.
 
-Canopy를 위해 OGX (Llama Stack)를 배포해봅시다!
+이제 Canopy에서 사용할 OGX(Llama Stack)를 배포합니다.
 
 (살짝 힌트를 드리면: 여러분의 Gen AI Playground는 처음부터 OGX를 사용하고 있었습니다 🥳)
 
@@ -109,7 +109,7 @@ Canopy를 위해 OGX (Llama Stack)를 배포해봅시다!
 
     ![llama-stack-ocp.png](./images/llama-stack-ocp.png)
 
-5. 최종 사용자의 관점에서는 아무런 변화가 없어야 합니다. 이제 OGX (Llama Stack)가 backend가 직접 접근하는 대신 모델(그리고 곧 Milvus DB도)에 접근하고 있습니다. `<USER_NAME>-canopy` 환경에서 Canopy UI에 접속해 이를 확인할 수 있습니다.
+5. 최종 사용자에게는 달라지는 점이 없어야 합니다. 백엔드가 모델을 직접 호출하는 대신 OGX(Llama Stack)가 모델을 호출하며, 곧 Milvus도 같은 계층을 통해 사용합니다. `<USER_NAME>-canopy` 환경의 Canopy UI에서 정상 동작을 확인합니다.
 
 6. `test`와 `prod`에서도 Llama Stack을 Argo CD로 배포하도록 설정해봅시다. `test/ogx/config.yaml`과 `prod/ogx/config.yaml`을 생성하세요:
 
@@ -150,7 +150,7 @@ Canopy를 위해 OGX (Llama Stack)를 배포해봅시다!
         service: "milvus-prod"
     ``` 
 
-7. 이제 배포해봅시다! 당연히 - git에 올라가지 않으면 진짜가 아니니까요!
+7. 변경 사항을 Git에 푸시해 배포합니다. GitOps에서는 Git에 저장된 구성이 배포의 기준입니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

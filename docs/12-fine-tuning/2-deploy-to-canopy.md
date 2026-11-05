@@ -1,18 +1,16 @@
-# 🚀 Deploy to Canopy
+# 🚀 Canopy에 배포하기
 
-이제 새로운 모델을 Canopy에 배포하고 사용해 봅시다!  
-먼저 모델을 배포해야 하는데, 여기서는 실험용 네임스페이스에 배포한 다음 MaaS와 Llamastack을 통해 이를 가져올 것입니다.  
-좀 더 엄격한 프로세스를 원한다면
+이제 새 모델을 배포해 Canopy에서 사용하겠습니다. 모델을 실험용 네임스페이스에 배포한 뒤 MaaS에 등록하고 Llama Stack을 통해 호출합니다.
 
-## Model Registry에서 배포하기
+## 모델 레지스트리에서 배포하기
 
-이전 노트북에서 모델을 Model Registry에 막 푸시했습니다. 이제 가서 어떤 모습인지 한번 살펴봅시다!
+이전 노트북에서 모델을 모델 레지스트리에 등록했습니다. 등록된 모델을 확인하고 배포하겠습니다.
 
 1. OpenShift AI Dashboard -> AI hub -> Models -> Registry로 이동합니다.
 
   ![model-registry](images/model-registry.png)
 
-2. 여기서 새로 파인튜닝한 모델을 위해 방금 생성한 모델카(modelcar)🚗를 확인할 수 있습니다!
+2. 새로 파인튜닝한 모델을 담은 모델카(modelcar) 이미지가 표시됩니다. 🚗
 
   `Latest version` (0.0.1)로 이동한 다음 `Model location URI`를 복사하세요. 배포할 때 필요합니다.
 
@@ -64,7 +62,7 @@
 
 ## 모델을 MaaS에 추가하기
 
-새로운 모델이 배포되었으니, 필요한 사람 누구나 사용할 수 있도록 MaaS에 추가해 봅시다 🚀
+새 모델이 배포되었으므로 여러 사용자가 이용할 수 있도록 MaaS에 등록합니다. 🚀
 
 1. MaaS 대시보드로 이동해서(닫았다면 https://litemaas-<USER_NAME>-maas.<CLUSTER_DOMAIN>) 새 모델을 추가하세요.
 
@@ -88,9 +86,9 @@
 
 ## 새 모델을 Llama Stack에 추가하기
 
-이제 MaaS에 새 모델이 생겼으니, 테스트용 Llama Stack에도 추가해서 Canopy에서 테스트해 봅시다! 🙌
+MaaS에 등록한 모델을 테스트 환경의 Llama Stack에 추가하고 Canopy에서 검증합니다. 🙌
 
-1. 워크벤치로 들어가서 `genaiops/test/ogx/config.yaml`을 엽니다.
+1. Workbench에서 `genaiops-gitops/canopy/test/ogx/config.yaml`을 엽니다.
 
 2. socratic-model을 반영하도록 yaml에 새 모델을 추가합니다.
 
@@ -135,7 +133,7 @@ git push
 
 ![meme.jpg](images/meme.jpg)
 
-이제 이 소크라테스식 튜터를 Canopy에 완전히 셋업해 봅시다!
+이제 소크라테스식 튜터를 Canopy 기능으로 구성합니다.
 
 1. 먼저, 소크라테스식 튜터를 위한 시스템 프롬프트를 만들어야 합니다. OpenShift AI Dashboard > Gen AI Studio > Prompts로 이동하고, **`<USER_NAME>-toolings`** 프로젝트 아래에서 작업하세요.
 
@@ -209,7 +207,6 @@ _(튜터가 다소 느릴 수 있는데, CPU에서 실행되고 있기 때문입
 
 축하합니다! 🎉
 
-이제 모델을 튜닝하고 온보딩하는 전체 흐름을 모두 거쳤습니다. 결코 작은 성취가 아닙니다.
+이제 모델을 튜닝하고 서비스에 등록하는 전체 흐름을 완료했습니다.
 
-다음 단계는 이 모든 과정을 자동화해서 버튼 클릭(또는 PR 머지) 한 번으로 모델이 업데이트되도록 만드는 것입니다.  
-이를 우리는 지속적 학습(Continous Training, CT) 파이프라인이라고 부르며, 관심이 있다면 [**AI500 MLOps Enablement with Red Hat AI Enterprise**](https://www.redhat.com/en/services/training/ai500-mlops-practices-with-red-hat-openshift-ai)에서 자세히 다루고 있습니다.
+다음 단계는 이 과정을 자동화해 버튼 클릭이나 PR 병합 한 번으로 모델을 업데이트하는 것입니다. 이를 지속적 학습(Continuous Training, CT) 파이프라인이라고 합니다. 자세한 내용은 [**AI500 MLOps Enablement with Red Hat AI Enterprise**](https://www.redhat.com/en/services/training/ai500-mlops-practices-with-red-hat-openshift-ai) 과정에서 다룹니다.

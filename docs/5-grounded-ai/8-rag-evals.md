@@ -8,12 +8,11 @@
 
 ...
 
-하지만, 우리에게는 이미 평가 프레임워크가 있으니, 이를 사용하지 않는 것은 아쉬운 일이겠죠. 그러니 RAG가 예상대로 동작하는지 확인하기 위한 평가를 몇 가지 추가해봅시다.
+하지만 이미 평가 프레임워크가 있으므로 RAG가 기대한 대로 동작하는지 검증하는 평가 항목을 추가해 보겠습니다.
 
-RAG에서는 검색된(retrieved) 텍스트 chunk도 있으므로, 이를 위한 테스트도 만들 수 있습니다. 여기서는 특히 검색된 chunk가 사용자의 질문과 관련이 있는지, 그리고 LLM이 그것들을 바탕으로 답변에 근거(ground)를 두는지를 테스트합니다.
-MLflow에는 이를 위한 내장 테스트가 있으므로 이를 사용하겠습니다. 자세한 내용은 여기에서 확인할 수 있습니다: https://mlflow.org/docs/latest/genai/eval-monitor/scorers/llm-judge/rag/
+RAG에는 검색된 텍스트 청크도 포함되므로 검색 단계 자체를 평가할 수 있습니다. 검색된 청크가 사용자 질문과 관련 있는지, LLM이 그 내용을 근거로 답했는지를 검사합니다. MLflow가 제공하는 내장 평가를 사용하며, 자세한 내용은 [MLflow RAG 평가 문서](https://mlflow.org/docs/latest/genai/eval-monitor/scorers/llm-judge/rag/)에서 확인할 수 있습니다.
 
-새로운 RAG 평가를 추가하려면, 단순히 몇 가지 테스트가 담긴 새로운 eval 폴더를 추가하면 됩니다.
+새 RAG 평가를 추가하려면 테스트 정의가 들어 있는 평가 폴더를 만들면 됩니다.
 
 1. workbench로 이동해 `evals` 폴더로 들어가세요.
 
@@ -25,7 +24,7 @@ MLflow에는 이를 위한 내장 테스트가 있으므로 이를 사용하겠�
     touch /opt/app-root/src/evals/information-search/judge_prompt.txt
     ```
 
-3. `information-search` 폴더 안의 `judge_prompt.txt`에 아래 텍스트를 추가하세요. summarization의 judge prompt는 사용자의 질문에 없는 사실을 끌어오는 답변에 감점을 주는데, 이는 검색된 문서를 바탕으로 한 유효한 RAG 응답을 잘못 실패시킬 수 있습니다. 그래서 RAG 전용 prompt가 필요한 것입니다:
+3. `information-search` 폴더의 `judge_prompt.txt`에 아래 내용을 추가합니다. 요약용 심사 프롬프트는 사용자 질문에 없는 정보를 포함한 응답에 감점을 줍니다. 하지만 RAG는 검색한 문서에서 새로운 정보를 가져오는 것이 정상 동작이므로 기존 기준을 그대로 사용하면 올바른 응답도 실패할 수 있습니다. 따라서 RAG 전용 심사 프롬프트가 필요합니다.
 
     ```bash
     You are an expert evaluator judging the quality of a generated answer to a question.
@@ -94,7 +93,7 @@ tests:
 ```
     
 
-  **참고:** 이 prompt들은 AI501 과목을 기준으로 작성되었습니다. 이전에 어떤 과목을 수집(ingest)했는지에 따라 내용에 맞게 수정해야 할 수 있습니다. 좋은 prompt와 예상 응답을 찾으려면 **Canopy UI**나 **Gen AI Playground**에서 몇 가지를 직접 실행해보세요.
+  **참고:** 이 프롬프트는 AI501 과목을 기준으로 작성되었습니다. 앞에서 수집한 교육계획서에 맞게 질문과 기대 응답을 수정하세요. **Canopy UI**나 **Gen AI Playground**에서 직접 질문해 보면 적절한 테스트 데이터를 만드는 데 도움이 됩니다.
 
 5. 평가 내용이 만족스럽다면, 반드시 git에 커밋하세요:
 
@@ -117,4 +116,3 @@ tests:
 8. pipeline이 완료되면, **<USER_NAME>-toolings** 프로젝트 아래의 `Experiments (MLflow)`에서 다시 평가 결과를 확인할 수 있습니다.
 
   ![rag-mlflow-eval.png](./images/rag-mlflow-eval.png)
-

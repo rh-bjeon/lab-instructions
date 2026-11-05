@@ -1,6 +1,6 @@
 # 🔄 Canopy가 압축된 Llama 3.2 FP8 모델을 사용하도록 업데이트하기
 
-실험 환경을 Tiny Llama에서 FP8 모델을 가리키도록 바꿔봅시다. 동일한 단계를 거칠 것입니다.
+실험 환경이 TinyLlama 대신 FP8 모델을 사용하도록 변경합니다.
 
 ## 🦙 Llama Stack 설정 업데이트
 
@@ -10,7 +10,7 @@
 
     ![fp8-llama-upgrade.png](./images/fp8-llama-upgrade.png)
 
-3. 이전에 TinyLlama에 했던 것처럼, 양자화된 Llama 3.2 FP8 모델을 Llama Stack의 또 다른 모델 엔드포인트로 추가합니다. 이렇게 하면 클라우드 모델, TinyLlama, 그리고 이 새 모델에 모두 접근할 수 있게 됩니다.
+3. 이전에 TinyLlama에 했던 것처럼, 양자화된 Llama 3.2 FP8 모델을 Llama Stack의 또 다른 모델 엔드포인트로 추가합니다. 이렇게 하면 클라우드 모델, TinyLlama, 그리고 이 새 모델에 모두 접근할 수 있습니다.
 
     Form view에서 `Add models`를 클릭해서 `models` 아래에 추가합니다:
 
@@ -22,7 +22,7 @@
 
     ![fp8-llama-upgrade2.png](./images/fp8-llama-upgrade2.png)
 
-5. 이제 `backend`가 이 새로 사용 가능해진 모델을 가리키도록 설정해봅시다 😌 **OpenShift Console** → **Helm** → **Releases**에서 `canopy-backend`를 찾습니다.
+5. 새 모델을 사용하도록 백엔드를 설정합니다. 😌 **OpenShift Console** → **Helm** → **Releases**에서 `canopy-backend`를 찾습니다.
 
     ![fp8-backend-upgrade.png](./images/fp8-backend-upgrade.png)
 
@@ -44,11 +44,11 @@
 
 ### 🌳 새 모델로 Canopy 테스트하기
 
-Llama Stack과 backend가 실행되면, 양자화된 모델과 통신할 수 있는지 확인해봅시다.
+Llama Stack과 백엔드가 다시 실행되면 양자화 모델을 정상적으로 호출하는지 확인합니다.
 
 1. [Canopy UI](https://canopy-ui-<USER_NAME>-canopy.<CLUSTER_DOMAIN>)로 이동해서 요약 기능을 테스트합니다. 원한다면 이전 챕터의 터키 차에 관한 텍스트를 복사해서 사용해도 됩니다 ☕️
 
-2. 양자화된 모델로부터 응답을 받게 되는데, 여전히 양자화되지 않은 모델을 사용하는 것 같은 느낌이 들 것입니다 😌 그러니 왜 test와 production 환경으로 가져가는 것을 미루고 있을까요?
+2. 양자화 모델의 응답 품질이 기존 모델과 비슷한지 확인합니다. 기준을 충족하면 테스트와 운영 환경에도 적용할 수 있습니다. 😌
 
 ### Test와 Prod를 On-Prem으로 전환하기 🦙
 
@@ -123,7 +123,7 @@ Llama Stack과 backend가 실행되면, 양자화된 모델과 통신할 수 있
 
 ## 달성한 것
 
-축하합니다! RDU가 학생들을 서빙하는 방식을 완전히 바꿔놓았습니다. 다음은 여러분이 달성한 내용입니다:
+RDU의 모델 서빙 방식을 개선했습니다. 이번 모듈에서 완료한 작업은 다음과 같습니다.
 
 - **양자화 기본 원리 숙달** — 이제 정밀도 형식(FP16, INT8, INT4) 간의 트레이드오프를 이해하고, 압축 전략에 대해 정보에 기반한 결정을 내릴 수 있습니다
 - **직접 모델 압축** — llm-compressor를 사용해 GPTQ 양자화를 적용하고, 모델이 능력을 잃지 않으면서도 축소되는 모습을 직접 확인했습니다
@@ -143,4 +143,3 @@ Llama Stack과 backend가 실행되면, 양자화된 모델과 통신할 수 있
 | **지속가능성** | 더 작은 모델은 추론당 에너지 소비가 적어, 품질을 유지하면서도 RDU의 탄소 발자국을 줄입니다 🌳🌳🌳🌳|
 
 결론: RDU는 이제 더 빠르고, 더 저렴하면서도 학생 데이터를 있어야 할 곳—캠퍼스 내—에 정확히 유지하는 프로덕션급 AI 어시스턴트를 운영하고 있습니다.
-

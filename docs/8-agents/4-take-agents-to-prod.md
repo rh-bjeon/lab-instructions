@@ -35,7 +35,7 @@
 
 3. Llama Stack에서 MCP가 활성화된 후에는, agent 기능을 사용할 수 있도록 Canopy 백엔드도 업데이트해야 합니다. 워크벤치로 이동해서 `genaiops-gitops/canopy/test/backend/config.yaml` 파일을 여세요.
 
-4. 파일을 편집해서 `student-assistant` feature flag를 추가하세요. 프롬프트는 자유롭게 변경해도 됩니다. 이전과 마찬가지로 이것은 system prompt입니다.
+4. 파일을 편집해서 `student-assistant` feature flag를 추가하세요. 프롬프트는 자유롭게 변경해도 됩니다. 이전과 마찬가지로 이것은 시스템 프롬프트입니다.
 
     ```yaml
     ---
