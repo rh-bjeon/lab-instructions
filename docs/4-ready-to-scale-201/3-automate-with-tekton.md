@@ -5,7 +5,7 @@
 
 ## 파이프라인 서버 설치
 
-`toolings` 네임스페이스에도 파이프라인 서버를 설정해야 하지만, 이번에는 ArgoCD로 설정하겠습니다.
+우리가 방금 `<USER_NAME>-canopy` 네임스페이스에 설정했던대로 `toolings` 네임스페이스에도 파이프라인 서버를 설정해야 하지만, 이번에는 좀 더 간편하게 ArgoCD로 설정하겠습니다.
 
 1. 이전과 마찬가지로 `<USER_NAME>-canopy` 네임스페이스에서 workbench를 엽니다.
 
@@ -75,17 +75,24 @@ Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가�
 
 4. 이제 `OpenShift Dashboard` -> `Pipelines` -> `<USER_NAME>-toolings` -> `canopy-evals-pipeline`로 이동하여 살펴봅시다.
 
-    여기서 하는 일은 단순한 `git clone`을 수행한 다음 Kubeflow 파이프라인을 시작하는 것뿐입니다.  
+    이 파이프라인이 하는 일은 단순한 `git clone`을 수행한 다음, Kubeflow 파이프라인을 시작하는 것뿐입니다.  
 
-    파이프라인이 완료되면, `test`의 변경 사항을 `prod`로 가져오기 위한 PR도 생성됩니다.
+    파이프라인이 완료되면, `test`의 변경 사항을 `prod`로 가져오기 위한 PR(Pull Requeest)도 생성됩니다.
 
     ![tekton-pipeline](images/tekton-pipeline.png)
 
-5. 좋습니다, 파이프라인이 준비되었습니다! 하지만 지금까지는 여전히 수동으로 트리거해야 하며, 이전과의 유일한 차이점은 이제 Tekton 파이프라인을 트리거하면 그것이 Kubeflow 파이프라인을 트리거한다는 점뿐입니다. 그 이상은 아직 없습니다...
+5. 좋습니다, 파이프라인이 준비되었습니다! 하지만 지금까지는 여전히 수동으로 파이프라인을 시작해야 하며, 이전과의 유일한 차이점은 이제 Tekton 파이프라인을 시작하면 그것이 Kubeflow 파이프라인을 시작한다는 점뿐입니다. 그 이상은 아직 없습니다...
 
     ![super-important-meme](images/super-important-meme.jpg)
 
-    Tekton 파이프라인을 제대로 활용하기 위해, 저장소의 git 변경 사항으로부터 자동으로 트리거되도록 만들어 봅시다.  
+    > 💡 **잠깐, Kubeflow 파이프라인이랑 Tekton 파이프라인이 왜 따로 있나요?**
+    >
+    > Kubeflow 파이프라인은 **"무엇을 평가할 것인가"**를 담당합니다 — MLflow 평가, GuideLLM 부하 테스트처럼 데이터 과학자가 작성한 평가 로직 그 자체입니다.
+    > Tekton 파이프라인은 **"언제, 어떻게 그 평가를 실행시킬 것인가"**를 담당합니다 — git push나 새 프롬프트 등록 같은 이벤트를 받아서 최신 코드를 `git clone`하고, Kubeflow 파이프라인을 실행시켜 주는 역할만 합니다.
+    >
+    > 이렇게 둘을 분리해 두면 평가 로직(Kubeflow)은 그대로 둔 채 트리거 방식(Tekton)만 자유롭게 바꿀 수 있습니다. 수동 실행이든, git push든, 새 프롬프트 등록이든 트리거 조건이 바뀌어도 Kubeflow 파이프라인 자체는 손댈 필요가 없는 거죠. 게다가 Tekton은 OpenShift Pipelines와 잘 통합된 범용 CI/CD 엔진이라 webhook, PR 생성 같은 GitOps 작업을 잘하고, Kubeflow는 평가 지표 계산이나 MLflow 연동 같은 ML 특화 작업을 잘합니다 — 각자 잘하는 일을 하도록 역할을 나눠둔 셈입니다.
+
+    Tekton 파이프라인을 좀 더 편하게 활용하기 위해, 코드 저장소에 변경 사항이 생기면 자동으로 파이프라인을 실행하도록 만들어 봅시다.  
     먼저 Gitea로 이동합니다.
 
 6. Gitea 안에서 `evals` 저장소로 이동합니다. Settings로 이동합니다.
@@ -104,9 +111,13 @@ Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가�
 
     ![githook](images/githook.png)
 
-9. 또한 시스템에 변경이 생길 때마다 평가를 트리거해야 합니다. 예를 들어 설정의 무언가를 변경하거나, 새로운 기능을 추가하는 등의 경우, 시스템을 다시 평가해야 합니다. 그러니 `genaiops-gitops` 저장소에도 webhook을 추가해 봅시다. 이곳에 외부화된 백엔드 설정이 저장되어 있습니다.
+9. 또한 시스템에 변경이 생길 때마다 평가를 트리거해야 합니다. 예를 들어 설정의 무언가를 변경하거나, 새로운 기능을 추가하는 등의 경우, 시스템을 다시 평가해야 합니다. 그러니 `genaiops-gitops` 저장소에도 동일한 webhook을 추가해 봅시다. 이곳에 외부화된 백엔드 설정이 저장되어 있습니다.
 
-    하지만 걱정하지 마세요. GitOps 저장소에 대한 _모든 push_에 대해 파이프라인을 트리거하지는 않습니다. `canopy/test/backend/config.yaml` 파일에 변경이 있을 때만 파이프라인을 트리거하는 [interceptor 설정](https://github.com/rhoai-genaiops/genaiops-helmcharts/blob/main/charts/canopy-evals-pipeline/templates/triggers/triggers.yaml#L83)이 있습니다.
+    (이 웹훅은 GitOps 저장소에 대한 __모든 push__에 대해 파이프라인을 트리거하지는 않습니다. `canopy/test/backend/config.yaml` 파일에 변경이 있을 때만 파이프라인을 트리거하는 [interceptor 설정](https://github.com/rhoai-genaiops/genaiops-helmcharts/blob/main/charts/canopy-evals-pipeline/templates/triggers/triggers.yaml#L83)이 있습니다.)
+
+    ```bash
+    http://el-canopy-evals-event-listener.<USER_NAME>-toolings.svc.cluster.local:8080
+    ```
 
     ![webhook-gitops.png](./images/webhook-gitops.png)
 
@@ -140,15 +151,15 @@ Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가�
 
 _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트를 실행하겠지만, 지금은 사전에 빌드된 백엔드 이미지를 사용하고 있으므로 그 부분은 생략합니다._
 
-결과에 만족하시나요? 그렇다면, 좋습니다! 다음 질문은 이렇습니다. 이제 어떻게 프로덕션으로 보낼 것인가?
+결과에 만족하시나요? 그렇다면, 좋습니다! 다음 질문은 이렇습니다. 이제 이 애플리케이션을 어떻게 프로덕션으로 보낼 것인가?
 
 ## 프롬프트 변경 사항을 프로덕션으로 가져가는 방법
 
-평가를 실행했고, GuideLLM 결과도 확인했으며, 모든 것이 프로덕션에 적합해 보입니다. 그렇다면 무엇이 변경되었는지 가시성을 확보하고, 문제가 생겼을 때 쉽게 롤백할 수 있는 방식으로 프로덕션의 system prompt를 어떻게 업데이트할 수 있을까요?
+평가를 실행했고, GuideLLM 결과도 확인했으며, 모든 것이 프로덕션에 적합해 보입니다. 그렇다면 무엇이 변경되었는지 가시성을 확보하고, 프로덕션의 system prompt를 문제가 생겼을 때 쉽게 롤백할 수 있는 방식으로 어떻게 업데이트할 수 있을까요?
 
-1. `summarization`에 대한 최신 프롬프트 버전을 사용하기로 결정했습니다. `prod` 별칭을 해당 버전으로 옮김으로써 이를 수행하겠습니다. 프롬프트에 별칭을 추가하면 해당 프롬프트의 ID로 GitOps 저장소를 업데이트하는 파이프라인이 트리거됩니다. 이를 통해 프로덕션에 무엇이, 언제 올라갔는지 알 수 있습니다. ID를 알고 있으면 Git 커밋 히스토리에 저장되어 있으므로 이전 ID로 쉽게 롤백할 수 있습니다.
+1. `summarization` 기능을 위한 프롬프트를 여러 버전으로 테스트해 본 결과, 최신 버전의 프롬프트를 canopy 애플리케이션에서 사용하기로 결정했습니다. 프로덕션 용도임을 표시하는 `prod` 별칭(alias)을 해당 버전 프롬프트로 옮겨보겠습니다. 프롬프트에 별칭을 추가하면, 해당 프롬프트의 ID를 사용하도록 GitOps 저장소를 업데이트하는 파이프라인이 자동 실행되어야 합니다. 이를 통해 프로덕션에 무슨 프롬프트가, 언제 올라갔는지 알 수 있습니다. 프롬프트 ID가 Git 커밋 히스토리에 저장되어 있으므로 이전 ID로 쉽게 롤백할 수 있습니다.
 
-    이를 위해, `prompt-promotion-pipeline`이라는 폴더를 생성하여 도구에 또 다른 파이프라인을 추가해 봅시다. 
+    위와 같은 과정을 구성하기 위해, `prompt-promotion-pipeline`이라는 폴더를 생성하여 도구에 또 다른 파이프라인을 추가해 봅시다. 
 
     Argo CD를 통해 Tekton 파이프라인을 배포해 봅시다. 먼저 다음을 실행합니다. 
 
@@ -167,7 +178,7 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
     USER_NAME: <USER_NAME>
     CLUSTER_DOMAIN: <CLUSTER_DOMAIN>
 
-3. 다시 git에 커밋하고 push 합니다.
+3. 터미널에 아래 명령어를 입력합니다. 그러면 다시 git에 커밋하고 push 하게 됩니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -210,7 +221,7 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
 
 예를 들어, 프로덕션 환경의 trace를 평가 데이터셋에 추가하려면 다음과 같이 합니다.
 
-1. **OpenShift AI Dashboard** > **Experiments **(MLflow)로 이동하여 `<USER_NAME>-prod`를 선택합니다.
+1. **OpenShift AI Dashboard** > **Experiments(MLflow)**로 이동하여 `<USER_NAME>-prod`를 선택합니다.
 2. **summarization** > **Traces**를 열고 trace를 하나 선택합니다.
 3. **Show assessments** > **Add expectations**를 클릭합니다 (예: `length` = `200`).
 4. **Add to dataset**을 클릭하고 기존의 `eval` 데이터셋을 선택한 다음 **Export**를 클릭합니다.

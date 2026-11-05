@@ -74,12 +74,11 @@ Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내�
 
 3. 이러한 평가를 실행하는 Kubeflow 파이프라인의 코드는 `evals-pipeline/mlflow_pipeline.py` 안에 있습니다. 이를 열어서 살펴보세요. 파일 상단 근처(19번째 줄 부근)에서, `repo_url` 인자에 필요한 변수들을 다음과 같이 수정합니다.
     ```python
-    # 🚨 replace with your own user details and repo URL
     USER_NAME="<USER_NAME>"
     PASSWORD="<PASSWORD>"
     GIT_SERVER="<GIT_SERVER>"  # https:// 가 없어야 합니다
     ```
-    ⚠️ 이 변수들은 파일 하단에서 `repo_url` 인자를 구성하는 데 사용되며, 이는 파이프라인이 `evals` 저장소를 클론하고 방금 보았던 테스트를 실행하기 위해 필요합니다. 반드시 본인의 값으로 교체하세요!
+    ⚠️ 이 변수들은 파일 하단에서 `repo_url` 인자를 구성하는 데 사용되며, 이는 파이프라인이 `evals` 저장소를 클론하고 방금 보았던 테스트를 실행하기 위해 필요합니다. 반드시 이 값으로 교체하세요!
 
 
 4. 변경 사항을 push 합시다.
@@ -111,6 +110,6 @@ Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내�
 
 ![summary_eval](./images/summary_eval.png)
 
-다음 섹션에서는 system prompt와 같은 변경 사항이 발생했을 때 이 파이프라인을 자동으로 트리거하는 방법을 살펴보겠습니다. 
+다음 섹션에서는 system prompt와 같은 변경 사항이 발생했을 때 이 파이프라인을 자동으로 트리거해서, 변경사항이 생겼을 때마다 자동으로 테스트를 실행하도록 구성하는 방법을 살펴보겠습니다. 
 
 그리고 GuideLLM 테스트도 잊지 말아야겠죠!
