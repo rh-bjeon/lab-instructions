@@ -53,6 +53,8 @@ OpenShift에는 `<USER_NAME>-canopy`라고 불리는 실험 환경이 있습니�
     - **MODEL_NAME:** `llama32`
   
     - **LLM_ENDPOINT:** `https://llama32-ai501.<CLUSTER_DOMAIN>`
+    
+    **(주의: 캡쳐에 보이는 것과 Value 값 순서가 다를 수 있습니다. 'MLFLOW_TRACKING_URI'가 아닌 'LLM_ENDPOINT' 값을 수정하고 있는지 다시한번 확인하세요!)**
   
     나머지는 지금은 그대로 두세요.
 
