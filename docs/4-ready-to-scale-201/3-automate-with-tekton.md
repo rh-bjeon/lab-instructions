@@ -219,11 +219,15 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
 
 [Evaluating with MLflow](1-evaluate-genai-applications.md#evaluating-with-mlflow) 섹션에서 했던 것처럼, MLflow trace로부터 평가 데이터셋을 키워나갈 수 있습니다. 각 환경은 자신만의 작업 공간에 trace를 저장합니다.
 
-예를 들어, 프로덕션 환경의 trace를 평가 데이터셋에 추가하려면 다음과 같이 합니다.
+예를 들어, 프로덕션 환경의 trace를 평가 데이터셋에 추가하려면 다음과 같이 합니다. 
 
 1. **OpenShift AI Dashboard** > **Experiments(MLflow)**로 이동하여 `<USER_NAME>-prod`를 선택합니다.
-2. **summarization** > **Traces**를 열고 trace를 하나 선택합니다.
-3. **Show assessments** > **Add expectations**를 클릭합니다 (예: `length` = `200`).
+2. **summarization** > **Traces**를 열고 trace를 하나 선택합니다. (summarization trace가 보이지 않는다면, 위의 8번 단계에 따라 prod Canopy에 접속하여 채팅을 쳐보세요)
+3. **Show assessments** > **Add expectations**를 클릭하고 기대값을 입력합니다. (아래는 예시)
+    - Assessment Name: `length`
+    - Data Type: `Number`
+    - Value: `200`
+    - Rationale: `This text really should not be longer than 200 chars`
 4. **Add to dataset**을 클릭하고 기존의 `eval` 데이터셋을 선택한 다음 **Export**를 클릭합니다.
 
 
@@ -233,7 +237,7 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
 
 ![where-are-my-prompts.jpg](./images/where-are-my-prompts.jpg)
 
-1. 프롬프트 레지스트리의 프롬프트 변경이 `toolings` 네임스페이스에서 평가 파이프라인 실행을 시작시킵니다.
+1. 프롬프트 레지스트리에서 프롬프트를 변경하면 `toolings` 네임스페이스에서 평가 파이프라인을 자동으로 시작시킵니다.
 2. 파이프라인은 세 곳에서 평가 데이터셋을 수집합니다. Git, 그리고 `test`와 `prod` 환경 각각의 trace 컬렉션입니다.
 3. 평가용 프롬프트가 `test` 백엔드로 전송되고, 백엔드는 LLM을 호출합니다. 그 결과로 `test` 환경에 새로운 trace가 생성됩니다.
 4. 평가 결과는 `toolings` 네임스페이스에 저장됩니다.

@@ -94,7 +94,7 @@ GenAI 애플리케이션에서 평가할 수 있는 구성 요소는 몇 가지�
 
 ![eval-runs.png](./images/eval-runs.png)
 
-그리고 trace를 클릭하여 평가의 세부 결과를 확인합니다. 'summary_quality'는 유저의 질문에 대한 LLM의 답변 퀄리티를 평가한 것이고, 'is_concise'는 
+그리고 trace를 클릭하여 평가의 세부 결과를 확인합니다. 'summary_quality'는 유저의 질문에 대한 LLM의 답변 퀄리티를 평가한 것이고, 'is_concise'는 LLM 출력이 글자 수 제한을 지키는지 평가한 것입니다. 
 
 ![eval-runs-2.png](./images/eval-runs-2.png)
 
