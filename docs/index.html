@@ -27,6 +27,14 @@
   <!-- Added Top Navigation with Dropdown -->
   <div class="top-navigation">
     <div class="dropdown">
+      <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">📋 내 정보 복사</button>
+      <div class="dropdown-content">
+        <a href="#" onclick="copyValue('USER_NAME', this, '사용자 이름'); return false;">사용자 이름</a>
+        <a href="#" onclick="copyValue('PASSWORD', this, '비밀번호'); return false;">비밀번호</a>
+        <a href="#" onclick="copyValue('CLUSTER_DOMAIN', this, '클러스터 도메인'); return false;">클러스터 도메인</a>
+      </div>
+    </div>
+    <div class="dropdown">
       <button class="storage-btns" style="background-color: #cc0000; color: white; border: 2px #FAB6B6;">바로가기</button>
       <div class="dropdown-content" id="dynamic-links">
         <!-- Links will be populated dynamically with JavaScript -->
@@ -131,7 +139,46 @@
 
     // Call once on page load
     document.addEventListener('DOMContentLoaded', populateDropdownLinks);
-    
+
+    // Copies a single stored value (USER_NAME/PASSWORD/CLUSTER_DOMAIN) to the clipboard,
+    // so students can grab just that value (e.g. to paste into a Jupyter notebook cell)
+    // without having to find/select it inside a longer code block.
+    function copyValue(storageKey, el, label) {
+      const value = localStorage.getItem(storageKey);
+      const originalText = label;
+      if (!value) {
+        el.textContent = '⚠️ 값이 없어요';
+        setTimeout(function () { el.textContent = originalText; }, 1200);
+        return;
+      }
+
+      function showCopied() {
+        el.textContent = '✅ 복사됨';
+        setTimeout(function () { el.textContent = originalText; }, 1200);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(showCopied, function () {
+          fallbackCopy(value);
+          showCopied();
+        });
+      } else {
+        fallbackCopy(value);
+        showCopied();
+      }
+    }
+
+    function fallbackCopy(value) {
+      const input = document.createElement('input');
+      input.value = value;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    }
+
     function setNamesInStorage () {
       let uname = document.getElementById('uname').value.toLowerCase();
       let pass = document.getElementById('pass').value;
