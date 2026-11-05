@@ -175,7 +175,7 @@ Canopy는 이미 트레이싱을 위해 MLflow를 사용하고 있으므로, 피
 
    ![champ-prompt.png](./images/champ-prompt.png)
 
-2. 이제 challenger 프롬프트를 만들고 새 버전으로 등록합니다. 새 버전은 자동으로 `latest` 별칭을 갖게 됩니다. `champion` 별칭은 그대로 유지됩니다.
+2. 이제 challenger용으로 새로운 버전의 프롬프트를 만들고 등록합니다. 새 버전은 자동으로 `latest` 별칭을 갖게 되는데, `latest` 프롬프트를 비교용 프롬프트로 사용할 예정입니다.
 
 3. A/B 테스트를 활성화하기 위해 `genaiops-gitops/canopy/test/backend/config.yaml`을 수정합니다. Prompt A는 `champion`을 가리키게 하고, A/B 설정에서는 `latest`를 challenger로 사용하도록 설정합니다.
 
