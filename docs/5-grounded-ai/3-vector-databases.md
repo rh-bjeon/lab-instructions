@@ -14,7 +14,7 @@ Vector database는 수백만 개의 벡터를 효율적으로 저장하고 검�
 
     ![deploy-milvus](./images/deploy-milvus.png)
 
-2. Milvus가 완전히 배포될 때까지 기다립니다.
+2. Milvus가 완전히 배포될 때까지 기다립니다. (milvus-standalone이 진한 파란색으로 변할 때까지 기다리세요. 하늘색이라면 Not Ready 상태입니다.)
     Milvus와 함께 **Attu**라는 것도 함께 배포되는 것을 볼 수 있습니다. Attu는 Milvus의 프런트엔드로, Milvus에 저장된 벡터들을 browse할 때 사용할 수 있습니다.
     열어서 어떤 모습인지 확인해보세요.
 
