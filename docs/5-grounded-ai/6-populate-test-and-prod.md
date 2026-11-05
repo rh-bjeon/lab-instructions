@@ -5,7 +5,7 @@
 
 ## 🔍 KFP Pipelines (다시) 소개
 
-이제 **Kubeflow Pipelines **(KFP)를 사용해 여러분의 실험적인 RAG 시스템을, 복잡한 학술 문서를 대규모로 자동 처리할 수 있는 production급 플랫폼으로 전환하겠습니다.
+이제 **Kubeflow Pipelines**(KFP)를 사용해 여러분의 실험적인 RAG 시스템을, 복잡한 학술 문서를 대규모로 자동 처리할 수 있는 production급 플랫폼으로 전환하겠습니다.
 
 ## 🏗️ Document Intelligence RAG Pipeline 아키텍처
 
@@ -55,7 +55,7 @@
 
 또 다른 pipeline을 실행할 시간입니다!
 
-1. RAG pipeline이 `backend/rag-pipeline/kfp_pipeline.py`에 있는 `backend` 저장소를 clone하세요.
+1. 다음 명령어를 실행해서 `backend` 저장소를 clone하세요. `backend/rag-pipeline/kfp_pipeline.py`에 RAG pipeline이 정의되어 있습니다. 
 
     ```bash
     cd /opt/app-root/src/
@@ -92,13 +92,13 @@
    </code></pre>
    </div>
 
-2. 이를 `<USER_NAME>-toolings` 네임스페이스에서 실행하도록 export하여 test와 prod를 가리키게 해봅시다.
-   pipeline을 export하려면 다음을 실행해 컴파일하세요.
+2. 이런 파이프라인을 `<USER_NAME>-toolings` 네임스페이스에서 실행할 수 있도록 export하여 test와 prod를 가리키게 해봅시다.
+   먼저, pipeline을 export하려면 다음을 실행해 컴파일하세요.
    ```bash
    cd /opt/app-root/src/backend/rag-pipeline
    python kfp_pipeline.py
    ```
-   `backend/rag-pipeline` 폴더 아래에 `document-intelligence-rag.yaml`이라는 파일이 생성됩니다. 이를 로컬 머신으로 다운로드하세요.
+   그러면 `backend/rag-pipeline` 폴더 아래에 `document-intelligence-rag.yaml`이라는 파일이 생성됩니다. 파일에 마우스를 올리고, 마우스 우클릭 버튼을 누르고, 'Download'를 클릭하여 로컬 머신으로 다운로드하세요.
    
 
 3. OpenShift AI로 이동해 `<USER_NAME>-toolings` 프로젝트로 들어가세요. 그 안에서 `Pipelines`로 이동해 `Import pipeline`을 클릭합니다.

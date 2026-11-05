@@ -75,7 +75,7 @@
 
 RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합니다. 팀이나 요구 사항에 따라 사용하는 벡터 데이터베이스가 달라질 수 있지만, 애플리케이션 코드는 구체적인 제품에 의존하지 않는 편이 좋습니다.
 
-**OGX **(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
+**OGX**(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
 
 공급자 이동성 외에도, OGX는 직접 구축하기 어려운 RAG 기능들도 제공합니다:
 
@@ -120,7 +120,7 @@ RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합�
     touch /opt/app-root/src/genaiops-gitops/canopy/prod/ogx/config.yaml
     ```
 
-    그리고 아래 설정을 각각의 `config.yaml`에 붙여넣으세요:
+    그리고 아래 설정을 각각의 `config.yaml`에 붙여넣으세요. (즉, `genaiops-gitops/canopy/test/ogx/config.yaml` 파일과 `genaiops-gitops/canopy/prod/ogx/config.yaml` 파일)
 
     **TEST용**:
 
