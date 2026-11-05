@@ -106,7 +106,7 @@ Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가�
 
 9. 또한 시스템에 변경이 생길 때마다 평가를 트리거해야 합니다. 예를 들어 설정의 무언가를 변경하거나, 새로운 기능을 추가하는 등의 경우, 시스템을 다시 평가해야 합니다. 그러니 `genaiops-gitops` 저장소에도 webhook을 추가해 봅시다. 이곳에 외부화된 백엔드 설정이 저장되어 있습니다.
 
-    하지만 걱정하지 마세요. GitOps 저장소에 대한 _모든 push_에 대해 파이프라인을 트리거하지는 않습니다. `canopy/test/backend/config.yaml` 파일에 변경이 있을 때만 파이프라인을 트리거하는 interceptor 설정이 있습니다.
+    하지만 걱정하지 마세요. GitOps 저장소에 대한 _모든 push_에 대해 파이프라인을 트리거하지는 않습니다. `canopy/test/backend/config.yaml` 파일에 변경이 있을 때만 파이프라인을 트리거하는 [interceptor 설정](https://github.com/rhoai-genaiops/genaiops-helmcharts/blob/main/charts/canopy-evals-pipeline/templates/triggers/triggers.yaml#L83)이 있습니다.
 
     ![webhook-gitops.png](./images/webhook-gitops.png)
 
