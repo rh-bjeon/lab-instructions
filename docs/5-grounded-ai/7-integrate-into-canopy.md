@@ -70,7 +70,7 @@ PROD(`genaiops-gitops/canopy/prod/backend/config.yaml`)
     git push
     ```
 
-6. Canopy UI(마지막으로 사용한 뒤 닫았다면 https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>)를 열고, 왼쪽 메뉴에서 *Information Search* 기능을 선택한 뒤 `what is the total credits in Biotechnology program in Redwood Digital University?`와 같이 질문해보세요.
+6. Canopy UI(마지막으로 사용한 뒤 닫았다면 https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN> )를 열고, 왼쪽 메뉴에서 *Information Search* 기능을 선택한 뒤 `what is the total credits in Biotechnology program in Redwood Digital University?`와 같이 질문해보세요.
 
 prompt 안의 "Biotechnology"를 Minio에 업로드한 프로그램의 교육계획서로 바꾸세요. 예를 들어 "Computer Science" 교육계획서만 업로드했다면, prompt에서 "Biotechnology" 대신 "Computer Science"라고 적으세요.
 
