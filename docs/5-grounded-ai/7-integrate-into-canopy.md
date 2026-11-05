@@ -60,7 +60,7 @@ PROD(`genaiops-gitops/canopy/prod/backend/config.yaml`)
       mlflow_prompt_version: prod
     
 
-5. 변경사항을 git에 push하세요:
+5. 변경사항을 git에 push하세요. 터미널에서 다음 명령어를 실행합니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

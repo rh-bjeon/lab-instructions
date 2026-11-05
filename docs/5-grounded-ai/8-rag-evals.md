@@ -156,7 +156,6 @@ tests:
   >       expected_result: "네 가지 트랙은 프로덕션 AI 시스템(Production AI Systems: Llama Stack, GitOps, CI/CD), 지식 기반 답변 생성(Knowledge Grounding: RAG 설계, 벡터 데이터베이스, 문서 처리 파이프라인), AI 안전성 및 보안(AI Safety & Security: 가드레일, 레드팀 테스트, 관측 가능성), 고급 애플리케이션(Advanced Applications: 에이전트 및 도구 호출, 멀티모달, 모델 최적화)입니다."
   > ```
 
-
   **참고:** 이 프롬프트는 AI501 과목을 기준으로 작성되었습니다. 앞에서 수집한 교육계획서에 맞게 질문과 기대 응답을 수정하세요. **Canopy UI**나 **Gen AI Playground**에서 직접 질문해 보면 적절한 테스트 데이터를 만드는 데 도움이 됩니다.
 
 5. 평가 내용이 만족스럽다면, 반드시 git에 커밋하세요:

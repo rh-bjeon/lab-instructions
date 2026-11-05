@@ -27,7 +27,7 @@
      - name: documents # 👈 이것을 추가하세요
    ```
 
-2. 이 변경사항을 커밋합시다!
+2. 이 변경사항을 커밋합시다! 터미널에서 명령어를 실행합니다.
 
    ```bash
    cd /opt/app-root/src/genaiops-gitops

@@ -23,7 +23,7 @@
     chart_path: charts/dspa
     ```
 
-4. Argo CD가 변경 사항을 가져올 수 있도록 push 합시다.
+4. Argo CD가 변경 사항을 가져올 수 있도록 push 합시다. 터미널에서 다음 명령어를 실행하면 됩니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -63,7 +63,7 @@ Tekton Pipeline에서 이를 트리거할 것이며, 여기에는 MLflow 평가�
       llmEndpoint: "http://llama-32-predictor.ai501.svc.cluster.local:8080"
     ```
 
-3. 변경 사항을 Git에 커밋하고 푸시합니다. GitOps에서는 Git에 기록된 상태가 배포의 기준입니다. 😉
+3. 변경 사항을 Git에 커밋하고 푸시합니다. GitOps에서는 Git에 기록된 상태가 배포의 기준입니다. 😉 터미널에서 다음 명령어를 실행하면 됩니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -175,7 +175,7 @@ _실제 환경에서는 새로운 백엔드를 빌드할 때마다도 테스트�
     USER_NAME: <USER_NAME>
     CLUSTER_DOMAIN: <CLUSTER_DOMAIN>
 
-3. 터미널에 아래 명령어를 입력합니다. 그러면 다시 git에 커밋하고 push 하게 됩니다.
+3. 터미널에서 아래 명령어를 입력합니다. 그러면 다시 git에 커밋하고 push 하게 됩니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

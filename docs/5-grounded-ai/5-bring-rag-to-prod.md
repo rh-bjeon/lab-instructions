@@ -25,7 +25,7 @@
 
     지금은 Milvus의 기본값으로 충분합니다.
 
-4. 이제 이 설정들을 배포해봅시다! 파일들을 Git에 커밋합니다:
+4. 이제 이 설정들을 배포해봅시다! 터미널에서 명령어를 실행하여 파일들을 Git에 커밋합니다:
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -150,7 +150,7 @@ RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합�
         service: "milvus-prod"
     ``` 
 
-7. 변경 사항을 Git에 푸시해 배포합니다. GitOps에서는 Git에 저장된 구성이 배포의 기준입니다.
+7. 터미널에서 변경 사항을 Git에 푸시해 배포합니다. GitOps에서는 Git에 저장된 구성이 배포의 기준입니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

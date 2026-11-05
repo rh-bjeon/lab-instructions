@@ -95,7 +95,7 @@
 
   <!-- For now, we are happy with the default Llama Stack values. We will get some exciting updates as we continue to the other chapters :) -->
 
-1. 이제 변경 사항을 배포합니다. 지금까지 수정한 내용은 Workbench에만 있으므로 아래 명령을 실행해 Git 저장소에 커밋하고 푸시합니다.
+1. 이제 변경 사항을 배포합니다. 지금까지 수정한 내용은 Workbench에만 있으므로 터미널에서 아래 명령을 실행해 Git 저장소에 커밋하고 푸시합니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

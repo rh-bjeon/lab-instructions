@@ -1,6 +1,6 @@
 ## Tekton으로 흐름 자동화하기
 
-1. MinIO에 새 문서가 업로드될 때 이 전체 흐름을 자동화해봅시다! 이를 위해서는 KFP (Kubeflow Pipelines) 트리거와 그 주변의 ops 작업들을 처리할 Tekton pipeline을 배포해야 합니다(Ready to Scale 201에서 했던 것과 매우 유사합니다).
+1. MinIO에 새 문서가 업로드될 때마다 이 전체 흐름이 자동으로 진행되도록 자동화해봅시다! 이를 위해서는 KFP(Kubeflow Pipelines) 트리거와 그 주변의 ops 작업들을 처리할 Tekton pipeline을 배포해야 합니다(Ready to Scale 201에서 했던 것과 매우 유사합니다).
     최종적으로 전체 흐름은 다음과 같은 모습이 됩니다:
 
     ![doc-ingestion-tekton-flow.png](./images/doc-ingestion-tekton-flow.png)
@@ -22,7 +22,7 @@
     cluster_domain: <CLUSTER_DOMAIN>
     ```
 
-3. 항상 그렇듯 변경사항을 커밋하고 push하세요.
+3. 항상 그렇듯 터미널에서 변경사항을 커밋하고 push하세요.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops

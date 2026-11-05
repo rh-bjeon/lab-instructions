@@ -91,11 +91,13 @@ Canopy의 엔드투엔드 observability 여정을 지원하기 위해 toolings �
 
 5. Prometheus 데이터 소스에 대한 연결을 생성합니다. **Connections** → **Data sources**로 이동한 다음 **UWM Prometheus**를 선택하고 아래로 스크롤해 **Save & test**를 클릭합니다.
 
+   _데이터 소스가 보이지 않는다면, 아직 동기화되지 않은 것입니다. 페이지를 몇 번 새로고침해 보세요. 생각보다 오래 걸릴 수도 있는데, 그럴 땐 다음 단계인 로깅과 트레이싱을 먼저 진행하고 다시 메트릭으로 돌아와서 진행해보세요._
+
    ![Grafana Data Source 1](./images/grafana-data-source1.png)
 
    ![Grafana Data Source 2](./images/grafana-data-source2.png)
 
-   _데이터 소스가 보이지 않는다면, 아직 동기화되지 않은 것입니다. 페이지를 몇 번 새로고침해 보세요 :)_
+
 
 
 6. 대시보드를 보려면 **Dashboards** → **Browse**로 이동해 `<USER_NAME>-toolings Canopy Dashboards` 폴더를 찾습니다.
