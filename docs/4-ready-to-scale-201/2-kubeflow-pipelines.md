@@ -37,14 +37,14 @@ Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내�
 7. 모두 파란색으로 표시되면 계속 진행해도 좋습니다!
     ![dspa-minio.png](./images/dspa-minio.png)
 
-    > 참고: 브라우저 탭을 닫고 다시 여는 것으로는 충분하지 않으므로, workbench를 정지한 후 다시 시작하여 재시작해 주세요. DataSciencePipelineApplication(```dspa```)이 생성되면 Workbench 구성 내부에 일부 변수가 주입되는데, 이 변수들은 런타임 중에는 적용되지 않기 때문에 완전한 재시작이 필요합니다.
+    > 주의: 지금 사용 중인 workbench를 정지한 후 다시 시작하여 재시작해 주세요!! OpenShift AI 대시보드 > Projects > `<USER_NAME>-canopy` 프로젝트 선택 > Workbenches 탭 선택 > `<USER_NAME>-canopy` 워크벤치를 'STOP' 한 후에 'Start'를 클릭하면 됩니다. DataSciencePipelineApplication(```dspa```)이 생성되면 Workbench 내부에 일부 변수가 주입되는데, 이 변수들은 런타임 중에는 적용되지 않기 때문에 이렇게 완전히 재시작을 해주어야 합니다.
 
 ### 평가 파이프라인 설정하기
 
 이제 실험 네임스페이스에서 파이프라인을 실행할 수 있도록 모든 준비가 끝났으니, 코드를 살펴보고 실행해 봅시다!  
-평가 파이프라인은 `evals`라는 저장소 안에 있으며, 평가 테스트와 파이프라인 정의가 함께 저장되어 있습니다. 
+평가 파이프라인에 대한 설정은 `evals`라는 저장소 안에 있으며, 평가 테스트와 파이프라인 정의가 함께 저장되어 있습니다. 
 
-1. 이를 살펴보려면 workbench로 돌아가서 저장소를 클론하세요.
+1. workbench 화면으로 돌아가서(화면을 다시 로딩하라는 경고문이 떠있을 것입니다. Reload windows 버튼을 클릭하세요) 다음 명령어를 터미널에 입력하세요. 이 명령어를 통해 evals 저장소를 클론하게 됩니다.
 
    ```bash
    cd /opt/app-root/src/
@@ -75,9 +75,9 @@ Kubeflow 파이프라인은 Python 기반이며, OpenShift AI 대시보드 내�
 3. 이러한 평가를 실행하는 Kubeflow 파이프라인의 코드는 `evals-pipeline/mlflow_pipeline.py` 안에 있습니다. 이를 열어서 살펴보세요. 파일 상단 근처(19번째 줄 부근)에서, `repo_url` 인자에 필요한 변수들을 다음과 같이 수정합니다.
     ```python
     # 🚨 replace with your own user details and repo URL
-    USER_NAME="Your user name"
-    PASSWORD="Your password"
-    GIT_SERVER="Your Gitea host"  # Without the https://
+    USER_NAME="<USER_NAME>"
+    PASSWORD="<PASSWORD>"
+    GIT_SERVER="<GIT_SERVER>"  # https:// 가 없어야 합니다
     ```
     ⚠️ 이 변수들은 파일 하단에서 `repo_url` 인자를 구성하는 데 사용되며, 이는 파이프라인이 `evals` 저장소를 클론하고 방금 보았던 테스트를 실행하기 위해 필요합니다. 반드시 본인의 값으로 교체하세요!
 
