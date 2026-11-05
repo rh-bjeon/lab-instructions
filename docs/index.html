@@ -157,14 +157,31 @@
         setTimeout(function () { el.textContent = originalText; }, 1200);
       }
 
+      let settled = false;
+      function finish() {
+        if (settled) return;
+        settled = true;
+        showCopied();
+      }
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(value).then(showCopied, function () {
+        navigator.clipboard.writeText(value).then(finish, function () {
           fallbackCopy(value);
-          showCopied();
+          finish();
         });
+        // Safety net: in some browser/permission states this Promise never
+        // settles at all (neither resolves nor rejects) instead of failing
+        // fast, which would otherwise leave the button stuck with no
+        // feedback and nothing copied. Fall back after a short timeout.
+        setTimeout(function () {
+          if (!settled) {
+            fallbackCopy(value);
+            finish();
+          }
+        }, 1000);
       } else {
         fallbackCopy(value);
-        showCopied();
+        finish();
       }
     }
 
@@ -409,8 +426,8 @@
       cursor: pointer;
       background-color: #FAB6B6;
       color: black;
-      border: 2px solid #FAB6B6; 
-      width: 130px; 
+      border: 2px solid #FAB6B6;
+      white-space: nowrap;
       text-align: center;
     }
     p.tip {
@@ -437,7 +454,7 @@
     }
     /* Dropdown styling */
     .top-navigation {
-      position: absolute;
+      position: fixed;
       top: 40px;
       right: 100px;
       z-index: 100;
