@@ -34,7 +34,25 @@
     summarization
     ```
 
-    그리고 이 작업을 위해 당신이 새롭게 가장 좋아하게 된 시스템 프롬프트를 붙여넣으세요 🫶 하는 김에, 괜찮은 커밋 메시지도 추가하고 `Create`를 누르세요. 
+    그리고 이 작업을 위해 다음의 프롬프트 중, 당신이 새롭게 가장 좋아하게 된 시스템 프롬프트를 붙여넣으세요 🫶 하는 김에, 괜찮은 커밋 메시지도 추가하고 `Create`를 누르세요. 
+
+    (만약 'You do not have permission to access this resource.'라는 에러가 발생한다면, 프로젝트가 `<USER_NAME>-canopy`로 적절하게 선택되어 있는지 확인하세요)
+
+	```
+	Write a short version of this.
+	```
+
+	```
+	Summarize the text in a few sentences.
+	```
+
+	```
+	Explain the given text as if I'm a 5-year-old.
+	```
+
+	```
+	Explain the given text using only emojis.
+	```
 
     ![summarization-prompt-1.png](./images/summarization-prompt-1.png)
 

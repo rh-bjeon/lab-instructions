@@ -65,7 +65,7 @@ Red Hat OpenShift AI는 다양한 프롬프팅 전략을 실험해볼 수 있는
 	좋은 요약 프롬프트를 생각해 보세요. 그리고 여기 요약을 요청할 텍스트가 있습니다(다시 말해, 사용자 프롬프트에 보낼 텍스트입니다).
 
 	```
-	Tea preparation involves the controlled extraction of bioactive compounds from processed Camellia sinensis leaves. Begin by heating water to near 100°C to optimize solubility. Introduce a tea bag to a ceramic vessel, then infuse with hot water to initiate steeping—typically 3–5 minutes to allow for the diffusion of polyphenols and caffeine. Upon removal of the bag, optional additives like sucrose or lipid-based emulsions may be introduced to alter flavor profiles. The infusion is then ready for consumption.
+	차를 준비하는 과정은 가공된 차나무(Camellia sinensis) 잎에서 생리활성 화합물을 제어된 방식으로 추출하는 과정입니다. 먼저, 화합물의 용해도를 최적화하기 위해 물을 약 100°C까지 가열합니다. 세라믹 용기에 티백을 넣은 다음, 뜨거운 물을 부어 우려내는 과정을 시작합니다. 일반적으로 폴리페놀과 카페인이 충분히 확산될 수 있도록 3~5분 동안 우려냅니다. 티백을 제거한 후에는 풍미를 조절하기 위해 설탕(자당)이나 지방 기반 유화액(예: 우유)과 같은 첨가물을 선택적으로 넣을 수 있습니다. 이렇게 하면 차가 완성되어 마실 준비가 됩니다.
 	```
 
 	![images/explain-like-8.jpg](images/explain-like-8.jpg)
@@ -81,7 +81,7 @@ Red Hat OpenShift AI는 다양한 프롬프팅 전략을 실험해볼 수 있는
 
 6. 위 텍스트를 요약하는 데 당신이 찾을 수 있는 최선의 시스템 프롬프트와 설정은 무엇인가요?
 
-	시도해볼 수 있는 몇 가지 예시 시스템 프롬프트입니다.
+	시도해볼 수 있는 몇 가지 예시 시스템 프롬프트입니다. (실습에서 사용하는 LLM 모델의 사이즈가 크지 않아서, 한국어보다는 영어로 지시하거나 물어볼 때 답변이 더 적절하게 나오는 경향이 있습니다)
 
 	```
 	Write a short version of this.

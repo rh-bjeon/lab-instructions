@@ -165,7 +165,7 @@
 > - say goodbye
 > - tell a lie and hurt you
 
-**"give you up"**이라고 답했다면 — 축하합니다, 당신은 방금 LLM처럼 행동한 것입니다!
+"give you up"이라고 답했다면 — 축하합니다, 당신은 방금 LLM처럼 행동한 것입니다!
 
 ![Never gonna give you up](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYndwNGtsMHV3MmN4NnVicWN2aWZjdGR4MXA2bGI5azgyYWN5bHczdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lgcUUCXgC8mEo/giphy.gif)
 
@@ -230,7 +230,7 @@
 > - be alone
 > - change
 
-충분한 컨텍스트가 없으면, 모델은 **"give you up"** 대신 (다른 노래에서 나온) **"leave this bed"**를 고를 수도 있습니다. 답변은 여전히 *그럴듯해* 보입니다 — 문법적으로 문장을 완성하기는 합니다 — 하지만 **틀린** 노래입니다!
+충분한 컨텍스트가 없으면, 모델은 **"give you up"** 대신 (다른 노래에서 나온) **"leave this bed"** 를 고를 수도 있습니다. 답변은 여전히 *그럴듯해* 보입니다 — 문법적으로 문장을 완성하기는 합니다 — 하지만 **틀린** 노래입니다!
 
 ![Never gonna leave this bed — 환각의 사례!](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZmMzltdXhyeWluNTA4cXVjazFzczdybWRjZGl6YXl1d2d5YWVieSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUSg8ARAv5S9rqg/giphy.gif)
 
