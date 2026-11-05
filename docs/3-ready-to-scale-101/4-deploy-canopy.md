@@ -10,7 +10,11 @@
 
   ![prompt-toolings](./images/prompt-toolings.png)
 
-1. `Create prompt`를 클릭하고 이전에 사용했던 것과 동일한 이름인 `summarization`으로 지정합니다. 그리고 test 환경으로 가져가고자 하는 System Prompt를 붙여넣습니다.
+1. `Create prompt`를 클릭하고 이전에 사용했던 것과 동일한 이름인 `summarization`으로 지정합니다. 그리고 test 환경으로 가져가고자 하는 System Prompt를 붙여넣습니다. (아래는 예시입니다)
+
+	```
+	You are a helpful assistant that summarizes given text using emoji.
+	```
 
   원한다면 적절한 커밋 메시지도 추가할 수 있으며, `Create`를 클릭합니다. 
 
@@ -40,6 +44,8 @@
 
 2. `frontend` 정의를 추가해 봅시다. `test`와 `prod`라는 두 개의 서로 다른 환경이 있으므로 두 개의 파일을 생성했습니다. 따라서 업데이트해야 할 파일도 두 개입니다. `genaiops-gitops` 아래에서, `canopy/test/frontend/config.yaml`과 `canopy/prod/frontend/config.yaml` 파일을 다음과 같이 업데이트합니다. 
 
+    (아래 내용은 명령어가 아닙니다! Workbench 화면 왼쪽의 파일 익스플로러에서 직접 `genaiops-gitops/canopy/test/frontend/config.yaml` 파일과 `genaiops-gitops/canopy/prod/frontend/config.yaml`파일을 찾아서 아래 내용을 붙여넣으세요.)
+
     이렇게 하면 UI 배포 helm-chart를 가져와서 이미지 버전과 같은 추가 구성을 적용하게 됩니다. 기본적으로 실험 환경에서 수동으로 했던 모든 작업과 동일합니다.
 
     ```yaml
@@ -55,7 +61,6 @@
     TEST (`genaiops-gitops/canopy/test/backend/config.yaml`):
 
     ```yaml
-    ---
     repo_url: https://gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/backend
     chart_path: chart
     summarization:
@@ -63,13 +68,12 @@
       model: llama32
       endpoint: "http://llama-32-predictor.ai501.svc.cluster.local:8080/v1"
       mlflow_prompt: summarization
-      mlflow_prompt_version: latest # 👈 always on latest
+      mlflow_prompt_version: latest # 👈 테스트 환경에서는 항상 latest 버전의 프롬프트를 사용하도록 설정합니다.
     ```
 
     PROD (`genaiops-gitops/canopy/prod/backend/config.yaml`):
 
     ```yaml
-    ---
     repo_url: https://gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/backend
     chart_path: chart
     summarization:
@@ -77,7 +81,7 @@
       model: llama32
       endpoint: "http://llama-32-predictor.ai501.svc.cluster.local:8080/v1"
       mlflow_prompt: summarization
-      mlflow_prompt_version: prod # 👈 what we wrote as alias
+      mlflow_prompt_version: prod # 👈 우리가 아까 새로 만든 프롬프트의 별칭(alias, 태그)을 입력합니다! 프로덕션 환경에서는 최신 버전이 아니라 prod로 태깅한 프롬프트만 사용하게 됩니다.
     ```
 
 <!-- 4. Lastly, let's setup Llama Stack to deploy via Argo CD. We just need Llama Stack Server here, Playground is something we only use in the experimentation phase. Update **both** `test/ogx/config.yaml` and `prod/ogx/config.yaml` as below:
@@ -91,7 +95,7 @@
 
   <!-- For now, we are happy with the default Llama Stack values. We will get some exciting updates as we continue to the other chapters :) -->
 
-1. 이제 이 모든 것을 배포해 봅시다! 물론, git에 들어가지 않으면 실제가 아니니까요!
+1. 이제 이 모든 것을 배포해 봅시다! 지금까지 수정한 내용은 아직 우리 workbench 환경에만 저장되어 있고, git 저장소에는 업로드 되어 있지 않습니다. 아래 명령어를 터미널에서 실행하여 지금 수정한 내용을 git으로 push하여 업데이트해보겠습니다. 
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
@@ -100,7 +104,7 @@
     git push 
     ```
 
-2. 모든 애플리케이션 값이 Git에 저장되었으니, 이제 Argo CD에게 이러한 환경들의 변경 사항을 가져오라고 알려봅시다. 이를 위해서는 단순히 ApplicationSets를 생성하기만 하면 됩니다.
+2. 애플리케이션에 모든 설정 값이 Git에 저장되었으니, 이제 Argo CD에게 이러한 환경들의 변경 사항을 가져와서 앱을 배포하라고 알려봅시다. ArgoCD가 애플리케이션을 배포할 때 참고하는 값들이 적힌 ApplicationSets를 생성하기만 하면 됩니다. 아까는 ArgoCD 화면에서 우리가 직접 하나하나 입력하여 ArgoCD Application을 생성했지만, 이번에는 미리 만들어둔 ApplicationSet 파일을 바로 적용해보겠습니다. 아래의 appset-test.yaml, appset-prod.yaml 파일을 내용을 보시면, 우리가 위에서 붙여넣은 config.yaml 파일을 참고하여 애플리케이션을 배포하도록 되어있습니다.
 
     ```bash
     oc apply -f /opt/app-root/src/genaiops-gitops/appset-test.yaml -n <USER_NAME>-toolings

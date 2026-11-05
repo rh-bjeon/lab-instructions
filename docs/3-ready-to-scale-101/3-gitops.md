@@ -11,7 +11,7 @@ GenAIOps의 맥락에서, 우리는 Argo CD를 활용하여 애플리케이션, 
 
 GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 구성 요소를 Argo CD를 통해 `<USER_NAME>-test` 및 `<USER_NAME>-prod` 환경에 배포해 봅시다.
 
-1. 먼저 GitOps와 Argo CD에 익숙해져 봅시다. Argo CD 인스턴스는 이미 `<USER_NAME>-toolings` 환경에 설치되어 있습니다. 위의 `Quick Links` 타일에서 URL을 가져오거나, 단순히 workbench의 터미널에서 아래 명령을 실행하여 얻을 수 있습니다.
+1. 먼저 GitOps와 Argo CD에 익숙해져 봅시다. Argo CD 인스턴스는 이미 `<USER_NAME>-toolings` 환경에 설치되어 있습니다. 오른쪽 상단의 `바로가기` 버튼에서 gitops를 클릭해 이동하거나, 단순히 workbench의 터미널에서 아래 명령을 실행하여 얻을 수 있습니다.
    
    * 참고: 본인의 워크스테이션에 이미 `oc` CLI가 로컬로 설치되어 있다면 그것을 사용해도 됩니다. 하지만 이러한 명령을 확실하게 실행할 수 있는 쉬운 방법이 필요하다면, 앞서 생성했던 VSCode Workbench로 돌아가는 것을 권장합니다 (기억하신다면, 그곳에서 터미널을 열어 `git clone`을 실행했습니다). 웹 브라우저와 컨테이너의 장점 덕분에, 로컬 워크스테이션이 어떻게 구성되어 있든 상관없이 동작하는 것을 보장할 수 있는 방법입니다. 감사 인사는 넣어두세요!)
 
@@ -24,19 +24,19 @@ GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 �
     oc login --server=https://api.${CLUSTER_DOMAIN##apps.}:6443 -u <USER_NAME> -p <PASSWORD>
   ```
 
-  그런 다음 URL을 가져오고 (또는 우측 상단의 `Quick Links`를 사용할 수도 있습니다) Argo CD에 접속합니다.
+  그런 다음 URL을 가져오고 Argo CD에 접속합니다. (아니면 이 방식 대신에, 지금 보고 있는 가이드 페이지 우측 상단의 `바로가기`를 사용할 수도 있습니다) 
 
   ```bash
     echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n <USER_NAME>-toolings)
   ```
 
-2. `Log in via OpenShift`를 클릭하여 Argo CD에 로그인하고, 제공된 OpenShift 자격 증명을 사용합니다.
+2. `Log in via OpenShift`를 클릭하여 Argo CD에 로그인하고, 제공된 OpenShift 자격 증명을 사용합니다. (우측 상단의 `내 정보 복사` 버튼을 활용하면 유저이름과 비밀번호를 바로 복사해서 사용할 수 있습니다!)
 
   ![argocd-login.png](./images/argocd-login.png)
 
 3. 처음 로그인할 때는 `Allow selected permissions`를 선택합니다.
 
-4. 방금 Argo CD에 로그인했습니다 👏👏👏! UI를 통해 샘플 애플리케이션을 배포해 봅시다. 이것은 우리가 GenAIOps 목적으로 Argo CD를 사용하기에 앞서, 그 마법 같은 기능을 미리 맛보기 위한 것입니다. Argo CD에서 `CREATE APPLICATION`을 클릭합니다. 빈 양식이 보일 것입니다. 다음과 같이 입력해 봅시다.
+4. 방금 Argo CD에 로그인했습니다 👏👏👏! UI를 통해 샘플 애플리케이션을 배포해 봅시다. 이것은 우리가 GenAIOps 목적으로 Argo CD를 사용하기에 앞서, 그 마법 같은 기능을 미리 맛보기 위한 것입니다. Argo CD에서 `CREATE APPLICATION`을 클릭합니다. 빈 양식이 보일 것입니다. 다음과 같이 입력해 봅시다. (마우스로 빈 칸을 클릭하면 아래쪽에 Drop-down으로 자동으로 값이 표시되는 항목도 있습니다)
 
    * "GENERAL" 상자에서
       * Application Name: `token-visualizer` 
@@ -44,7 +44,7 @@ GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 �
       * Sync Policy: `Automatic`
    * "SOURCE" 상자에서
       * Repository URL: `https://rhoai-genaiops.github.io/genaiops-helmcharts/`
-      * 우측 GIT/HELM 드롭다운 메뉴에서 `Helm` 선택
+      * 우측 GIT/HELM 드롭다운 메뉴에서 `Helm` 선택 (바로 변경되지 않으면 잠시 기다리거나, URL 칸을 마우스로 한번 클릭하고 기다려보세요)
       * Chart: `token-visualizer`
       * Version: `1.0.2`
    * "DESTINATION" 상자에서
@@ -59,7 +59,7 @@ GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 �
     
     ![argocd-create-application](images/argocd-create-application.png)
 
-5. `Create`를 클릭하면 `token-visualizer` 애플리케이션이 생성되어 `<USER_NAME>-toolings` 네임스페이스에 배포되기 시작하는 것을 볼 수 있습니다.
+5. 화면 위쪽의 `Create`를 클릭하면 `token-visualizer` 애플리케이션이 생성되어 `<USER_NAME>-toolings` 네임스페이스에 배포되기 시작하는 것을 볼 수 있습니다.
 
   ![argocd-token-visualizer-1.png](./images/argocd-token-visualizer-1.png)
 
@@ -76,7 +76,7 @@ GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 �
     echo https://$(oc get route/token-visualizer -n <USER_NAME>-toolings --template='{{.spec.host}}')
     ```
   
-  우리가 사용하고 있는 LLM의 URL을 입력하고 Enter를 누른 다음, 교육 시작 이후 지금까지 보내고 생성한 토큰 수를 시각화해 보세요 :)
+  token-visualizer 웹페이지의 'Server URL:' 부분에 우리가 사용하고 있는 LLM의 URL을 입력하고 Enter를 누른 다음, 교육 시작 이후 지금까지 보내고 생성한 토큰 수를 시각화해 보세요 :)
 
   ```bash
   https://llama32-ai501.<CLUSTER_DOMAIN>
@@ -91,11 +91,11 @@ GitOps 시스템의 기반을 설정하고, 지금까지 사용해 온 모든 �
 
 ### GitOps를 위한 Gitea 준비
 
-> 이 실습에서는 Argo CD(GitOps 컨트롤러)를 Git 저장소에 연결하여 GitOps 워크플로우를 활성화합니다. 도구 및 애플리케이션 배포에 대한 정의는 `genaiops-gitops` 저장소에 저장하고, Argo CD가 해당 저장소를 인식하도록 설정합니다.
+> 이 실습에서는 Argo CD(GitOps 컨트롤러)를 Git 저장소에 연결하여 GitOps 워크플로우를 활성화합니다. 도구 및 애플리케이션 배포에 대한 정의(설정)은 `genaiops-gitops` 저장소에 저장하고, Argo CD가 해당 저장소를 인식하도록 설정합니다.
 
-Gitea는 팀이 저장소를 관리하고, 이슈를 추적하며, 코드를 효율적으로 협업할 수 있도록 지원하는 경량의 자체 호스팅 Git 서버입니다. 오픈소스이며 배포가 쉽고 다양한 버전 관리 작업을 지원합니다. 이 워크샵에서 Gitea는 `genaiops-gitops` 구성이 저장되어 Argo CD와 원활하게 통합되는 중앙 저장소 역할을 합니다.
+Gitea는 팀이 코드 저장소를 관리하고, 이슈를 추적하며, 코드를 효율적으로 협업할 수 있도록 지원하는 경량의 자체 호스팅 Git 서버입니다. 오픈소스이며 배포가 쉽고 다양한 버전 관리 작업을 지원합니다. 이 워크샵에서 Gitea는 도구 및 애플리케이션 배포에 대한 정의를 `genaiops-gitops` 라는 이름의 Repository에 저장하고 Argo CD와 원활하게 통합되는 중앙 저장소 역할을 합니다.
 
-1. 자격 증명으로 Gitea에 로그인합니다. Gitea URL은 다음과 같습니다.
+1. Gitea에 로그인합니다. 유저 이름과 비밀번호는 OpenShift에서 사용한 것과 같으므로 우측 상단의 '내 정보 복사'를 통해 유저이름과 비밀번호를 복사해서 사용하는 것고 가능힙니다. 그리고 Gitea URL은 다음과 같습니다. (또는 '바로가기'에서 'Git 서버'를 클릭하세요)
 
     ```bash
     https://gitea-gitea.<CLUSTER_DOMAIN>

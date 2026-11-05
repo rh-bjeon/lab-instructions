@@ -52,7 +52,7 @@ LLM 비즈니스 로직을 프런트엔드에서 분리하여 별도의 백엔�
 
 3. 그 다음 조금 아래로 내려가 `image` 값을 펼치고 태그를 더 새로운 버전으로 업데이트합니다.
    
-   - tag: **0.12** (`simple-0.5`를 `0.12`로 교체합니다.)
+   - tag: **0.12** (`simple-0.5`를 `0.12`로 교체합니다. 캡쳐에는 0.11로 적혀있지만 무시하세요!)
   
   ..그리고 이제 `Upgrade`를 클릭합니다!
 
@@ -65,7 +65,7 @@ LLM 비즈니스 로직을 프런트엔드에서 분리하여 별도의 백엔�
 2. 다시 한 번 텍스트 요약을 요청해 보세요!
 
     ```
-    Tea preparation involves the controlled extraction of bioactive compounds from processed Camellia sinensis leaves. Begin by heating water to near 100°C to optimize solubility. Introduce a tea bag to a ceramic vessel, then infuse with hot water to initiate steeping—typically 3–5 minutes to allow for the diffusion of polyphenols and caffeine. Upon removal of the bag, optional additives like sucrose or lipid-based emulsions may be introduced to alter flavor profiles. The infusion is then ready for consumption.
+    차를 준비하는 과정은 가공된 차나무(Camellia sinensis) 잎에서 생리활성 화합물을 제어된 방식으로 추출하는 과정입니다. 먼저, 화합물의 용해도를 최적화하기 위해 물을 약 100°C까지 가열합니다. 세라믹 용기에 티백을 넣은 다음, 뜨거운 물을 부어 우려내는 과정을 시작합니다. 일반적으로 폴리페놀과 카페인이 충분히 확산될 수 있도록 3~5분 동안 우려냅니다. 티백을 제거한 후에는 풍미를 조절하기 위해 설탕(자당)이나 지방 기반 유화액(예: 우유)과 같은 첨가물을 선택적으로 넣을 수 있습니다. 이렇게 하면 차가 완성되어 마실 준비가 됩니다.
     ```
    
    ![canopy-ui-after-backend.png](./images/canopy-ui-after-backend.png)
