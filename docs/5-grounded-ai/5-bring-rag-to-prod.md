@@ -4,9 +4,9 @@
 
 ## 📊 Milvus Test & Prod 배포
 
-1. workbench로 다시 돌아갑니다 🧑‍🏭
+1. 우리가 작업을 진행하던 [workbench](https://rh-ai.<CLUSTER_DOMAIN>/notebook/<USER_NAME>-canopy/<USER_NAME>-canopy)로 다시 이동합니다. 
 
-2. `genaiops-gitops` 폴더 아래에, test와 prod 환경을 위한 별도의 설정을 만들겠습니다:
+2. `genaiops-gitops` 폴더 아래에, test와 prod 환경을 위한 별도의 설정을 만들겠습니다. 아래 명령어를 터미널에 입력하세요. (터미널이 열려있지 않다면 왼쪽의 ☰ 아이콘을 누르고 Terminal > New Terminal을 눌러 새로 엽니다)
 
     ```bash
     mkdir -p /opt/app-root/src/genaiops-gitops/canopy/test/milvus
@@ -35,10 +35,16 @@
     git push
     ```
 
-5. 두 Milvus pod가 모두 정상 동작할 때까지 기다립니다. 즉, `Ready` 열 아래 `1/1`이 표시되는지 확인하세요:
+5. 두 Milvus pod가 모두 정상 동작할 때까지 기다립니다. 즉, `Ready` 열 아래 `1/1`이 표시되는지 확인하세요. 
 
   ```bash
   oc get po -n <USER_NAME>-test -w
+  ```
+
+  ```bash
+    ## Error from server (Forbidden) 에러가 발생한다면 아래 명령어를 실행하여 터미널->OpenShift에 로그인 후 다시 진행해보세요.
+    export CLUSTER_DOMAIN=<CLUSTER_DOMAIN>
+    oc login --server=https://api.${CLUSTER_DOMAIN##apps.}:6443 -u <USER_NAME> -p <PASSWORD>
   ```
 
     <div class="highlight" style="background: #f7f7f7">
@@ -54,7 +60,7 @@
 
   _watch을 중단하려면 `Ctrl + C`를 누르세요._
 
-1. 각 Milvus 배포에는 이전에 경험했던 것과 마찬가지로 Attu가 포함되어 있습니다. 방금 배포한 test 환경의 Attu를 확인해보고 싶다면 👇
+6. 각 Milvus 배포에는 이전에 경험했던 것과 마찬가지로 Attu가 포함되어 있습니다. 방금 배포한 test 환경의 Attu를 확인해보고 싶다면 👇
 
     ```
     https://milvus-test-attu-<USER_NAME>-test.<CLUSTER_DOMAIN>
