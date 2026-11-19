@@ -1,7 +1,7 @@
 # ⚙️ KFP Pipelines로 RAG 자동화하기
 
 여러분의 document intelligence RAG 시스템은 노트북에서는 잘 동작하지만, 많은 문서를 처리해야 할 때는 어떻게 될까요?
-수동 실행은 확장이 어렵고, RDU에는 신뢰할 수 있고 항시 사용 가능한 지능형 문서 처리가 필요합니다.
+수동으로 실행하는 것은 확장이 어렵고, Redwood Digital University(RDU) 앱에는 신뢰할 수 있고 항시 사용 가능한 지능형 문서 처리가 필요합니다.
 
 ## 🔍 KFP Pipelines (다시) 소개
 
@@ -16,7 +16,7 @@
 
 ## 스토리지 환경 준비하기
 
-1. 기존의 MinIO를 문서 저장소로 사용하되, 문서를 위한 버킷이 하나 더 필요합니다. `genaiops-gitops/toolings/minio/config.yaml`을 아래와 같이 업데이트하세요:
+1. 기존의 MinIO를 문서 저장소로 사용하되, 문서를 위한 버킷이 하나 더 필요합니다. 워크벤치로 돌아가서 `genaiops-gitops/toolings/minio/config.yaml`을 아래와 같이 업데이트하세요.
 
    ```yaml
    ---
@@ -37,7 +37,7 @@
    git push
    ```
 
-3. 이제 RDU의 여러 프로그램에 대한 교육계획서(syllabus)를 수집(ingest)해보겠습니다! 다른 교육계획서를 다운로드하고 싶다면 RDU 웹사이트로 이동하세요. 가지고 있던 것을 그대로 사용해도 괜찮습니다. 이 파일을 MinIO의 `documents` 버킷에 업로드하겠습니다.
+3. 이제 RDU의 여러 프로그램에 대한 교육계획서(syllabus)를 수집(ingest)해보겠습니다! 가지고 있던 교육계획서를 삭제해버렸거나 다른 교육계획서를 더 다운로드하고 싶다면, RDU 웹사이트로 이동해서 각 과목 > Learn More > '📄 Download Program Info Sheet (PDF)' 버튼을 클릭하세요. 이 파일을 MinIO의 `documents` 버킷에 업로드하겠습니다.
 
    [🌲 Redwood Digital University 웹사이트](https://rdu-website-ai501.<CLUSTER_DOMAIN>)
 
@@ -81,8 +81,8 @@
         "vector_provider": "milvus",
         "docling_service": "http://docling-v0-7-0-predictor.ai501.svc.cluster.local:5001",
         "processing_timeout": 180,
-        "llama_stack_url": "http://llama-stack-service:8321",            # We will update these values later
-        "prod_llama_stack_url": "http://llama-stack-service-prod:8321",  # We will update these values later
+        "llama_stack_url": "http://llama-stack-service:8321",            # 이 값은 우리가 나중에 업데이트할 예정입니다
+        "prod_llama_stack_url": "http://llama-stack-service-prod:8321",  # 이 값은 우리가 나중에 업데이트할 예정입니다
         "model_id": "llama32",
         "temperature": 0.0,
         "max_tokens": 4096,

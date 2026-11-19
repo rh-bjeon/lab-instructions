@@ -60,12 +60,11 @@
 
   _watch을 중단하려면 `Ctrl + C`를 누르세요._
 
-6. 각 Milvus 배포에는 이전에 경험했던 것과 마찬가지로 Attu가 포함되어 있습니다. 방금 배포한 test 환경의 Attu를 확인해보고 싶다면 👇
+6. 각 Milvus 배포에는 이전에 경험했던 것과 마찬가지로 Attu가 포함되어 있습니다. 방금 배포한 test 환경의 Attu를 확인해보고 싶다면 아래 링크를 클릭하세요.👇
 
-    ```
     https://milvus-test-attu-<USER_NAME>-test.<CLUSTER_DOMAIN>
-    ```
-    연결하려면 Milvus Address를 아래와 같이 업데이트하세요:
+
+    Milvus 웹콘솔이 열렸다면, Milvus Address를 아래와 같이 입력하고 'Connect' 버튼을 누르세요.
 
     ```bash
     http://milvus-test.<USER_NAME>-test.svc.cluster.local:19530
@@ -77,21 +76,21 @@
 
 # 🦙 OGX (Open GenAI Stack) - 통합 프레임워크
 
-지금까지 Canopy는 항상 모델과 직접 통신했습니다 — 단일한 하드코딩된 엔드포인트였죠. 프롬프트를 보내고 응답을 받는 것만 필요했을 때는 그것만으로도 충분했습니다.
+지금까지 Canopy 앱은 항상 모델과 직접 통신했습니다. 엔드포인트 주소 1개가 앱에 하드코딩 됐었죠. 프롬프트를 보내고 응답을 받는 것만 필요했을 때는 그것만으로도 충분했습니다.
 
-RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합니다. 팀이나 요구 사항에 따라 사용하는 벡터 데이터베이스가 달라질 수 있지만, 애플리케이션 코드는 구체적인 제품에 의존하지 않는 편이 좋습니다.
+그러나 RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합니다. 팀이나 요구 사항에 따라 사용하는 벡터 데이터베이스가 달라질 수 있지만, 애플리케이션 코드는 구체적인 제품에 의존하지 않는 편이 좋습니다.
 
-**OGX**(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에 위치합니다. vector store 작업을 위한 통합 API를 제공하므로, 데이터베이스 백엔드를 교체하는 작업이 애플리케이션 코드 변경이 아니라 OGX의 설정 변경으로 끝나게 됩니다. OGX는 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
+**OGX**(Open GenAI Stack, 이전 이름 Llama Stack)는 여러분의 애플리케이션과 RAG 인프라 사이에서 일종의 중계 역할을 합니다. vector store 작업을 위한 통합 API를 제공하기 때문에, 데이터베이스 백엔드를 교체해야할 때도 앞 단의 애플리케이션 코드를 변경할 필요 없이 OGX의 설정만 변경하면 됩니다. OGX는 뒷 단에 연결할 vector store로 Milvus, Chroma, pgvector, Qdrant, Weaviate 등 16개의 vector store 공급자를 기본적으로 지원합니다.
 
-공급자 이동성 외에도, OGX는 직접 구축하기 어려운 RAG 기능들도 제공합니다:
+뿐만 아니라, OGX는 직접 구축하기 어려운 여러 RAG 기능들도 제공합니다.
 
 - **Hybrid search(하이브리드 검색)** — 벡터 유사도 검색과 키워드 검색을 하나의 쿼리에서 결합하여, 실제 콘텐츠에 대한 검색 품질을 크게 향상시킵니다
 - **Contextual chunking(컨텍스트 기반 청킹)** — 문서를 토큰 수로 단순히 나누는 대신, LLM이 저장되기 전에 각 chunk를 주변 컨텍스트로 보강하여 검색 정확도를 훨씬 높입니다
 - **Multiple embedding models(다중 embedding 모델)** — 애플리케이션 코드를 변경하지 않고도 nomic-embed, BGE, MiniLM, 또는 어떤 sentence-transformers 모델이든 전환할 수 있습니다
 
-이번 실습에서 모든 기능을 사용하지는 않지만 필요할 때 확장할 수 있습니다. 자세한 내용은 [OGX 검색 기능 문서](https://ogx-ai.github.io/docs/concepts/file_operations_vector_stores#search-capabilities)에서 확인하세요.
+이번 실습에서 모든 기능을 사용하지는 않겠지만, 필요할 때 확장할 수 있습니다. 자세한 내용은 [OGX 검색 기능 문서](https://ogx-ai.github.io/docs/concepts/file_operations_vector_stores#search-capabilities)에서 확인하세요.
 
-이제 Canopy에서 사용할 OGX(Llama Stack)를 배포합니다.
+이제 Canopy에서 사용할 OGX(Llama Stack)를 배포해보겠습니다.
 
 (살짝 힌트를 드리면: 여러분의 Gen AI Playground는 처음부터 OGX를 사용하고 있었습니다 🥳)
 
@@ -103,21 +102,22 @@ RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합�
 
     ![llama-stack-helmchart.png](./images/llama-stack-helmchart.png)
 
-3. Canopy frontend에 했던 것과 마찬가지로 Llama Stack에도 LLM 엔드포인트를 제공해야 합니다. 이 helm chart에는 이미 적절한 기본값이 들어 있습니다. `models` 아래에 다음 값들이 올바르게 설정되어 있는지, 그리고 RAG가 활성화되어 있는지 확인하세요:
+3. Canopy frontend에 했던 것과 마찬가지로 Llama Stack에도 LLM 엔드포인트를 제공해야 합니다. 이 helm chart에는 이미 적절한 기본값이 들어 있습니다. `models` 아래에 다음 값들이 올바르게 설정되어 있는지, `rag` 아래에 RAG가 활성화되어 있는지(enabled가 체크되어 있는지) 확인하세요.
 
     - name: `llama32`
     - url: `http://llama-32-predictor.ai501.svc.cluster.local:8080/v1`
+
     - rag: `enabled:true`
 
-..그리고 `Create`를 클릭합니다.
+그리고 `Create`를 클릭합니다.
 
-4. 여러분의 환경에서 Llama Stack이 실행 중인지 확인해보세요:
+4. 여러분의 환경에서 Llama Stack이 실행 중인지 확인해보세요. 링의 색이 연한 파란색이면 컨테이너가 실행 중이지만 Llama Stack이 아직 준비되지 않은 것이고, 링의 색이 다른 pod들과 마찬가지로 진한 남색이 되어야 합니다. 
 
     ![llama-stack-ocp.png](./images/llama-stack-ocp.png)
 
-5. 최종 사용자에게는 달라지는 점이 없어야 합니다. 백엔드가 모델을 직접 호출하는 대신 OGX(Llama Stack)가 모델을 호출하며, 곧 Milvus도 같은 계층을 통해 사용합니다. `<USER_NAME>-canopy` 환경의 Canopy UI에서 정상 동작을 확인합니다.
+5. 최종 사용자에게는 달라지는 점이 없어야 합니다. Canopy 백엔드가 모델을 직접 호출하는 대신 OGX(Llama Stack)가 모델을 호출하며, 곧 Milvus도 같은 OGX을 통해 사용하게 될 겁니다. `<USER_NAME>-canopy` 프로젝트에서 Canopy UI가 정상 동작하고 있는 것을 확인합니다.
 
-6. `test`와 `prod`에서도 Llama Stack을 Argo CD로 배포하도록 설정해봅시다. `test/ogx/config.yaml`과 `prod/ogx/config.yaml`을 생성하세요:
+6. 이제 `test`와 `prod`에서도 Llama Stack을 Argo CD로 배포하도록 설정해봅시다. 워크벤치로 돌아가 `test/ogx/config.yaml`과 `prod/ogx/config.yaml`을 생성하세요.
 
     ```bash
     mkdir -p /opt/app-root/src/genaiops-gitops/canopy/test/ogx
@@ -156,7 +156,7 @@ RAG에는 벡터 데이터베이스라는 두 번째 구성 요소가 필요합�
         service: "milvus-prod"
     ``` 
 
-7. 터미널에서 변경 사항을 Git에 푸시해 배포합니다. GitOps에서는 Git에 저장된 구성이 배포의 기준입니다.
+7. 터미널에서 다음 명령어를 입력하여, 변경 사항을 Git에 푸시해 배포합니다. GitOps에서는 Git에 저장된 구성이 배포의 기준입니다.
 
     ```bash
     cd /opt/app-root/src/genaiops-gitops
