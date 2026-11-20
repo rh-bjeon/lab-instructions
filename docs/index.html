@@ -122,9 +122,10 @@
       
       // Add dynamic links
       const links = [
-        { name: '☕️ Git 서버', url: `https://${gitServer}` },
         { name: '📺 OpenShift 콘솔', url: `https://console-openshift-console.${clusterDomain}` },
         { name: '🧠 OpenShift AI 대시보드', url: `https://data-science-gateway.${clusterDomain}` },
+        { name: '📓 OpenShift AI 워크벤치', url: `https://rh-ai.${clusterDomain}/notebook/${username}-canopy/${username}-canopy` },
+        { name: '☕️ Git 서버', url: `https://${gitServer}` },
         { name: '🐙 Argo CD', url: `https://argocd-server-${username}-toolings.${clusterDomain}` }
       ];
       
