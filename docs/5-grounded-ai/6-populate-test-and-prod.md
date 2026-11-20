@@ -55,13 +55,14 @@
 
 또 다른 pipeline을 실행할 시간입니다!
 
-1. 다음 명령어를 실행해서 `backend` 저장소를 clone하세요. `backend/rag-pipeline/kfp_pipeline.py`에 RAG pipeline이 정의되어 있습니다. 
+1. 먼저 여러분의 워크벤치에 `backend` 디렉토리가 있는지 확인하세요. 만약 없다면, 다음 명령어를 실행해서 `backend` 저장소를 clone하세요. `backend/rag-pipeline/kfp_pipeline.py`에 RAG pipeline이 정의되어 있습니다. 
 
     ```bash
     cd /opt/app-root/src/
     git clone https://<USER_NAME>:<PASSWORD>@gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/backend.git
     ```
 
+   (위 명령어를 실행했을 때 에러가 발생한다면, 이미 `backend` 디렉토리가 준비되어있는 경우일 수 있습니다! 에러가 없다면 이어서 진행하세요.)
    이것이 여러분의 문서 처리 pipeline입니다. 이 pipeline은 다음을 수행합니다:
    - Docling에 연결합니다
    - 문서를 처리합니다
