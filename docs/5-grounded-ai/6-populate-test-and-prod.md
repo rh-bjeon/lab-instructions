@@ -105,6 +105,7 @@
 
 3. **OpenShift AI**로 이동해 Develop & train > Pipeline definitions > `<USER_NAME>-toolings` 프로젝트로 들어가세요. 그 안에서 `Import pipeline`을 클릭합니다.
    <p style="color:#cc0000;font-weight:bold;">⚠️ 주의: `toolings` 프로젝트가 맞는지 확인하세요! </p>
+   
    ![import-pipeline](images/import-pipeline.png)
 
 4. pipeline에 `Document Ingestion`과 같은 적절한 이름을 지어주고, 방금 다운로드한 yaml 파일을 업로드하세요.
