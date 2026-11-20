@@ -103,7 +103,7 @@
    그러면 `backend/rag-pipeline` 폴더 아래에 `document-intelligence-rag.yaml`이라는 파일이 생성됩니다. 파일에 마우스를 올리고, 마우스 우클릭 버튼을 누르고, 'Download'를 클릭하여 로컬 머신으로 다운로드하세요.
    
 
-3. **OpenShift AI**로 이동해 Develop & train > Pipeline definitions > `<USER_NAME>-toolings` 프로젝트로 들어가세요. 그 안에서 `Pipelines`로 이동해 `Import pipeline`을 클릭합니다.
+3. **OpenShift AI**로 이동해 Develop & train > Pipeline definitions > `<USER_NAME>-toolings` 프로젝트로 들어가세요. 그 안에서 `Import pipeline`을 클릭합니다.
    <p style="color:#cc0000;font-weight:bold;">⚠️ 주의: `toolings` 프로젝트가 맞는지 확인하세요! </p>
    ![import-pipeline](images/import-pipeline.png)
 
