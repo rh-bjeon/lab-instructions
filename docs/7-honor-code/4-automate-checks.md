@@ -75,7 +75,7 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     ```
 
 
-6. 보시는 것처럼 모델의 내부 guardrailing은 그다지 훌륭하지 않습니다! 다행히 우리가 그 detector들을 추가해 두었죠. 이번에는 그것들도 테스트해 봅시다! 이번에는 백엔드가 하는 것처럼, 같은 테스트를 Llama Stack 엔드포인트에 대해 실행해 봅니다.
+6. 보시는 것처럼 모델의 내부에 있는 자체 guardrailing은 그다지 훌륭하지 않습니다! 다행히 우리가 그걸 보완할 수 있는 detector들을 추가해 두었죠. 이번에는 그것들도 테스트해 봅시다! 이번에는 RDU 앱의 백엔드가 하는 것처럼, 같은 테스트를 Llama Stack 엔드포인트에 대해 실행해 봅니다.
 
     테스트를 실행합니다.
 
@@ -120,6 +120,7 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-bash"> 
+    ## 이 명령어는 예시입니다! 실행할 필요없이 결과를 아래쪽에서 확인하세요 ##
     spikee generate --seed-folder datasets/seeds-cybersec-2025-04 --plugins 1337 --tag mytest
     </code></pre> 
     </div>
