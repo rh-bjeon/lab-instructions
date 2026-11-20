@@ -14,7 +14,7 @@ Canopy backend에는 이미 feature flag 뒤에 RAG 설정이 준비되어 있�
     ```
     ![information-search-prompt-2.png](./images/information-search-prompt-2.png)
 
-    테스트 환경은 최신 변경을 바로 검증할 수 있도록 `latest` 프롬프트를 사용합니다. 운영 환경은 검증된 버전만 사용하도록 `prod` 별칭을 지정합니다. 새 프롬프트에 이 별칭을 추가하세요.
+    테스트 환경에서는 최신 변경을 바로 검증할 수 있도록 `latest` 프롬프트를 사용합니다. 운영 환경에서는 검증된 버전만 사용하도록 `prod` 별칭(Aliases)가 붙은 프로픔트를 사용해야합니다. 이번에 추가한 새 프롬프트의 별치(Aliases)에 `prod`를 추가하세요.
 
 3. 그런 다음 workbench로 이동해 `genaiops-gitops/canopy/test/backend/config.yaml`과 `genaiops-gitops/canopy/prod/backend/config.yaml` 두 파일을 모두 여세요.
 
@@ -75,6 +75,10 @@ PROD(`genaiops-gitops/canopy/prod/backend/config.yaml`)
 prompt 안의 "Biotechnology"를 Minio에 업로드한 프로그램의 교육계획서로 바꾸세요. 예를 들어 "Computer Science" 교육계획서만 업로드했다면, prompt에서 "Biotechnology" 대신 "Computer Science"라고 적으세요.
 
   ![ask-canopy.png](images/ask-canopy.png)
+
+그러면 LLM 모델이 우리가 업로드한 문서(여기서는 가상의 강의 계획서들)의 내용을 바탕으로 답변해주는 것을 확인할 수 있습니다!
+
+일반적인 LLM 모델이 학습하지 않았을 내용이라도, 참고할 수 있는 문서를 RAG를 통해 적절히 처리해서 제공하고, 이걸 참고해서 답변해달라는 프롬프트를 입력해주면 이렇게 필요한 내용을 찾아 잘 답변해주게 됩니다.
 
 축하합니다! 🎉  
 이제 복잡한 문서를 필요에 따라 수집할 수 있는 RAG 시스템이 완성되었습니다.

@@ -16,7 +16,7 @@ RAG에는 검색된 텍스트 청크도 포함되므로 검색 단계 자체를 
 
 1. workbench로 이동해 `evals` 폴더로 들어가세요.
 
-2. 그 아래에 `information-search` 폴더를 만들고, 그 안에 `judge_prompt.txt`와 `information_search_tests.yaml` 파일을 생성하세요. 직접 하지 않고 명령어로 하고 싶다면 다음을 사용하세요:
+2. 그 아래에 `information-search` 폴더를 만들고, 그 안에 `judge_prompt.txt`와 `information_search_tests.yaml` 파일을 생성하세요. 직접 하지 않고 명령어로 하고 싶다면 터미널에서 다음을 입력하세요.
 
     ```bash
     mkdir /opt/app-root/src/evals/information-search
@@ -24,7 +24,7 @@ RAG에는 검색된 텍스트 청크도 포함되므로 검색 단계 자체를 
     touch /opt/app-root/src/evals/information-search/judge_prompt.txt
     ```
 
-3. `information-search` 폴더의 `judge_prompt.txt`에 아래 내용을 추가합니다. 요약 기능 평가 프롬프트는 사용자 질문에 없는 정보를 포함한 응답에 감점을 줍니다. 하지만 RAG는 검색한 문서에서 새로운 정보를 가져오는 것이 정상 동작이므로 기존 기준을 그대로 사용하면 올바른 응답도 실패할 수 있습니다. 따라서 RAG 전용 평가 프롬프트가 필요합니다.
+3. `information-search` 폴더의 `judge_prompt.txt`에 아래 내용을 추가합니다. 요약 기능을 평가하는 프롬프트는 사용자 질문에 없는 정보를 포함해서 응답을 하면 감점을 줍니다. 사용자가 주는 내용을 요약하는 기능이니까요! 하지만 RAG에서는 검색한 문서에서 새로운 정보를 가져오는 것이 정상 동작이므로, 기존 기준을 그대로 사용하면 올바른 응답도 평가 기준을 통과하는 데에 실패할 수 있습니다. 따라서 RAG 전용 평가 프롬프트가 필요합니다. (프롬프트 내용에 대한 번역은 영어 원문 아래에 있으니 읽어보세요)
 
     ```bash
     You are an expert evaluator judging the quality of a generated answer to a question.
@@ -79,7 +79,7 @@ RAG에는 검색된 텍스트 청크도 포함되므로 검색 단계 자체를 
   > **반드시 "yes" 또는 "no"로만 응답하세요.**
 
 
-4. `evals/information-search/information_search_tests.yaml`을 열고 다음을 붙여넣어 좋은 기준선(baseline)을 만드세요:
+4. `evals/information-search/information_search_tests.yaml`을 열고 다음을 붙여넣어 테스트를 위한 좋은 기준선(baseline)을 만드세요:
 
 ```yaml
 name: information_search_tests
@@ -167,7 +167,7 @@ tests:
     git push
     ```
 
-6. 기억하세요, 우리의 eval pipeline은 이 git push에 의해 트리거되어야 합니다! 🥳 `Ready to Scale 201` 섹션에서와 마찬가지로, OpenShift Pipelines로 이동해 진행 상황을 확인할 수 있습니다.
+6. 우리가 앞에서 파이프라인 자동화를 해두었기 때문에, 방금 git push에 따라 우리의 eval pipeline도 자동으로 실행되어야 합니다! 🥳 `Ready to Scale 201` 섹션에서와 마찬가지로, OpenShift Pipelines로 이동해 진행 상황을 확인할 수 있습니다.
 
   ![rag-eval-pipeline-run.png](./images/rag-eval-pipeline-run.png)
 

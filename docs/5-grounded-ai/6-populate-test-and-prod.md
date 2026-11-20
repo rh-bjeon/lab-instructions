@@ -62,14 +62,15 @@
     git clone https://<USER_NAME>:<PASSWORD>@gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/backend.git
     ```
 
-   (위 명령어를 실행했을 때 에러가 발생한다면, 이미 `backend` 디렉토리가 준비되어있는 경우일 수 있습니다! 에러가 없다면 이어서 진행하세요.)
+   (위 명령어를 실행했을 때 에러가 발생한다면, 이미 `backend` 디렉토리가 준비되어있는 경우일 수 있습니다! 에러 로그를 잘 읽어보고, 이미 'backend' 디렉토리가 있다는 내용이라면 그냥 이어서 진행하세요.)
+
    이것이 여러분의 문서 처리 pipeline입니다. 이 pipeline은 다음을 수행합니다:
    - Docling에 연결합니다
    - 문서를 처리합니다
    - vector database에 연결합니다
    - 처리된 문서를 데이터베이스에 추가합니다
 
-   이 처리 과정의 많은 부분은 pipeline 코드 하단 근처에서 볼 수 있는 아래의 설정/argument들을 기반으로 합니다. 이전과 동일한 작업을 수행하되 이제는 자동화되었다는 점을 빠르게 확인해보세요:
+   이 처리 과정의 많은 부분은 pipeline 코드 하단 근처에서 볼 수 있는 아래의 설정/argument들을 기반으로 합니다. 이전과 동일한 작업을 수행하되 이제는 자동화되었다는 점을 빠르게 확인해보세요.
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-python"> 
@@ -93,8 +94,8 @@
    </code></pre>
    </div>
 
-2. 이런 파이프라인을 `<USER_NAME>-toolings` 네임스페이스에서 실행할 수 있도록 export하여 test와 prod를 가리키게 해봅시다.
-   먼저, pipeline을 export하려면 다음을 실행해 컴파일하세요.
+2. 이 파이프라인을 `<USER_NAME>-toolings` 네임스페이스에서 실행할 수 있도록 export하여 test와 prod를 가리키게 해봅시다.
+   먼저, python 파일을 pipeline으로 export하려면 워크벤치의 터미널에 다음을 실행해 컴파일하세요.
    ```bash
    cd /opt/app-root/src/backend/rag-pipeline
    python kfp_pipeline.py
@@ -103,7 +104,7 @@
    
 
 3. OpenShift AI로 이동해 `<USER_NAME>-toolings` 프로젝트로 들어가세요. 그 안에서 `Pipelines`로 이동해 `Import pipeline`을 클릭합니다.
-
+   <p style="color:#cc0000;font-weight:bold;">⚠️ 주의: `toolings` 프로젝트가 맞는지 확인하세요! </p>
    ![import-pipeline](images/import-pipeline.png)
 
 4. pipeline에 `Document Ingestion`과 같은 적절한 이름을 지어주고, 방금 다운로드한 yaml 파일을 업로드하세요.
@@ -138,9 +139,8 @@
    ![Pipeline Monitoring](images/rag10.png)
 
 10. 완료되면 Attu에서 새로운 collection을 확인할 수 있습니다. 한번 확인해보세요:
-   ```
-   https://milvus-test-attu-<USER_NAME>-test.<CLUSTER_DOMAIN>
-   ```
+
+   [Milvus 벡터 스토어 웹콘솔 UI Attu](https://milvus-test-attu-<USER_NAME>-test.<CLUSTER_DOMAIN>)
 
    ![attu-new-collections.png](./images/attu-new-collections.png)
 
