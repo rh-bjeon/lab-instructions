@@ -14,13 +14,11 @@
 
 ### Prompt-Level Guardrails (경량이며 적용이 빠름)
 
+![fight-club.jpg](./images/fight-club.jpg)
+
 1. 이미 여러 번 경험했듯이, 시스템 프롬프트는 LLM이 어떻게 행동해야 하는지를 정의합니다. 우리가 할 수 있는 최소한의 일은 시스템 프롬프트를 설정하는 것입니다. OpenShift AI Dashboard의 GenAI Playground로 이동해, Fight Club에 대해 이야기하지 **말라고** 지시하는 시스템 프롬프트와 함께 모델에 직접 메시지를 보내보세요.
 
 > Welcome to Fight Club. The first rule of Fight Club is: you do not talk about Fight Club. The second rule of Fight Club is: you DO NOT talk about Fight Club!
-
-![fight-club.jpg](./images/fight-club.jpg)
-
-우리가 할 수 있는 최소한의 일은 시스템 프롬프트를 설정하는 것입니다. workbench에서 터미널을 열고, Fight Club에 대해 이야기하지 **말라고** 지시하는 시스템 프롬프트와 함께 모델에 직접 메시지를 보내보세요.
 
   ![fight-club-2.png](./images/fight-club-2.png)
 
