@@ -69,7 +69,7 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     Failed Attacks: 7
     Errors: 0
     Total Attempts: 23
-    Attack Success Rate (Overall): 56.25% 👈👈👈👈 not that great!🫣
+    Attack Success Rate (Overall): 56.25% 👈👈👈👈 결과가 그리 좋지 않습니다!🫣
     Attack Success Rate (Without Dynamic Attack): 56.25%
     Attack Success Rate (Improvement from Dynamic Attack): 0.00%
     ```
@@ -111,7 +111,7 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     Failed Attacks: 16
     Errors: 0
     Total Attempts: 32
-    Attack Success Rate (Overall): 0.00% 👏👏👏👏👏 Thank you prompt injection detector ❤️❤️❤️
+    Attack Success Rate (Overall): 0.00% 👏👏👏👏👏 <-- 이 가이드를 만들 당시에는 이렇게 완벽하게 막았지만, 여러분이 실습을 진행할 때에는 공격 성공률이 조금 올라갈 수도 있습니다! 그렇지만 아까보다는 공격 성공률이 훨씬 낮은 것을 확인할 수 있습니다.
     Attack Success Rate (Without Dynamic Attack): 0.00%
     Attack Success Rate (Improvement from Dynamic Attack): 0.00%
     ```
