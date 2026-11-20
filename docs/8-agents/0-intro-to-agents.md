@@ -8,7 +8,7 @@ LLM은 학습 데이터에 포함된 내용만 알고 있으며 스스로 외부
 
    OpenShift AI Dashboard > Gen AI studio > AI asset endpoints > `MCP Servers`에서 이 서버가 사용 가능하게 등록되어 있는 것을 확인할 수 있습니다.
 
-2. OpenShift AI Dashboard > Gen AI studio > Playground 으로 이동해서, 프로젝트가 `<USER_NAME>-canopy`로 선택되어 있는지 확인하세요.
+2. OpenShift AI Dashboard > Gen AI studio > Playground 으로 이동해서, 프로젝트가 `<USER_NAME>-canopy`로 선택되어 있는지 확인하세요. (Playground가 비어있다면 'Create Playground' 버튼을 누르고 생성될 때까지 잠시 기다리세요)
 
 
 3. 모델이 평소에는 정확히 답할 수 없는 질문을 해 보세요.
