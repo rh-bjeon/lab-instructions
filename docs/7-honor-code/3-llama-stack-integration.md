@@ -31,11 +31,11 @@ Canopy Backend → Llama Stack → NeMo Guardrails → LLM
       endpoint: 'http://llama-stack-service:8321/v1' # 👈 UPDATE THIS ‼️‼️‼️‼️
       mlflow_prompt: summarization
       mlflow_prompt_version: latest
-  ```
+    ```
 
 4. 모든 것이 정상인지 확인하기 위해 Topology 뷰를 확인합니다 ❤️
 
-![canopy-topology.png](./images/canopy-topology.png)
+   ![canopy-topology.png](./images/canopy-topology.png)
 
 이제 Canopy의 모든 요청은 모델에 도달하기 전에 NeMo를 거칩니다. 백엔드는 개별 탐지기의 구현을 알 필요 없이 shield 이름만 전달하면 되고, 나머지 처리는 NeMo가 담당합니다.
 
