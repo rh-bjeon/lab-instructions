@@ -41,7 +41,8 @@
 
    아래와 같은 모습이 되어야 합니다.
 
-      ```yaml
+      <pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
+      # 아래 내용을 그대로 복사하지 마세요!
       ---
       repo_url: https://gitea-gitea.<CLUSTER_DOMAIN>/<USER_NAME>/backend
       chart_path: chart
@@ -60,7 +61,7 @@
         mlflow_prompt_version: latest
       feedback:  # 👈 add this block 📚❗︎❗︎❗︎❗︎❗︎
         enabled: true
-      ```
+      </code></pre>
 
    
 2. 변경 사항을 커밋하고 push합니다. Argo CD가 배포를 동기화할 때까지 기다립니다.
