@@ -17,7 +17,7 @@ Canopy를 위해 구성한 rail들은 다음과 같습니다.
 
 ## NeMo Guardrails 배포하기
 
-1. `<USER_NAME>-canopy` 환경에서 **Helm > Releases > Create Helm Release**로 이동해 `GenAIOps Helm Charts`를 선택한 다음 `NeMo Guardrails Orchestrator` 차트를 찾습니다.
+1. `<USER_NAME>-canopy` 환경에서 **Helm > Releases > Create Helm Release**로 이동해 Chart Repositories 아래에서 `GenAIOps Helm Charts`를 체크한 다음 `NeMo Guardrails Orchestrator` 차트를 찾습니다.
 
     ![nemo-guardrails-helm.png](./images/nemo-guardrails-helm.png)
 

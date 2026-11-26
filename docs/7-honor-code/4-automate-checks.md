@@ -48,7 +48,8 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
 
     아래와 같은 결과가 보일 것입니다.
 
-    ```bash
+    <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
+    <pre><code class="language-bash"> 
 
     _____ _____ _____ _  ________ ______ 
     / ____|  __ \_   _| |/ /  ____|  ____|
@@ -72,7 +73,8 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     Attack Success Rate (Overall): 56.25% 👈👈👈👈 결과가 그리 좋지 않습니다!🫣
     Attack Success Rate (Without Dynamic Attack): 56.25%
     Attack Success Rate (Improvement from Dynamic Attack): 0.00%
-    ```
+    </code></pre> 
+    </div>
 
 
 6. 보시는 것처럼 모델의 내부에 있는 자체 guardrailing은 그다지 훌륭하지 않습니다! 다행히 우리가 그걸 보완할 수 있는 detector들을 추가해 두었죠. 이번에는 그것들도 테스트해 봅시다! 이번에는 RDU 앱의 백엔드가 하는 것처럼, 같은 테스트를 Llama Stack 엔드포인트에 대해 실행해 봅니다.
@@ -90,7 +92,8 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     ```
     아래와 같은 결과가 나와야 합니다.
 
-    ```bash
+    <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
+    <pre><code class="language-bash"> 
 
     _____ _____ _____ _  ________ ______ 
     / ____|  __ \_   _| |/ /  ____|  ____|
@@ -114,7 +117,8 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
     Attack Success Rate (Overall): 0.00% 👏👏👏👏👏 <-- 이 가이드를 만들 당시에는 이렇게 완벽하게 막았지만, 여러분이 실습을 진행할 때에는 공격 성공률이 조금 올라갈 수도 있습니다! 그렇지만 아까보다는 공격 성공률이 훨씬 낮은 것을 확인할 수 있습니다.
     Attack Success Rate (Without Dynamic Attack): 0.00%
     Attack Success Rate (Improvement from Dynamic Attack): 0.00%
-    ```
+    </code></pre> 
+    </div>
 
 8. 이는 겨우 몇 개의 프롬프트에 대한 테스트였습니다. 좀 더 현실적인 테스트를 해보고 싶다면, `dataset` 폴더에 있는 다양한 데이터셋 중 하나를 기반으로 테스트를 실행할 수 있습니다. 다만 이 데이터셋들은 매우 크며, 예를 들어 `seeds-cybersec-2025-04`는 우리 환경에서 약 7시간 정도 걸리지만 훨씬 더 현실적인 결과를 줄 것입니다. 여전히 궁금하다면, 기존 데이터셋을 다음과 같이 사용할 수 있습니다.
 
