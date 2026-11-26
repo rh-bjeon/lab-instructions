@@ -151,9 +151,10 @@ tests:
 ```
 
 위 설정 파일의 내용을 번역하면 다음과 같습니다.
-<pre><code class="language-yaml">
+<pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
+# 이 내용은 실습생의 이해를 돕기 위해 student_assistant_tests.yaml의 내용을 일부 번역한 것입니다.
 name: student_assistant_tests
-description: End-to-end tests for the student assistant agent with tool choice validation
+description: 학생 도우미 에이전트의 도구 선택 검증을 포함한 엔드투엔드 테스트
 usecase: student-assistant
 endpoint: /student-assistant
 scorers:
@@ -163,15 +164,15 @@ scorers:
 judge_prompt: judge_prompt.txt
 tests:
   - inputs:
-      prompt: "What is a forest canopy?"
+      prompt: "숲의 수관층(Forest Canopy)이란 무엇인가요?"
     expectations:
-      expected_result: "A forest canopy is the upper layer of a forest, formed by the crowns of trees. It's an important ecosystem component that provides habitat for many species and plays a crucial role in photosynthesis and the forest's overall health."
+      expected_result: "숲의 수관층은 나무의 수관(나뭇가지와 잎이 우거진 부분)으로 형성된 숲의 상층부입니다. 수관층은 다양한 생물종에게 서식지를 제공하고, 광합성과 숲 전체의 건강을 유지하는 데 중요한 역할을 하는 생태계의 핵심 구성 요소입니다."
       expected_tools:
         - search_knowledge_base
   - inputs:
-      prompt: "Who can help me with machine learning?"
+      prompt: "머신러닝에 대해 도움을 받을 수 있는 교수님은 누구인가요?"
     expectations:
-      expected_result: "Dr. Sarah Chen from the Computer Science department can help you with machine learning. She specializes in Machine Learning, Neural Networks, AI Ethics, and Agentic Workflows. You can reach her at s.chen@university.edu."
+      expected_result: "컴퓨터공학과의 Sarah Chen 교수님이 머신러닝에 관한 도움을 주실 수 있습니다. Chen 교수님의 전문 분야는 머신러닝, 신경망, AI 윤리, 에이전트 워크플로입니다. 이메일(s.chen@university.edu)로 연락하실 수 있습니다."
       expected_tools:
         - find_professors_by_expertise
 </code></pre>
@@ -203,6 +204,33 @@ Answer "no" if it gives incorrect information, contradicts the expected answer, 
 
 Respond with only "yes" or "no".
 ```
+
+<pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
+당신은 질문에 대해 생성된 답변의 품질을 평가하는 전문 평가자입니다.
+
+당신의 임무는 생성된 답변(GENERATED_ANSWER)이 질문(QUESTION)에 정확하고 충실하게 답변했는지, 기대 답변(EXPECTED_ANSWER)과 비교하여 판단하는 것입니다.
+
+높은 품질의 답변은 다음 기준을 모두 충족해야 합니다.
+- 질문(QUESTION)에 정확하게 답변해야 합니다.
+- 핵심 사실과 주장이 기대 답변(EXPECTED_ANSWER)과 일치해야 합니다.
+- 기대 답변(EXPECTED_ANSWER)에 포함된 정보와 모순되거나 해당 정보를 왜곡해서는 안 됩니다.
+- 답변이 논리적으로 일관되고, 그 자체로 직접적인 도움이 되어야 합니다.
+
+입력(INPUT):
+{{ inputs }}
+
+생성된 답변(GENERATED_ANSWER):
+{{ outputs }}
+
+기대 답변(EXPECTED_ANSWER):
+{{ expectations }}
+
+생성된 답변이 위의 모든 기준을 충족하면 "yes"로 답변하세요.
+잘못된 정보를 제공하거나, 기대 답변과 모순되거나, 질문에 적절하게 답변하지 못한 경우 "no"로 답변하세요.
+
+반드시 "yes" 또는 "no"로만 응답하세요.
+</code></pre>
+
 
 4. 테스트 안의 `expected_tools` 필드를 눈여겨보세요 - 이는 agent가 어떤 도구를 호출해야 하는지 평가자에게 알려줍니다. 이 필드는 `tool_call_correctness`와 `tool_call_efficiency`라는 두 가지 새로운 scorer에서 사용됩니다. 이제 eval 파이프라인은 다음을 확인하게 됩니다.
     - canopy 질문에 대해 agent가 `search_knowledge_base`를 호출했는가?
