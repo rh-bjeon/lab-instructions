@@ -26,6 +26,7 @@ docsify serve ./docs
 #### Ansible 사전 요구사항
 
 ```shell
+git clone https://github.com/rh-bjeon/lab-instructions -b natural-korean-translation && cd lab-instructions
 sudo dnf install -y ansible-core python3.12-pip
 pip3.12 install -r ansible/requirements.txt
 ansible-galaxy collection install -r ansible/requirements.yml
@@ -39,7 +40,7 @@ ansible-playbook ansible/deploy-labguide.yml \
   -e student_count=30 \
   -e openshift_cluster_ingress_domain='apps로시작하는클러스터도메인주소' \
   -e default_password='유저공통패스워드' \
-  -e content_git_repo_ref=ko-openshift-labguide
+  -e content_git_repo_ref=natural-korean-translation
 
 
 # 랩가이드를 제거하는 경우(teardown)
@@ -65,7 +66,7 @@ ansible-playbook ansible/destroy-labguide.yml -e student_count=30
 ```shell
 ansible-playbook ansible/deploy-workshop-ui.yml \
   -e workshop_ui_admin_password='워크샵배정UI어드민패스워드' \
-  -e content_git_repo_ref=ko-openshift-labguide
+  -e content_git_repo_ref=natural-korean-translation
 
 # 제거 (PVC까지 함께 삭제되어 할당 데이터도 사라집니다)
 ansible-playbook ansible/destroy-workshop-ui.yml
@@ -76,5 +77,5 @@ ansible-playbook ansible/destroy-workshop-ui.yml
 - 워크샵 제목/설명/비밀번호/등록 방식 등 나머지 설정은 Ansible 변수가 아니라, 배포 후 admin 대시보드(`/admin`)에서 직접 입력합니다.
 
 #### 워크샵 웹페이지 설정
-- 워크샵 UI가 배포되면 해당 route 주소 끝에 /admin을 붙여 어드민 페이지로 접속합니다. (패스워드는 배포 시에 지정한 orkshop_ui_admin_password 값을 입력)
+- 워크샵 UI가 배포되면 해당 route 주소 끝에 /admin을 붙여 어드민 페이지로 접속합니다. (패스워드는 배포 시에 지정한 workshop_ui_admin_password 값을 입력)
 - 어드민 페이지에서 이 워크샵의 제목, 설명, 유저 몇명을 배정할 수 있게 할지, 클러스터 도메인 주소 등을 지정하여 저장합니다. 
