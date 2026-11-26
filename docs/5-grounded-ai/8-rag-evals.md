@@ -55,6 +55,7 @@ RAG에는 검색된 텍스트 청크도 포함되므로 검색 단계 자체를 
   위 프롬프트를 한국어로 번역하면 다음과 같습니다. `judge_prompt.txt`에는 위의 영어 원문을 붙여넣으시고, 아래는 참고만 하세요.
 
 <pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;">
+# 이 내용은 실습생의 이해를 돕기 위해 judge_prompt.txt의 내용을 번역한 것입니다.
 당신은 질문에 대해 생성된 답변의 품질을 평가하는 전문 평가자입니다.
 
 당신의 임무는 생성된 답변(GENERATED_ANSWER)이 질문(QUESTION)에 정확하고 충실하게 답변했는지, 기대 답변(EXPECTED_ANSWER)과 비교하여 판단하는 것입니다.
@@ -122,6 +123,7 @@ tests:
     
 위 내용을 한국어로 번역하면 다음과 같습니다. 위의 영어 원문을 붙여넣으시고, 아래는 참고만 하세요.
 <pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
+# 이 내용은 실습생의 이해를 돕기 위해 information_search_tests.yaml의 내용을 번역한 것입니다.
 name: information_search_tests
 description: Llama 3.2 3B 모델의 정보 검색 프롬프트를 평가하기 위한 테스트입니다.
 usecase: information-search

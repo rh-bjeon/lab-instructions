@@ -51,12 +51,10 @@ tests/test_tools.py::test_mcp_calendar_list_events PASSED                [100%]
 ======================== 4 passed in 1.22s ========================
 ```
 
-> 
 > 💡 **TIP**
 > 
 > 아래와 같은 에러는 무시하셔도 됩니다.
 > `2026/11/26 08:20:40 WARNING mlflow.tracing.export.mlflow_v3: Failed to send trace to MLflow backend: INTERNAL_ERROR: Response: {'error': {'code': 'PERMISSION_DENIED', 'message': 'Permission denied for requested operation.'}}`
-> 
 
 **방금 우리가 테스트한 것은 무엇일까요?**
 
@@ -150,7 +148,7 @@ tests:
         - find_professors_by_expertise
 ```
 
-위 설정 파일의 내용을 번역하면 다음과 같습니다.
+위 설정 파일의 내용을 번역하면 다음과 같습니다. 
 <pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
 # 이 내용은 실습생의 이해를 돕기 위해 student_assistant_tests.yaml의 내용을 일부 번역한 것입니다.
 name: student_assistant_tests
@@ -206,6 +204,7 @@ Respond with only "yes" or "no".
 ```
 
 <pre style="background-color: #EAF6FF; padding: 15px; border-radius: 6px;"><code class="language-yaml">
+# 이 내용은 실습생의 이해를 돕기 위해 judge_prompt.txt의 내용을 번역한 것입니다.
 당신은 질문에 대해 생성된 답변의 품질을 평가하는 전문 평가자입니다.
 
 당신의 임무는 생성된 답변(GENERATED_ANSWER)이 질문(QUESTION)에 정확하고 충실하게 답변했는지, 기대 답변(EXPECTED_ANSWER)과 비교하여 판단하는 것입니다.
