@@ -51,6 +51,13 @@ tests/test_tools.py::test_mcp_calendar_list_events PASSED                [100%]
 ======================== 4 passed in 1.22s ========================
 ```
 
+> 
+> 💡 **TIP**
+> 
+> 아래와 같은 에러는 무시하셔도 됩니다.
+> `2026/11/26 08:20:40 WARNING mlflow.tracing.export.mlflow_v3: Failed to send trace to MLflow backend: INTERNAL_ERROR: Response: {'error': {'code': 'PERMISSION_DENIED', 'message': 'Permission denied for requested operation.'}}`
+> 
+
 **방금 우리가 테스트한 것은 무엇일까요?**
 
 - **search_knowledge_base** - 도구가 벡터 스토어에서 관련 콘텐츠를 가져올 수 있는지 확인했습니다
@@ -142,6 +149,33 @@ tests:
       expected_tools:
         - find_professors_by_expertise
 ```
+
+위 설정 파일의 내용을 번역하면 다음과 같습니다.
+<pre><code class="language-yaml">
+name: student_assistant_tests
+description: End-to-end tests for the student assistant agent with tool choice validation
+usecase: student-assistant
+endpoint: /student-assistant
+scorers:
+  - answer_quality
+  - tool_call_correctness
+  - tool_call_efficiency
+judge_prompt: judge_prompt.txt
+tests:
+  - inputs:
+      prompt: "What is a forest canopy?"
+    expectations:
+      expected_result: "A forest canopy is the upper layer of a forest, formed by the crowns of trees. It's an important ecosystem component that provides habitat for many species and plays a crucial role in photosynthesis and the forest's overall health."
+      expected_tools:
+        - search_knowledge_base
+  - inputs:
+      prompt: "Who can help me with machine learning?"
+    expectations:
+      expected_result: "Dr. Sarah Chen from the Computer Science department can help you with machine learning. She specializes in Machine Learning, Neural Networks, AI Ethics, and Agentic Workflows. You can reach her at s.chen@university.edu."
+      expected_tools:
+        - find_professors_by_expertise
+</code></pre>
+
 
 같은 폴더에 `judge_prompt.txt`도 추가하세요.
 ```bash

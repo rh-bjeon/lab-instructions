@@ -53,4 +53,4 @@ LangGraph는 자체적인 MCP 지원 기능을 가지고 있어서 Llama Stack �
 ## 직접 만들어 봅시다!
 
 훨씬 쉬워지는 걸 직접 확인할 준비가 되셨나요? 똑같은 agentic 기능을 **~70% 더 적은 코드**로 구현하게 될 것입니다. 깔끔하고 선언적인 agent 정의만 남게 됩니다.
-워크벤치로 이동해서 **`experiments/8-agents/4-agentic-llamas.ipynb`**를 열어보세요
+워크벤치로 이동해서 `experiments/8-agents/4-agentic-llamas.ipynb`를 열어보세요

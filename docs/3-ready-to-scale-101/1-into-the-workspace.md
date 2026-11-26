@@ -15,7 +15,7 @@
 
 이 섹션을 마치면 모델을 워크플로와 애플리케이션에 통합하는 기본 방법을 이해하고, 이후의 고급 실습을 진행할 준비를 갖추게 됩니다.
 
-1. [OpenShift AI](https://data-science-gateway.<CLUSTER_DOMAIN>/)로 다시 이동합니다.
+1. [OpenShift AI Dashboard](https://rh-ai.<CLUSTER_DOMAIN>/)로 다시 이동합니다.
 
    ![openshift-ai.png](./images/openshift-ai.png)
 

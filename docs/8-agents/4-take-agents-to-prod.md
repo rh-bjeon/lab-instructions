@@ -74,7 +74,7 @@
       mlflow_prompt_version: latest
     ```
 
-5. 이 변경 사항을 push하기 전에, 먼저 prompt registry에 `student-assistant` 프롬프트를 생성해야 합니다. OpenShift Dashboard > Gen AI Studio > Prompts로 이동해서 `<USER_NAME>-toolings` 프로젝트 아래에 `student-assistant` 프롬프트를 생성하세요. 그런 다음 아래 프롬프트를 추가하고 적절한 커밋 메시지를 남기세요.
+5. 이 변경 사항을 push하기 전에, 먼저 prompt registry에 `student-assistant` 프롬프트를 생성해야 합니다. [OpenShift AI Dashboard](https://rh-ai.<CLUSTER_DOMAIN>/) > Gen AI Studio > Prompts로 이동해서 `<USER_NAME>-toolings` 프로젝트 아래에 `student-assistant` 프롬프트를 생성하세요. 그런 다음 아래 프롬프트를 추가하고 적절한 커밋 메시지를 남기세요.
 
     ```bash
     You are a helpful assistant that helps students with their calendar and studies.
@@ -130,7 +130,7 @@
     git push
   ```
 
-8. Canopy UI를 열고, 왼쪽에서 Student Assistant로 전환한 다음 `I need help understanding quantum chromodynamics.`라고 물어보세요.
+8. Canopy UI를 열고, 왼쪽에서 Student Assistant로 전환한 다음 `I need help understanding quantum chromodynamics. Can you find me an expert and schedule a one-hour meeting?`라고 물어보세요.
     Agent는 정보를 찾으려고 시도했다가 실패한 후, 도와줄 교수님을 찾아서 해당 교수님과의 미팅을 예약할 것입니다.
 
     Canopy를 더 이상 열어두지 않았다면, 여기서 다시 찾을 수 있습니다: [https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>](https://canopy-ui-<USER_NAME>-test.<CLUSTER_DOMAIN>)
