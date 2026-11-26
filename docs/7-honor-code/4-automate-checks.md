@@ -50,7 +50,6 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-bash"> 
-
     _____ _____ _____ _  ________ ______ 
     / ____|  __ \_   _| |/ /  ____|  ____|
     | (___ | |__) || | | ' /| |__  | |__   
@@ -94,7 +93,6 @@ Spikee는 [웹사이트](https://spikee.ai/)에 소개된 대로, "Simple Prompt
 
     <div class="highlight" style="background: #f7f7f7; overflow-x: auto; padding: 8px;">
     <pre><code class="language-bash"> 
-
     _____ _____ _____ _  ________ ______ 
     / ____|  __ \_   _| |/ /  ____|  ____|
     | (___ | |__) || | | ' /| |__  | |__   
